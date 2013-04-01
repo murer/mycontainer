@@ -14,7 +14,9 @@ Example:
     </dependency>
     
 Not all versions are deployed to central. 
-You can find all released versions at my private repository [here](http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/).
+But you can find them all at my private repository [here](http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/).
+
+It is highly recommended that you **avoid** using this repository directly since I can not ensure their availability.
 
 ## Build
 
