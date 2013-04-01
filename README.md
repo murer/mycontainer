@@ -16,7 +16,7 @@ Example:
 Not all versions are deployed to central. 
 But you can find them all at my private repository [here](http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/).
 
-It is highly recommended that you **avoid** using this repository directly since I can not ensure their availability.
+It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure their availability.
 
 ## Build
 
