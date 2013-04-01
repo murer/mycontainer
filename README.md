@@ -2,7 +2,12 @@
 
 Test Light Weight Container
 
-## Dependencies
+## It has just come from googlecode
+
+It means you still should go http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
+
+
+## Maven Repository
 
 This project is deployed to [maven central repository](http://repo1.maven.org/maven2/com/googlecode/mycontainer/). 
 Example:
