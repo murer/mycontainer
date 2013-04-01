@@ -7,8 +7,8 @@
 	<version>1.4.1-SNAPSHOT</version>
 
 	<scm>
-		<connection>scm:git:ssh://github.com/murer/mycontainer</connection>
-		<developerConnection>scm:git:ssh://github.com/murer/mycontainer</developerConnection>
+		<connection>scm:git:ssh://git@github.com/murer/mycontainer.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/murer/mycontainer.git</developerConnection>
 		<url>http://github.com/murer/mycontainer</url>
 	</scm>
 
