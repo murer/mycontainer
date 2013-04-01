@@ -53,31 +53,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<scm>
-		<connection>scm:svn:https://mycontainer.googlecode.com/svn/trunk/devel/implementation/mycontainer-parent
-		</connection>
-		<developerConnection>scm:svn:https://mycontainer.googlecode.com/svn/trunk/devel/implementation/mycontainer-parent
-		</developerConnection>
-		<url>https://mycontainer.googlecode.com/svn/trunk/devel/implementation/mycontainer-parent
-		</url>
-	</scm>
-
-
-	<distributionManagement>
-		<repository>
-			<id>fuweweu</id>
-			<name>Fuweweu Release Repository</name>
-			<url>${dist.release.url}</url>
-		</repository>
-		<snapshotRepository>
-			<id>fuweweu</id>
-			<uniqueVersion>false</uniqueVersion>
-			<name>Fuweweu Snapshot Repository</name>
-			<url>${dist.snapshot.url}</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	
 	<dependencyManagement>
 		<dependencies>
