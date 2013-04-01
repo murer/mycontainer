@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+	<New id="helper" class="com.googlecode.mycontainer.test.web.MycontainerTestHelper">
+		<Call name="bootBackend"></Call>
+	</New>
+	
+</Configure>

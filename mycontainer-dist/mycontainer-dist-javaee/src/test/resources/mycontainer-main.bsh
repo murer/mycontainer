@@ -1,0 +1,34 @@
+import com.googlecode.mycontainer.kernel.boot.*;
+import com.googlecode.mycontainer.web.*;
+import com.googlecode.mycontainer.web.jetty.*;
+
+// Mycontainer Builder is a nice helper
+builder = new ContainerBuilder();
+
+// Let's do undeploy when VM goes down
+builder.deployVMShutdownHook();
+
+// Web Server deployer
+WebServerDeployer server = builder.createDeployer(JettyServerDeployer.class);
+server.setName("WebServer");
+server.bindPort(8080);
+
+// Let's create a scripted servlet (it's awesome)
+tstServlet = new SpecServlet() {
+    doGet(req, resp) {
+        var out = resp.outputStream;
+        out.println("Hello World");
+    }
+    return this;
+};
+
+// Create a web context with this servlet
+web = server.createContextWebServer();
+web.setContext("/");
+web.getServlets().add(new ServletDesc(tstServlet, "/*"));
+
+// Deploy web server
+server.deploy();
+
+// Everthing is running, let's wait for ctrl+c
+builder.waitFor();

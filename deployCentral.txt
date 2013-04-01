@@ -1,0 +1,10 @@
+
+
+# Setting proxy
+MAVEN_OPTS="-Xmx512m -Xms512m -XX:MaxPermSize=128M -Dhttps.proxyHost=172.16.129.1 -Dhttps.proxyPort=3128 -Dhttps.proxyUser=$USER -Dhttps.proxyPassword=xxxx"
+
+# deploy snapshot
+mvn clean verify source:jar-no-fork javadoc:jar gpg:sign deploy:deploy -Dgpg.passphrase=passphrase -DdeployCentral -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/service/local/staging/deploy/maven2 
+
+
+

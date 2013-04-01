@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.googlecode.mycontainer</groupId>
+	<artifactId>mycontainer</artifactId>
+	<packaging>pom</packaging>
+	<name>mycontainer</name>
+	<version>1.4.1-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.googlecode.mycontainer</groupId>
+		<artifactId>mycontainer-parent</artifactId>
+		<version>1.4.1-SNAPSHOT</version>
+		<relativePath>mycontainer-parent</relativePath>
+	</parent>
+
+	<scm>
+		<connection>scm:svn:https://mycontainer.googlecode.com/svn/trunk/devel/implementation
+		</connection>
+		<developerConnection>scm:svn:https://mycontainer.googlecode.com/svn/trunk/devel/implementation
+		</developerConnection>
+		<url>https://mycontainer.googlecode.com/svn/trunk/devel/implementation
+		</url>
+	</scm>
+
+	<modules>
+		<module>mycontainer-parent</module>
+		<module>mycontainer-usage-parent</module>
+		<module>mycontainer-components</module>
+		<module>mycontainer-gae</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>deployCentral</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+        			<property>
+					<name>!deployCentral</name>
+				</property>
+      			</activation>
+			<modules>
+				<module>mycontainer-test</module>
+				<module>mycontainer-dist</module>
+			</modules>
+		</profile>
+		<profile>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>dist</name>
+				</property>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<artifactId>maven-assembly-plugin</artifactId>
+							<executions>
+								<execution>
+									<id>make-assembly</id>
+									<phase>package</phase>
+									<goals>
+										<goal>single</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>	
+
+</project>

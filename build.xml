@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<project name="mycontainer-download" default="all" basedir=".">
+
+    <property environment="env" />
+    <property file="build.properties" />
+
+    <path id="build.path">
+        <fileset dir="lib" includes="*.jar"/>
+    </path> 
+
+    <target name="all" depends="pack, googledownload">
+    </target>
+
+    <target name="pack">
+	<exec executable="mvn" dir="." failonerror="true">
+        	<arg value="clean" />
+                <arg value="package" />
+                <arg value="assembly:assembly" />
+        </exec>
+    </target>
+
+    <target name="proxy">
+        <setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"
+            proxyuser="${proxy.user}" proxypassword="${proxy.pass}"/>
+    </target>
+
+    <target name="googledownload">
+        <taskdef classname="net.bluecow.googlecode.ant.GoogleCodeUploadTask" classpathref="build.path" name="gcupload"/>
+	<gcupload username="${googlecode.username}" password="${googlecode.password}" projectname="mycontainer"
+	    filename="target/mycontainer-${mycontainer.version}-bin.zip" targetfilename="mycontainer-${mycontainer.version}.zip"
+	    summary="mycontainer ${mycontainer.version}" labels="Featured" />
+    </target>
+
+</project>

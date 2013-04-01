@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<display-name>Mycontainer Commons Servlet Test Web</display-name>
+
+	<servlet>
+		<servlet-name>EchoServlet</servlet-name>
+		<servlet-class>com.googlecode.mycontainer.commons.servlet.EchoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EchoServlet</servlet-name>
+		<url-pattern>/echo/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PrintServlet</servlet-name>
+		<servlet-class>com.googlecode.mycontainer.commons.servlet.PrintServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PrintServlet</servlet-name>
+		<url-pattern>/print/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ClasspathServlet</servlet-name>
+		<servlet-class>com.googlecode.mycontainer.commons.servlet.ClasspathServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClasspathServlet</servlet-name>
+		<url-pattern>/cp/*</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>NamingInvokerFilter</filter-name>
+		<filter-class>com.googlecode.mycontainer.commons.servlet.json.NamingInvokerFilter</filter-class>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>^/invoker/naming/</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>NamingInvokerFilter</filter-name>
+		<url-pattern>/invoker/naming/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>RestrictNamingInvokerFilter</filter-name>
+		<filter-class>com.googlecode.mycontainer.commons.servlet.json.RestrictNamingInvokerFilter</filter-class>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>^/invoker/restrictnaming/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>domain</param-name>
+			<param-value>view</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>RestrictNamingInvokerFilter</filter-name>
+		<url-pattern>/invoker/restrictnaming/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>PojoInvokerServlet</filter-name>
+		<filter-class>com.googlecode.mycontainer.commons.servlet.json.PojoInvokerFilter</filter-class>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>^/invoker/pojo/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>root</param-name>
+			<param-value>com.googlecode.mycontainer.commons</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>PojoInvokerServlet</filter-name>
+		<url-pattern>/invoker/pojo/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>JsonProtocolFilter</filter-name>
+		<filter-class>com.googlecode.mycontainer.commons.servlet.json.JsonProtocolFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JsonProtocolFilter</filter-name>
+		<url-pattern>*.js</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>ContentTypeByExtentionFilter</filter-name>
+		<filter-class>com.googlecode.mycontainer.commons.servlet.ContentTypeByExtentionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ContentTypeByExtentionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+</web-app>

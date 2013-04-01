@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>mycontainer-servlet-commons</name>
+	<groupId>com.googlecode.mycontainer</groupId>
+	<artifactId>mycontainer-servlet-commons</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.googlecode.mycontainer</groupId>
+		<artifactId>mycontainer-components</artifactId>
+		<version>1.4.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.googlecode.mycontainer</groupId>
+			<artifactId>mycontainer-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.mycontainer</groupId>
+			<artifactId>mycontainer-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+</project>

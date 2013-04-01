@@ -1,0 +1,31 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<!-- TODO: a jarjar format would be better -->
+	<id>dist</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<outputDirectory>${project.artifactId}-${project.version}/</outputDirectory>
+			<directory>src/main/bin-src</directory>
+			<useDefaultExcludes>true</useDefaultExcludes>
+		</fileSet>
+		<fileSet>
+			<outputDirectory>${project.artifactId}-${project.version}/conf</outputDirectory>
+			<directory>src/main/conf</directory>
+			<useDefaultExcludes>true</useDefaultExcludes>
+		</fileSet>		
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>${project.artifactId}-${project.version}/lib</outputDirectory>
+			<useProjectArtifact>true</useProjectArtifact>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+</assembly>

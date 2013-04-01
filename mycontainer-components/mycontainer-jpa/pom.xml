@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.googlecode.mycontainer</groupId>
+	<artifactId>mycontainer-jpa</artifactId>
+	<packaging>jar</packaging>
+	<name>Mycontainer JPA Implementation</name>
+	<parent>
+		<groupId>com.googlecode.mycontainer</groupId>
+		<artifactId>mycontainer-components</artifactId>
+		<version>1.4.1-SNAPSHOT</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>com.googlecode.mycontainer</groupId>
+			<artifactId>mycontainer-kernel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.mycontainer</groupId>
+			<artifactId>mycontainer-jta</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.mycontainer</groupId>
+			<artifactId>mycontainer-datasource</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- this is a dependency of hibernate-entitymanager (3.4.GA). And this 
+				version working with JBoss 4.x. The version for JBoss 5.x is 3.10.0.GA. Mycontainer 
+				does not requires direct dependency to it. -->
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.10.0.GA</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement />
+</project>

@@ -1,0 +1,21 @@
+import com.googlecode.mycontainer.kernel.boot.*;
+import com.googlecode.mycontainer.ejb.*;
+import com.googlecode.mycontainer.datasource.*;
+import com.googlecode.mycontainer.jta.*;
+
+builder = new ContainerBuilder();
+
+SessionInterceptorDeployer sessionInterceptorDeployer = builder
+		.createDeployer(SessionInterceptorDeployer.class);
+sessionInterceptorDeployer.deploy();
+
+builder.createDeployer(MyTransactionManagerDeployer.class).setName("TransactionManager").deploy();
+
+DataSourceDeployer ds = builder
+		.createDeployer(DataSourceDeployer.class);
+ds.setName("TestDS");
+ds.setDriver("org.hsqldb.jdbcDriver");
+ds.setUrl("jdbc:hsqldb:mem:.");
+ds.setUser("sa");
+ds.deploy();
+

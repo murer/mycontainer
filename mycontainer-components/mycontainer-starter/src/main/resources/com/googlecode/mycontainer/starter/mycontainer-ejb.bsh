@@ -1,0 +1,7 @@
+import com.googlecode.mycontainer.kernel.deploy.*;
+
+ScannerDeployer scanner = builder.createDeployer(ScannerDeployer.class);
+scanner.add(new StatelessScannableDeployer());
+scanner.scan(project.getBasedir().toURL());
+scanner.deploy();
+
