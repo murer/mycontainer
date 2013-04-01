@@ -27,13 +27,9 @@
 		<hsqldb.version>1.8.0.7</hsqldb.version>
 		<jsf.version>2.1.2</jsf.version>
 
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gae.version>1.7.6</gae.version>
 		<appengine.target.plugin.version>1.7.5</appengine.target.plugin.version>
 		<datanucleus.version>1.1.5</datanucleus.version>
-
-		<dist.release.url>dav:http://repo.pyrata.org/release/maven2</dist.release.url>
-		<dist.snapshot.url>dav:http://repo.pyrata.org/snapshot/maven2</dist.snapshot.url>
 	</properties>
 
 	<dependencies>
