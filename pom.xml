@@ -4,7 +4,7 @@
 	<artifactId>mycontainer</artifactId>
 	<packaging>pom</packaging>
 	<name>mycontainer</name>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:ssh://git@github.com/murer/mycontainer.git</connection>
