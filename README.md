@@ -31,3 +31,8 @@ You need java and [maven](http://maven.apache.org/).
 
 Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
+## Let's do it
+
+I really like to merge **pull requests**
+
+
