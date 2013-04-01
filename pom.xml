@@ -19,7 +19,7 @@
 		<module>mycontainer-gae</module>
 	</modules>
 
-<build>
+	<build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
