@@ -22,6 +22,15 @@ Here a junit sample:
 [AbstractWebBaseTestCase.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/AbstractWebBaseTestCase.java)
 / [MycontainerWebTest.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerWebTest.java)
 
+## Starting all modules from maven
+
+Configure mycontainer maven plugin: [pom.xml](./mycontainer-usage-parent/pom.xml)
+
+Write the beanshell: [mycontainer-start.bsh](./mycontainer-test-starter/src/test/resources/mycontainer-start.bsh).
+Remeber you can write this in any java class and just use that in beanshell
+
+    mvn mycontainer:start
+
 ## Maven Repository
 
 This project is deployed to [maven central repository](http://repo1.maven.org/maven2/com/googlecode/mycontainer/). 
