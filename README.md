@@ -4,7 +4,7 @@ Test Light Weight Container
 
 ## @Before
 
-You need java and maven
+You will need java and maven
 
 ## Start a local web server
 
@@ -45,7 +45,7 @@ Example:
 Not all versions are deployed to central. 
 But you can find them all at my private repository http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/
 
-It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure their availability.
+It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure it's availability.
 
 ## Build
 
@@ -57,10 +57,10 @@ Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
 ## It has just come from googlecode
 
-It means you still should go http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
+It means you still should go to http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
 
 ## Let's do it
 
-I really like to merge **pull requests**
+We really like to merge **pull requests**
 
 
