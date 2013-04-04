@@ -26,7 +26,7 @@ Here a junit sample:
 
 Configure mycontainer maven plugin: [pom.xml](./mycontainer-usage-parent/pom.xml)
 
-Write the beanshell: [mycontainer-start.bsh](./mycontainer-test-starter/src/test/resources/mycontainer-start.bsh).
+Write the beanshell: [mycontainer-start.bsh](./mycontainer-test/mycontainer-test-starter/src/test/resources/mycontainer-start.bsh).
 Remeber you can write this in any java class and just use that in beanshell
 
     mvn mycontainer:start
