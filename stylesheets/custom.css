@@ -1,0 +1,9 @@
+.togglepanel {
+	cursor: pointer;
+}
+
+.togglepanel-inner {
+	margin-left: 10px;
+	padding-left: 10px;
+	border-left: 1px dashed rgba(255, 255, 255, 0.15) 
+}
