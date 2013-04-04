@@ -2,9 +2,15 @@
 
 Test Light Weight Container
 
-## It has just come from googlecode
+## @Before
 
-It means you still should go http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
+You need java and maven
+
+## Start a local web server
+
+No pom.xml required :) And it is nice to quick start html, javascript and css projects.
+
+    $ mvn com.googlecode.mycontainer:maven-mycontainer-plugin:web -Dmycontainer.web.port=8080
 
 ## Embedding Mycontainer to do some Java EE stuff
 
@@ -35,6 +41,10 @@ Not all versions are deployed to central.
 But you can find them all at my private repository http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/
 
 It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure their availability.
+
+## It has just come from googlecode
+
+It means you still should go http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
 
 ## Let's do it
 
