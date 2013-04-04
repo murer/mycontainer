@@ -57,6 +57,16 @@ It is highly recommended that you **avoid** linking this repository in your `pom
 
 Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
+## Some features
+ * Embeddable on any java application (junit tests, jetty, tomcat, and any others)
+ * Programmatic configuration and deploy
+ * Light weight
+ * Fast boot
+ * No hijack the Java Virtual Machine (real embeddable):
+   * No change JVM URL protocols configs
+   * No dynamic classloader
+   * No classloader isolation
+
 ## It has just come from googlecode
 
 It means you still should go to http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
