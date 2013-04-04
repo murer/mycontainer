@@ -2,6 +2,10 @@
 
 Test Light Weight Container
 
+Mycontainer is a generic light weight java embeddable container.
+The main implementation is a Java EE without some common features like pools, clusters and others.
+Nice to be used for tests (integrations or units)
+
 ## @Before
 
 You will need java and maven
