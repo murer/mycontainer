@@ -83,7 +83,7 @@ Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
 It means you still should go to http://mycontainer.googlecode.com to read the [wikis](https://code.google.com/p/mycontainer/w/list).
 
-## Let's do it
+## @After
 
 We really like to merge **pull requests**
 
