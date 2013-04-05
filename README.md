@@ -32,11 +32,11 @@ Configure [pom.xml](./mycontainer-gae/mycontainer-gae-test/pom.xml) to [Google A
 
 Use [GAETestHelper.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/GAETestHelper.java) or code like that.
 
-Google has [LocalServiceTestHelper](https://developers.google.com/appengine/docs/java/tools/localunittesting) to do unit tests, but it requires a local thread environment.
+Google has [LocalServiceTestHelper](https://developers.google.com/appengine/docs/java/tools/localunittesting) 
+to do unit tests, but it requires a thread environment.
 It means we need to keep the env to each request thread.
-This filter [LocalServiceTestHelperFilter.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/LocalServiceTestHelperFilter.java) does the job.
-
-We use a non-documented google class ApiProxy to do it.
+This filter [LocalServiceTestHelperFilter.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/LocalServiceTestHelperFilter.java)
+does the job using a non-documented google class ApiProxy.
 
 ## Starting all modules from maven
 
