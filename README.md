@@ -26,6 +26,18 @@ Here is a junit sample:
 [AbstractWebBaseTestCase.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/AbstractWebBaseTestCase.java)
 / [MycontainerWebTest.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerWebTest.java)
 
+## Embedding Mycontainer to do some GAE stuff
+
+Configure [pom.xml](./mycontainer-gae/mycontainer-gae-test/pom.xml) to [Google App Engine](https://developers.google.com/appengine/)
+
+Use [GAETestHelper.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/GAETestHelper.java) or code like that.
+
+Google has [LocalServiceTestHelper](https://developers.google.com/appengine/docs/java/tools/localunittesting) to do unit tests, but it requires a local thread environment.
+It means we need to keep the env to each request thread.
+This filter [LocalServiceTestHelperFilter.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/LocalServiceTestHelperFilter.java) does the job.
+
+We use a non-documented google class ApiProxy to do it.
+
 ## Starting all modules from maven
 
 Configure mycontainer maven plugin: [pom.xml](./mycontainer-usage-parent/pom.xml)
