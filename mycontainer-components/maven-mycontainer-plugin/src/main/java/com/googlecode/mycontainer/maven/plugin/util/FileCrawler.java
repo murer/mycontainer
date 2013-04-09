@@ -10,7 +10,7 @@ public abstract class FileCrawler {
 				continue;
 			}
 			String name = f.getName();
-			if (name.equals(".") || name.equals("..")) {
+			if (name.equals("..")) {
 				continue;
 			}
 			found(f);
