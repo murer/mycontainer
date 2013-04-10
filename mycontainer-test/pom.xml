@@ -46,6 +46,32 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.googlecode.mycontainer</groupId>
+				<artifactId>maven-mycontainer-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>us-ascii</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<filters>
+						<param>include:^.*\.java$</param>
+						<param>include:^.*\.properties$</param>
+						<param>include:^.*\.txt$</param>
+						<param>include:^.*\.html$</param>
+						<param>include:^.*\.js$</param>
+						<param>include:^.*\.css$</param>
+						<param>include:^.*\.xml$</param>
+						<param>include:^.*\.xhtml$</param>
+						<param>include:^.*\.jsp$</param>
+					</filters>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 		</pluginManagement>
