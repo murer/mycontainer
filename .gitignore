@@ -3,5 +3,6 @@ target
 .settings
 .classpath
 lockedfile-test
+release-logs
 *~
 
