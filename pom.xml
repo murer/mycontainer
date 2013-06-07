@@ -4,7 +4,7 @@
 	<artifactId>mycontainer</artifactId>
 	<packaging>pom</packaging>
 	<name>mycontainer</name>
-	<version>1.4.3</version>
+	<version>1.4.4-SNAPSHOT</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
