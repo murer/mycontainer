@@ -16,7 +16,7 @@ You will need java and maven
 
 No pom.xml required :) And it is nice to quick start html, javascript and css projects.
 
-    $ mvn com.googlecode.mycontainer:maven-mycontainer-plugin:web -Dmycontainer.web.port=8080
+    $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:web -Dmycontainer.web.port=8080
 
 ## Embedding Mycontainer to do some Java EE stuff
 

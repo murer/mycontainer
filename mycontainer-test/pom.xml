@@ -48,7 +48,7 @@
 		<plugins>
 			<plugin>
 				<groupId>com.googlecode.mycontainer</groupId>
-				<artifactId>maven-mycontainer-plugin</artifactId>
+				<artifactId>mycontainer-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
