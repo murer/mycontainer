@@ -1,10 +1,18 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.mycontainer</groupId>
 	<artifactId>mycontainer</artifactId>
 	<packaging>pom</packaging>
 	<name>mycontainer</name>
 	<version>1.4.4-SNAPSHOT</version>
+	<description>Test Light Weight Container</description>
+	<url>http://mycontainer.googlecode.com</url>
+	<organization>
+		<name>Mycontainer Team</name>
+		<url>http://mycontainer.googlecode.com</url>
+	</organization>
+	<inceptionYear>2008</inceptionYear>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -197,5 +205,29 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<issueManagement>
+		<system>Google</system>
+		<url>http://code.google.com/p/mycontainer/issues/entry</url>
+	</issueManagement>
+	<licenses>
+		<license>
+			<name>Apache Software License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<id>bthiago</id>
+			<name>Thiago Balthazar</name>
+			<email>bthiago@gmail.com</email>
+		</developer>
+		<developer>
+			<id>fuweweu</id>
+			<name>Paulo Murer</name>
+			<email>fuweweu@gmail.com</email>
+		</developer>
+	</developers>
+
 
 </project>
