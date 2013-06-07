@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.4.4</version>
+		<version>1.4.5-SNAPSHOT</version>
 	</parent>
 	<prerequisites>
 		<maven>2.0.9</maven>
