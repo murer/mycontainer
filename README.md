@@ -8,6 +8,10 @@ Nice to be used for tests (integrations or units)
 
 [![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
 
+## Since 1.4.4
+
+You need to change `maven-mycontainer-plugin` to `mycontainer-maven-plugin` (thanks maven 3.x)
+
 ## @Before
 
 You will need java and maven
