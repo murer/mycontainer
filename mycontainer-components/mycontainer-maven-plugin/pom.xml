@@ -1,11 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.mycontainer</groupId>
 	<artifactId>mycontainer-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Mycontainer Maven Plugin</name>
 	<description>
-		This plugin can start JEE Mycontainer with all project modules.
+		This plugin can start JEE Mycontainer with all project
+		modules.
 	</description>
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
@@ -15,6 +17,10 @@
 	<prerequisites>
 		<maven>2.0.9</maven>
 	</prerequisites>
+	<properties>
+		<maven.version>2.0.9</maven.version>
+		<truezip.version>7.7.4</truezip.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -68,10 +74,22 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-driver-zip</artifactId>
+			<version>${truezip.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-driver-tar</artifactId>
+			<version>${truezip.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.schlichtherle.truezip</groupId>
+			<artifactId>truezip-file</artifactId>
+			<version>${truezip.version}</version>
+		</dependency>
 	</dependencies>
-	<properties>
-		<maven.version>2.0.9</maven.version>
-	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
