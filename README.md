@@ -18,9 +18,18 @@ You will need java and maven
 
 ## Start a local web server
 
-No pom.xml required :) And it is nice to quick start html, javascript and css projects.
+No pom.xml required. And it is nice to quick start html, javascript and css projects.
 
     $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:web -Dmycontainer.web.port=8080
+    
+## Checking for non us-ascii files
+
+Checking recursively for non-ascii files (pom.xml is not required):
+
+    $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:us-ascii
+    
+You can configure your pom.xml do check it on test maven phase like we do [pom.xml](./mycontainer-test/pom.xml).
+Remeber you need `<inherited>false</inherited>` if you are configuring your root pom.xml at multi modules project.
 
 ## Embedding Mycontainer to do some Java EE stuff
 
