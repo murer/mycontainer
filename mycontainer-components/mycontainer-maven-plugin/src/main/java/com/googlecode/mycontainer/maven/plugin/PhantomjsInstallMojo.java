@@ -1,4 +1,4 @@
-package com.googlecode.mycontainer.maven.plugin.phantomjs;
+package com.googlecode.mycontainer.maven.plugin;
 
 import java.io.Closeable;
 import java.io.File;
@@ -77,7 +77,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 
 	public PhantomjsInstallMojo() {
 		addSpec("linux", "i686", "tar.bz2", "bin/phantomjs", "phantomjs");
-		addSpec("linux", "x64_64", "tar.bz2", "bin/phantomjs", "phantomjs");
+		addSpec("linux", "x86_64", "tar.bz2", "bin/phantomjs", "phantomjs");
 		addSpec("macosx", null, "zip", "bin/phantomjs", "phantomjs");
 		addSpec("windows", null, "zip", "phantomjs.exe", "phantomjs.exe");
 	}
