@@ -62,6 +62,19 @@ Checking recursively for non-ascii files (pom.xml is not required):
 You can configure your pom.xml do check it on test maven phase like we do [pom.xml](./mycontainer-test/pom.xml).
 Remeber you need `<inherited>false</inherited>` if you are configuring your root pom.xml at multi modules project.
 
+## Installing PhantomJS
+
+Mycontainer has a plugin to install [PhantomJS](http://phantomjs.org). 
+
+ * Download packages from original host: http://code.google.com/p/phantomjs/downloads/
+ * Install the correct package (windows, macosx, linux).
+ * No pom.xml required
+ * It set a maven property to the phantomjs executable: `mycontainer.phantomjs.executable`
+
+Maven command:
+
+    $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:phantomjs-install -Dmycontainer.phantomjs.dest=target/phantomjs -Dmycontainer.phantomjs.version=1.9.2
+
 ## Maven Repository
 
 This project is deployed to [maven central repository](http://repo1.maven.org/maven2/com/googlecode/mycontainer/). 
