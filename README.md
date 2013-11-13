@@ -43,7 +43,7 @@ does the job using a non-documented google class ApiProxy.
 Configure mycontainer maven plugin: [pom.xml](./mycontainer-usage-parent/pom.xml)
 
 Write the beanshell: [mycontainer-start.bsh](./mycontainer-test/mycontainer-test-starter/src/test/resources/mycontainer-start.bsh).
-Remeber you can write this in any java class and just use that in beanshell
+You can write this in any java class and just use that in beanshell
 
     mvn mycontainer:start
 
@@ -60,7 +60,7 @@ Checking recursively for non-ascii files (pom.xml is not required):
     $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:us-ascii
     
 You can configure your pom.xml do check it on test maven phase like we do [pom.xml](./mycontainer-test/pom.xml).
-Remeber you need `<inherited>false</inherited>` if you are configuring your root pom.xml at multi modules project.
+Use `<inherited>false</inherited>` if you are configuring your root pom.xml at multi modules project.
 
 ## Installing PhantomJS
 
