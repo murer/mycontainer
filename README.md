@@ -6,6 +6,13 @@
 
 Mycontainer is a generic test and development enviroment. Check it out.
 
+ * [Embedding Mycontainer to do some Java EE stuff](#embedding-mycontainer-to-do-some-java-ee-stuff)
+ * [Embedding Mycontainer to do some GAE stuff](#embedding-mycontainer-to-do-some-gae-stuff)
+ * [Starting all modules from maven](#starting-all-modules-from-maven)
+ * [Start a local web server](#start-a-local-web-server)
+ * [Checking for non us-ascii files](#checking-for-non-us-ascii-files)
+ * [Installing PhantomJS](#installing-phantomjs)
+
 ## Since 1.4.4
 
 You need to change `maven-mycontainer-plugin` to `mycontainer-maven-plugin` (thanks maven 3.x)
