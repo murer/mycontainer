@@ -1,10 +1,10 @@
 # Mycontainer
 
-Test Light Weight Container
+## Purpose
 
-Mycontainer is a generic light weight java embeddable container.
-The main implementation is a Java EE without some common features like pools, clusters and others.
-Nice to be used for tests (integrations or units)
+Mycontainer purpose has been incresed to be a generic test container (and not only Java EE one).
+
+It means you can use mycontainer help you test your project. Check it out.
 
 [![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
 
