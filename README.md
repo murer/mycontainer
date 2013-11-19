@@ -107,8 +107,5 @@ Use `-Ddist` to assembly a all-in-one jar and a binary zip.
    * No dynamic classloader
    * No classloader isolation
 
-## @After
-
-We really like to merge **pull requests**
 
 
