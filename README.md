@@ -1,12 +1,12 @@
 # Mycontainer
 
+[![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
+
 ## Purpose
 
 Mycontainer purpose has been incresed to be a generic test container (and not only Java EE one).
 
 It means you can use mycontainer help you test your project. Check it out.
-
-[![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
 
 ## Since 1.4.4
 
