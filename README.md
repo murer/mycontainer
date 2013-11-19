@@ -91,7 +91,7 @@ But you can find them all at my private repository http://repo.pyrata.org/releas
 
 It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure it's availability.
 
-## Build
+## Building Mycontainer
 
     mvn clean install
 
