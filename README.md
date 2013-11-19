@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Mycontainer purpose has been incresed to be a generic test container (and not only Java EE one).
+Mycontainer purpose has been increased to be a generic test container (and not only Java EE one).
 
 It means you can use mycontainer to help you test your project. Check it out.
 
