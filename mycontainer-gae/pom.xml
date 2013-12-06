@@ -24,6 +24,7 @@
 
 	<modules>
 		<module>mycontainer-gae-web</module>
+		<module>mycontainer-gae-archetype</module>
 	</modules>
 
 	<dependencies>

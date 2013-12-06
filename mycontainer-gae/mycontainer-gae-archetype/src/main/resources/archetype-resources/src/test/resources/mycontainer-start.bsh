@@ -1,0 +1,11 @@
+import ${package}.container.*;
+
+helper = new MyContainerGAEHelper();
+helper.setPort(8080);
+helper.prepareLocalServiceTestHelper();
+
+container = helper.bootMycontainer();
+
+container.waitFor();
+
+helper.shutdownMycontainer();
