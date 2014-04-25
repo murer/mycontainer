@@ -7,6 +7,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -94,7 +95,22 @@ public class MycontainerStartMojo extends AbstractMojo {
 	private Set<String> packs;
 
 	/**
-	 * @parameter expression="false"
+	 * @parameter expression="${mycontainer.debug2info}" default-value="false"
+	 * @required
+	 */
+	private boolean debug2info;
+
+	/**
+	 * @parameter expression="${mycontainer.start.resolveConflict}"
+	 *            default-value="false"
+	 * @required
+	 */
+	private boolean resolveConflict;
+
+	/**
+	 * @parameter expression="${mycontainer.start.includeTests}"
+	 *            expression="false"
+	 * @required
 	 */
 	private boolean includeTests = false;
 
@@ -121,16 +137,57 @@ public class MycontainerStartMojo extends AbstractMojo {
 			throw new MojoExecutionException("Beanshell not found: " + script);
 		}
 		PluginUtil.configureLogger(getLog());
-		List<File> classpath = getClasspath();
-		classpath.addAll(getMycontainerDependencies());
+
+		Set<Artifact> artifacts = new HashSet<Artifact>();
+		Set<MavenProject> projects = new HashSet<MavenProject>();
+		resolveDependencies(artifacts, projects);
+		resolvePluginDependencies(artifacts);
+		if (resolveConflict) {
+			resolveConflicts(artifacts);
+		}
+		List<File> classpath = getProjectsClasspath(projects);
+		classpath.addAll(getArtifactsClasspath(artifacts));
 		exec(classpath);
 	}
 
-	private List<File> getMycontainerDependencies() {
+	private void resolveConflicts(Set<Artifact> artifacts) {
+		Map<String, Artifact> ret = new HashMap<String, Artifact>();
+		for (Artifact artifact : artifacts) {
+			String id = new StringBuilder().append(artifact.getGroupId()).append(':').append(artifact.getArtifactId()).append(':').append(artifact.getType()).toString();
+			Artifact old = ret.get(id);
+			if (old != null) {
+				debug("Conflict removed: " + artifact + " (" + old + ")");
+			} else {
+				ret.put(id, artifact);
+			}
+		}
+	}
+
+	private void resolvePluginDependencies(Set<Artifact> artifacts) {
 		getLog().info("Getting plugin dependencies...");
-		Collection<Artifact> artifacts = pluginArtifactMap.values();
-		List<File> files = getArtifactsClasspath(artifacts);
-		return files;
+		Collection<Artifact> coll = pluginArtifactMap.values();
+		for (Artifact artifact : coll) {
+			debug("Plugin dependency: " + artifact);
+			if (artifacts.add(artifact)) {
+				debug("Plugin dependency: " + artifact);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void resolveDependencies(Set<Artifact> artifacts, Set<MavenProject> projects) throws MojoExecutionException {
+		if (packs.contains(project.getPackaging())) {
+			projects.add(project);
+			mountClasspath(project, artifacts);
+		}
+		List<MavenProject> collectedProjects = project.getCollectedProjects();
+		for (MavenProject module : collectedProjects) {
+			if (packs.contains(module.getPackaging())) {
+				projects.add(module);
+				mountClasspath(module, artifacts);
+			}
+		}
+		removeProjects(projects, artifacts);
 	}
 
 	private void exec(List<File> classpath) throws MojoExecutionException {
@@ -141,7 +198,7 @@ public class MycontainerStartMojo extends AbstractMojo {
 					getLog().warn("File not found to isolated classloader: " + file);
 				} else {
 					URL url = file.toURI().toURL();
-					getLog().debug("Classpath: " + url);
+					debug("Classpath: " + url);
 					urls.add(url);
 				}
 			}
@@ -158,28 +215,6 @@ public class MycontainerStartMojo extends AbstractMojo {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<File> getClasspath() throws MojoExecutionException {
-		Set<Artifact> artifacts = new HashSet<Artifact>();
-		Set<MavenProject> projects = new HashSet<MavenProject>();
-		if (packs.contains(project.getPackaging())) {
-			projects.add(project);
-			mountClasspath(project, artifacts);
-		}
-		List<MavenProject> collectedProjects = project.getCollectedProjects();
-		for (MavenProject module : collectedProjects) {
-			if (packs.contains(module.getPackaging())) {
-				projects.add(module);
-				mountClasspath(module, artifacts);
-			}
-		}
-		removeProjects(projects, artifacts);
-		List<File> files = getArtifactsClasspath(artifacts);
-		files.addAll(getProjectsClasspath(projects));
-
-		return files;
-	}
-
-	@SuppressWarnings("unchecked")
 	private List<File> getProjectsClasspath(Set<MavenProject> projects) throws MojoExecutionException {
 		try {
 			getLog().info("Including project classpath. includingTests: " + includeTests);
@@ -187,13 +222,13 @@ public class MycontainerStartMojo extends AbstractMojo {
 			for (MavenProject module : projects) {
 				List<String> elements = module.getCompileClasspathElements();
 				for (String element : elements) {
-					getLog().debug("Path: " + element);
+					debug("Path: " + element);
 					ret.add(new File(element));
 				}
 				if (includeTests) {
 					elements = module.getTestClasspathElements();
 					for (String element : elements) {
-						getLog().debug("Path: " + element);
+						debug("Path: " + element);
 						ret.add(new File(element));
 					}
 				}
@@ -216,7 +251,9 @@ public class MycontainerStartMojo extends AbstractMojo {
 	private void removeProjects(Set<MavenProject> projects, Set<Artifact> artifacts) {
 		for (MavenProject module : projects) {
 			Artifact artifact = module.getArtifact();
-			artifacts.remove(artifact);
+			if (artifacts.remove(artifact)) {
+				debug("project removed: " + artifact);
+			}
 		}
 	}
 
@@ -226,7 +263,6 @@ public class MycontainerStartMojo extends AbstractMojo {
 			Artifact artifact = module.getArtifact();
 			getLog().info("Mounting classpath: " + artifact);
 			artifacts.add(artifact);
-			getLog().debug("Dependency: " + artifact);
 
 			DependencyNode root = dependencyTreeBuilder.buildDependencyTree(module, localRepository, artifactFactory, artifactMetadataSource, null, artifactCollector);
 			Iterator<DependencyNode> it = root.iterator();
@@ -237,12 +273,20 @@ public class MycontainerStartMojo extends AbstractMojo {
 				if ((Artifact.SCOPE_COMPILE.equals(dependencyScope) || (includeTests && Artifact.SCOPE_TEST.equals(dependencyScope))) && packs.contains(dependency.getType())) {
 					boolean add = artifacts.add(dependency);
 					if (add) {
-						getLog().debug("Dependency: " + artifact);
+						debug("Dependency: " + dependencyScope + " " + dependency);
 					}
 				}
 			}
 		} catch (DependencyTreeBuilderException e) {
 			throw new MojoExecutionException("error", e);
+		}
+	}
+
+	private void debug(String msg) {
+		if (debug2info) {
+			getLog().info(msg);
+		} else {
+			getLog().debug(msg);
 		}
 	}
 
