@@ -7,4 +7,3 @@ MAVEN_OPTS="-Xmx512m -Xms512m -XX:MaxPermSize=128M -Dhttps.proxyHost=172.16.129.
 mvn clean verify source:jar-no-fork javadoc:jar gpg:sign deploy:deploy -Dgpg.passphrase=passphrase -DdeployCentral -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/service/local/staging/deploy/maven2 
 
 
-
