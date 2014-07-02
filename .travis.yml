@@ -11,6 +11,7 @@ script:
   - rm $HOME/.m2/settings.xml
 after_script: ./cmds/ci/after_script.sh  
 env:
+  - secure: mu16QSMbr5n10L29ZkYhl10usN7jhqXNdqKDa/9BwQNNz9V3AIVzchar80sBvW19URTS5FPK/GIOmf18QZslngAB1UrFP1u+7kvIfbEn8t3famWpWM514BVeT1wXomvygZvlVs6Aya/Xl3NdxZMIYmp++GOkDuPWUxaWku8WYss=
   - MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m"
 cache:
   directories:
