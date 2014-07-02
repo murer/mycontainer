@@ -6,9 +6,9 @@ install:
   - "echo we do not need install"
 script: 
   - ./cmds/ci/script.sh
-#  - cp cmds/ci/settings.priv $HOME/.m2/settings.xml
-#  - ./cmds/central/deploy-snapshot.sh 
-#  - rm $HOME/.m2/settings.xml
+  - cp cmds/ci/settings.priv $HOME/.m2/settings.xml
+  - ./cmds/central/deploy-snapshot.sh 
+  - rm $HOME/.m2/settings.xml
 after_script: ./cmds/ci/after_script.sh  
 env:
   - secure: sN4SdEFQwAr2gNb2pmyIslaCmVPiEfcgvBTY2+74q4Xv/lgbRqftVrbP0pO7lDTnJpPklqowsR56tsqumZ3H3MA0LOwA0fCFCWG4DkTa4BqrAso2pq6ECwWyrDAzFa09gp5yqGxJox3vmgh4AaUx8pMT6P/VRsbd/nCGi7JI/6c=
