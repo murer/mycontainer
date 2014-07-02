@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 if [ "x$MYCONTAINER_SECRET" == "x" ]; then
         echo "export MYCONTAINER_SECRET to descrypt files";
