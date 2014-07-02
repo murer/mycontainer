@@ -8,6 +8,7 @@ script:
   - ./cmds/ci/script.sh
   - cp cmds/ci/settings.priv $HOME/.m2/settings.xml
   - ./cmds/central/deploy-snapshot.sh 
+  - rm $HOME/.m2/settings.xml
 after_script: ./cmds/ci/after_script.sh  
 env:
   - MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m"
