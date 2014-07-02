@@ -4,5 +4,6 @@ target
 .classpath
 lockedfile-test
 release-logs
+*.priv
 *~
 
