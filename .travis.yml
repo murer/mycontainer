@@ -1,3 +1,5 @@
 language: java
 jdk:
   - oraclejdk7
+before_install: ./ci/before_install.sh
+after_script: ./ci/after_script.sh  
