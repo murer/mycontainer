@@ -2,5 +2,5 @@
 
 ./cmds/decrypt.sh
 
-gpg --import keys/pyrata.org-private.key
+gpg --import keys/pyrata.org.priv
 
