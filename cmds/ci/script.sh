@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-mvn clean install -B
+mvn test -B
 
 find "$HOME/.m2/repository" -name "mycontainer" -exec rm -rf "{}" \; | cat
 
