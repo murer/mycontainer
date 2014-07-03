@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-parent</artifactId>
-		<version>1.4.10-SNAPSHOT</version>
+		<version>1.4.10</version>
 		<relativePath>../mycontainer-parent</relativePath>
 	</parent>
 
