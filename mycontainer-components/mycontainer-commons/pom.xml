@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.4.12-SNAPSHOT</version>
+		<version>1.5.0</version>
 	</parent>
 
 	<dependencies>
