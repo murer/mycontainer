@@ -50,7 +50,6 @@ public class MycontainerUsAsciiMojo extends AbstractMojo {
 	private List<String> filters;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		PluginUtil.configureLogger(getLog());
 		prepareParams();
 		getLog().info("params: " + filters);
 

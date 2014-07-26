@@ -136,7 +136,6 @@ public class MycontainerStartMojo extends AbstractMojo {
 		if (!script.exists()) {
 			throw new MojoExecutionException("Beanshell not found: " + script);
 		}
-		PluginUtil.configureLogger(getLog());
 
 		Set<Artifact> artifacts = new HashSet<Artifact>();
 		Set<MavenProject> projects = new HashSet<MavenProject>();
