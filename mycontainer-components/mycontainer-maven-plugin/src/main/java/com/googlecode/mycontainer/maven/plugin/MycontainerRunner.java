@@ -15,9 +15,12 @@ public class MycontainerRunner implements Runnable {
 
 	private final File bsh;
 
+	private ClassLoader classloader;
+
 	public MycontainerRunner(Log log, ClassLoader classloader, File bsh) {
 		this.log = log;
 		this.bsh = bsh;
+		this.classloader = classloader;
 		thread = new Thread(this, "MycontainerRunner");
 		thread.setContextClassLoader(classloader);
 	}
@@ -33,6 +36,7 @@ public class MycontainerRunner implements Runnable {
 	public void run() {
 		try {
 			log.info("Creating starter");
+			PluginUtil.configureLogger(classloader, log);
 			BeanshellMyontainerStarter starter = new BeanshellMyontainerStarter();
 			starter.setUrl(bsh.toURI().toURL().toString());
 			starter.execute();

@@ -39,7 +39,6 @@ public class MycontainerWebMojo extends AbstractMojo {
 	private String resources;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		PluginUtil.configureLogger(getLog());
 		ContainerBuilder builder = new ContainerBuilder(getInitialContext());
 		JettyServerDeployer web = builder.createDeployer(JettyServerDeployer.class);
 		web.setName("WebServer");
