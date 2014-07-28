@@ -23,6 +23,7 @@
 		<module>mycontainer-parent</module>
 		<module>mycontainer-usage-parent</module>
 		<module>mycontainer-components</module>
+		<module>mycontainer-util</module>
 		<module>mycontainer-gae</module>
 	</modules>
 

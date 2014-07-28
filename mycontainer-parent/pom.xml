@@ -228,7 +228,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.googlecode.mycontainer</groupId>
-				<artifactId>mycontainer-cpscanner</artifactId>
+				<artifactId>mycontainer-util</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

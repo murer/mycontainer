@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
-			<artifactId>mycontainer-cpscanner</artifactId>
+			<artifactId>mycontainer-util</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
