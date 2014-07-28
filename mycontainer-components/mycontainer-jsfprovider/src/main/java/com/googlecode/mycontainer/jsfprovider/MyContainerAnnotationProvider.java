@@ -16,8 +16,8 @@ import javax.servlet.ServletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.googlecode.mycontainer.cpscanner.ClasspathScanner;
 import com.googlecode.mycontainer.kernel.reflect.ReflectUtil;
+import com.googlecode.mycontainer.util.cpscanner.ClasspathScanner;
 import com.sun.faces.config.JavaClassScanningAnnotationScanner;
 
 public class MyContainerAnnotationProvider extends JavaClassScanningAnnotationScanner {

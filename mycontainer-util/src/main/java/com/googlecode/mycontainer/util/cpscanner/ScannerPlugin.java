@@ -9,7 +9,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package com.googlecode.mycontainer.cpscanner;
+package com.googlecode.mycontainer.util.cpscanner;
 
 import java.net.URL;
 import java.util.List;

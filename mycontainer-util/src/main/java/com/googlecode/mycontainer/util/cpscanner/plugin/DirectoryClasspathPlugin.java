@@ -9,7 +9,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package com.googlecode.mycontainer.cpscanner.plugin;
+package com.googlecode.mycontainer.util.cpscanner.plugin;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.mycontainer.cpscanner.ScannerPlugin;
+import com.googlecode.mycontainer.util.cpscanner.ScannerPlugin;
 
 
 public class DirectoryClasspathPlugin implements ScannerPlugin {

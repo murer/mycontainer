@@ -9,7 +9,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package com.googlecode.mycontainer.cpscanner.plugin;
+package com.googlecode.mycontainer.util.cpscanner.plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import com.googlecode.mycontainer.cpscanner.ScannerPlugin;
+import com.googlecode.mycontainer.util.cpscanner.ScannerPlugin;
 
 public class ZipClasspathPlugin implements ScannerPlugin {
 

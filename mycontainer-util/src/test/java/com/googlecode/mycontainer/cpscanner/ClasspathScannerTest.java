@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.googlecode.mycontainer.cpscanner.ClasspathScanner;
-import com.googlecode.mycontainer.cpscanner.ListScannerListener;
+import com.googlecode.mycontainer.util.cpscanner.ClasspathScanner;
+import com.googlecode.mycontainer.util.cpscanner.ListScannerListener;
 
 public class ClasspathScannerTest {
 

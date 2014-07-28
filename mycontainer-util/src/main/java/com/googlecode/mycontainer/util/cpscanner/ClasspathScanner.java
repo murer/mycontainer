@@ -9,7 +9,7 @@
  * language governing permissions and limitations under the License.
  */
 
-package com.googlecode.mycontainer.cpscanner;
+package com.googlecode.mycontainer.util.cpscanner;
 
 import java.net.URL;
 import java.security.CodeSource;
@@ -17,8 +17,8 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.mycontainer.cpscanner.plugin.DirectoryClasspathPlugin;
-import com.googlecode.mycontainer.cpscanner.plugin.ZipClasspathPlugin;
+import com.googlecode.mycontainer.util.cpscanner.plugin.DirectoryClasspathPlugin;
+import com.googlecode.mycontainer.util.cpscanner.plugin.ZipClasspathPlugin;
 
 public class ClasspathScanner implements ScannerPlugin {
 

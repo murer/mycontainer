@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.googlecode.mycontainer.cpscanner.ClassScannerListener;
+import com.googlecode.mycontainer.util.cpscanner.ClassScannerListener;
 
 public class ClassSetListener extends ClassScannerListener {
 
