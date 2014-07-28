@@ -25,17 +25,13 @@ import java.util.zip.ZipFile;
 
 import com.googlecode.mycontainer.cpscanner.ScannerPlugin;
 
-
 public class ZipClasspathPlugin implements ScannerPlugin {
-
-	private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(ZipClasspathPlugin.class);
 
 	public List<URL> listDirectories(URL directory) {
 		if (!check(directory)) {
 			return null;
 		}
 
-		LOG.trace("listFiles read all files recursively");
 		return new ArrayList<URL>();
 	}
 
