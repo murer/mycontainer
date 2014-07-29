@@ -38,9 +38,8 @@ public class Tunnels implements Closeable {
 	public static void main(String[] args) {
 		Tunnels tunnels = new Tunnels();
 		try {
-			// tunnels.bind(new Tunnel("0.0.0.0", 5001, "google.com", 80));
-			// tunnels.bind(new Tunnel("0.0.0.0", 5002, "chat.freenode.net",
-			// 6667));
+			tunnels.bind(new Tunnel("0.0.0.0", 5001, "google.com", 80));
+			tunnels.bind(new Tunnel("0.0.0.0", 5002, "chat.freenode.net", 6667));
 			tunnels.bind(new Tunnel("0.0.0.0", 5003, "localhost", 5000));
 			tunnels.run();
 		} finally {
