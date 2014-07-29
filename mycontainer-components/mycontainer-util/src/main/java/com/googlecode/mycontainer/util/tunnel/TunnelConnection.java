@@ -6,11 +6,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import com.googlecode.mycontainer.util.Util;
-import com.googlecode.mycontainer.util.log.Log;
 
 public class TunnelConnection implements Closeable {
-
-	private static Log LOG = Log.get(Tunnel.class);
 
 	private Socket local;
 
