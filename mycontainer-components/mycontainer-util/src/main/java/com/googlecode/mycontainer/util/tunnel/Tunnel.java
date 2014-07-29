@@ -170,4 +170,18 @@ public class Tunnel implements Closeable {
 		return Collections.unmodifiableList(connections);
 	}
 
+	public void closeFinisheds() {
+		Iterator<TunnelConnection> it = connections.iterator();
+		while (it.hasNext()) {
+			TunnelConnection conn = it.next();
+			TunnelData localData = conn.getLocalData();
+			TunnelData remoteData = conn.getRemoteData();
+			if (localData.isStopped() || remoteData.isStopped()) {
+				if (!localData.hasBuffer() && !remoteData.hasBuffer()) {
+					Util.close(conn);
+				}
+			}
+		}
+	}
+
 }

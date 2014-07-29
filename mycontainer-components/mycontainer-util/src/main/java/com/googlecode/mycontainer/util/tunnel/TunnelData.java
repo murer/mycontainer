@@ -52,4 +52,8 @@ public class TunnelData {
 	public boolean isStopped() {
 		return TunnelState.STOP.equals(state);
 	}
+
+	public boolean hasBuffer() {
+		return offset > 0;
+	}
 }

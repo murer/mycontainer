@@ -49,7 +49,6 @@ public class TunnelConnection implements Closeable {
 	}
 
 	public void close() {
-		LOG.info("Closing " + this);
 		Util.close(local);
 		Util.close(remote);
 	}
