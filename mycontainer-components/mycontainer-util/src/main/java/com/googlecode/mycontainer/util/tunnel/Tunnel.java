@@ -86,7 +86,7 @@ public class Tunnel implements Closeable {
 
 	@Override
 	public String toString() {
-		return "[Tunnel " + localHost + ":" + localPort + "-" + remoteHost + ":" + remotePort + "]";
+		return "[Tunnel " + localHost + ":" + localPort + " " + remoteHost + ":" + remotePort + "]";
 	}
 
 	public void close() {

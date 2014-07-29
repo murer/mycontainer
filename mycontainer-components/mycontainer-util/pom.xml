@@ -6,9 +6,8 @@
 	<name>Mycontainer Classpath Scanner</name>
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
-		<artifactId>mycontainer-parent</artifactId>
+		<artifactId>mycontainer-components</artifactId>
 		<version>1.5.1-SNAPSHOT</version>
-		<relativePath>../mycontainer-parent</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
