@@ -9,6 +9,8 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.net.ServerSocketFactory;
@@ -129,14 +131,20 @@ public class Tunnel implements Closeable {
 	}
 
 	public void read() {
-		for (TunnelConnection conn : connections) {
+		Iterator<TunnelConnection> it = connections.iterator();
+		while (it.hasNext()) {
+			TunnelConnection conn = it.next();
 			conn.readData();
+			if (conn.isStopped()) {
+				System.out.println("closing: " + conn);
+				it.remove();
+				Util.close(conn);
+			}
 		}
 	}
 
-	public void handle() {
-		for (TunnelConnection conn : connections) {
-			conn.handler();
-		}
+	public List<TunnelConnection> getConnections() {
+		return Collections.unmodifiableList(connections);
 	}
+
 }

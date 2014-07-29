@@ -9,7 +9,9 @@ import com.googlecode.mycontainer.util.Util;
 
 public class Tunnels implements Closeable {
 
-	private List<Tunnel> tunnels = new ArrayList<Tunnel>();
+	private final List<Tunnel> tunnels = new ArrayList<Tunnel>();
+
+	private TunnelHandler handler = new RedirectTunnelHandler();
 
 	public Tunnels() {
 	}
@@ -54,7 +56,10 @@ public class Tunnels implements Closeable {
 			}
 			tunnel.accepts();
 			tunnel.read();
-			tunnel.handle();
+			List<TunnelConnection> connections = tunnel.getConnections();
+			for (TunnelConnection conn : connections) {
+				handler.handle(conn);
+			}
 		}
 	}
 

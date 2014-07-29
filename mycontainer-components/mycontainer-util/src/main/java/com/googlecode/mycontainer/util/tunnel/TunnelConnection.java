@@ -2,6 +2,7 @@ package com.googlecode.mycontainer.util.tunnel;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import com.googlecode.mycontainer.util.Util;
@@ -63,15 +64,42 @@ public class TunnelConnection implements Closeable {
 		remoteData.readData();
 	}
 
-	public void handler() {
-		String l = new String(localData.getBuffer());
-		if (l.length() > 0) {
-			System.out.println("> " + l);
+	public TunnelData getLocalData() {
+		return localData;
+	}
+
+	public void setLocalData(TunnelData localData) {
+		this.localData = localData;
+	}
+
+	public TunnelData getRemoteData() {
+		return remoteData;
+	}
+
+	public void setRemoteData(TunnelData remoteData) {
+		this.remoteData = remoteData;
+	}
+
+	public void writeRemote(byte[] data) {
+		try {
+			OutputStream out = remote.getOutputStream();
+			out.write(data);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		String r = new String(remoteData.getBuffer());
-		if (r.length() > 0) {
-			System.out.println("< " + r);
+	}
+
+	public void writeLocal(byte[] data) {
+		try {
+			OutputStream out = local.getOutputStream();
+			out.write(data);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
+	}
+
+	public boolean isStopped() {
+		return localData.isStopped() || remoteData.isStopped();
 	}
 
 }
