@@ -2,6 +2,7 @@ package com.googlecode.mycontainer.util.tunnel;
 
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.googlecode.mycontainer.util.Util;
@@ -26,7 +27,6 @@ public class Tunnels implements Closeable {
 	}
 
 	public void run() {
-
 	}
 
 	public static void main(String[] args) {
@@ -34,9 +34,21 @@ public class Tunnels implements Closeable {
 		try {
 			tunnels.bind(new Tunnel("0.0.0.0", 0, "google.com", 80));
 			tunnels.bind(new Tunnel("0.0.0.0", 0, "chat.freenode.net", 6667));
-			tunnels.run();
+			tunnels.step();
 		} finally {
 			tunnels.close();
+		}
+	}
+
+	public void step() {
+		Iterator<Tunnel> it = tunnels.iterator();
+		while (it.hasNext()) {
+			Tunnel tunnel = it.next();
+			if (tunnel.isClosed()) {
+				it.remove();
+				continue;
+			}
+			tunnel.accepts();
 		}
 	}
 

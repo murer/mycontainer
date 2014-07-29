@@ -4,10 +4,15 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
 
 import com.googlecode.mycontainer.util.Util;
 import com.googlecode.mycontainer.util.log.Log;
@@ -21,6 +26,7 @@ public class Tunnel implements Closeable {
 	private String remoteHost;
 	private int remotePort;
 	private ServerSocket serverSocket;
+	private final List<TunnelConnection> connections = new ArrayList<TunnelConnection>();
 
 	public Tunnel() {
 
@@ -90,7 +96,31 @@ public class Tunnel implements Closeable {
 	}
 
 	public void close() {
+		LOG.info("Closing " + this);
 		Util.close(serverSocket);
+		for (TunnelConnection conn : connections) {
+			Util.close(conn);
+		}
 	}
 
+	public boolean isClosed() {
+		return false;
+	}
+
+	public void accepts() {
+		try {
+			Socket socket = serverSocket.accept();
+			TunnelConnection socketTunnel = new TunnelConnection();
+			this.connections.add(socketTunnel);
+			socketTunnel.setLocal(socket);
+			Socket remote = SocketFactory.getDefault().createSocket(remoteHost, remotePort);
+			socketTunnel.setRemote(remote);
+		} catch (UnknownHostException e) {
+			throw new RuntimeException(e);
+		} catch (SocketTimeoutException e) {
+			return;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
