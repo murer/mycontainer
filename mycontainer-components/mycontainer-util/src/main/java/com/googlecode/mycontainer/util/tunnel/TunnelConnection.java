@@ -60,8 +60,14 @@ public class TunnelConnection implements Closeable {
 	}
 
 	public void readData() {
-		localData.readData();
-		remoteData.readData();
+		boolean localStopped = localData.isStopped();
+		if (!localStopped) {
+			localData.readData();
+		}
+		boolean remoteStopped = remoteData.isStopped();
+		if (!remoteStopped) {
+			remoteData.readData();
+		}
 	}
 
 	public TunnelData getLocalData() {
@@ -99,7 +105,7 @@ public class TunnelConnection implements Closeable {
 	}
 
 	public boolean isStopped() {
-		return localData.isStopped() || remoteData.isStopped() || local.isClosed() || remote.isClosed();
+		return local.isClosed() || remote.isClosed();
 	}
 
 }

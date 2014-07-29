@@ -57,6 +57,7 @@ public class Tunnels implements Closeable {
 			}
 			tunnel.accepts();
 			tunnel.read();
+			
 			List<TunnelConnection> connections = tunnel.getConnections();
 			for (TunnelConnection conn : connections) {
 				handler.handle(conn);

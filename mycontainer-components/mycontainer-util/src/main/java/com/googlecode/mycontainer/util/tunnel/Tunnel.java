@@ -112,6 +112,7 @@ public class Tunnel implements Closeable {
 	}
 
 	public void accepts() {
+		boolean error = true;
 		Socket local = null;
 		Socket remote = null;
 		try {
@@ -128,13 +129,16 @@ public class Tunnel implements Closeable {
 			socketTunnel.setRemote(remote);
 			this.connections.add(socketTunnel);
 			LOG.info("Starting tunneling: " + socketTunnel);
+			error = false;
 		} catch (UnknownHostException e) {
 			LOG.error("error connecting", e);
 		} catch (IOException e) {
 			LOG.error("error connecting", e);
 		} finally {
-			Util.close(local);
-			Util.close(remote);
+			if (error) {
+				Util.close(local);
+				Util.close(remote);
+			}
 		}
 	}
 
@@ -153,6 +157,7 @@ public class Tunnel implements Closeable {
 		while (it.hasNext()) {
 			TunnelConnection conn = it.next();
 			if (conn.isStopped()) {
+				LOG.info("Closing " + conn);
 				it.remove();
 				Util.close(conn);
 				continue;
