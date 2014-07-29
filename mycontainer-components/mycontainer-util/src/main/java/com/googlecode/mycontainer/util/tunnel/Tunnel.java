@@ -3,6 +3,7 @@ package com.googlecode.mycontainer.util.tunnel;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -111,20 +112,37 @@ public class Tunnel implements Closeable {
 	}
 
 	public void accepts() {
+		Socket local = null;
+		Socket remote = null;
 		try {
-			Socket socket = serverSocket.accept();
+			local = serverAccept();
+			if (local == null) {
+				return;
+			}
 			TunnelConnection socketTunnel = new TunnelConnection();
-			this.connections.add(socketTunnel);
-			socketTunnel.setLocal(socket);
-			socket.setSoTimeout(1);
-			Socket remote = SocketFactory.getDefault().createSocket(remoteHost, remotePort);
+			socketTunnel.setLocal(local);
+			local.setSoTimeout(1);
+			remote = SocketFactory.getDefault().createSocket();
+			remote.connect(new InetSocketAddress(remoteHost, remotePort), 30000);
 			remote.setSoTimeout(1);
 			socketTunnel.setRemote(remote);
+			this.connections.add(socketTunnel);
 			LOG.info("Starting tunneling: " + socketTunnel);
 		} catch (UnknownHostException e) {
-			throw new RuntimeException(e);
+			LOG.error("error connecting", e);
+		} catch (IOException e) {
+			LOG.error("error connecting", e);
+		} finally {
+			Util.close(local);
+			Util.close(remote);
+		}
+	}
+
+	private Socket serverAccept() {
+		try {
+			return serverSocket.accept();
 		} catch (SocketTimeoutException e) {
-			return;
+			return null;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -134,12 +152,12 @@ public class Tunnel implements Closeable {
 		Iterator<TunnelConnection> it = connections.iterator();
 		while (it.hasNext()) {
 			TunnelConnection conn = it.next();
-			conn.readData();
 			if (conn.isStopped()) {
-				System.out.println("closing: " + conn);
 				it.remove();
 				Util.close(conn);
+				continue;
 			}
+			conn.readData();
 		}
 	}
 

@@ -21,22 +21,18 @@ public class TunnelData {
 	public void readData() {
 		try {
 			if (offset >= data.length) {
-				System.out.println("buffer");
 				return;
 			}
 			if (TunnelState.STOP.equals(state)) {
 				if (offset > 0) {
-					System.out.println("stopped + buffer");
 					return;
 				}
 				throw new RuntimeException("wrong");
 			}
 			int read = in.read(data, offset, data.length - offset);
 			if (read >= 0) {
-				System.out.println("reading more");
 				offset += read;
 			} else {
-				System.out.println("changing to stop");
 				state = TunnelState.STOP;
 			}
 		} catch (SocketTimeoutException e) {
@@ -54,6 +50,6 @@ public class TunnelData {
 	}
 
 	public boolean isStopped() {
-		return TunnelState.STOP.equals(state) && offset == 0;
+		return TunnelState.STOP.equals(state);
 	}
 }

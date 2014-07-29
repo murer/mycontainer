@@ -99,7 +99,7 @@ public class TunnelConnection implements Closeable {
 	}
 
 	public boolean isStopped() {
-		return localData.isStopped() || remoteData.isStopped();
+		return localData.isStopped() || remoteData.isStopped() || local.isClosed() || remote.isClosed();
 	}
 
 }
