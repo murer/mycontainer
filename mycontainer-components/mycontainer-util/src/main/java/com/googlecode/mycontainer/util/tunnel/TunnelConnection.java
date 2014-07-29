@@ -104,4 +104,8 @@ public class TunnelConnection implements Closeable {
 		return local.isClosed() || remote.isClosed();
 	}
 
+	public boolean hasBuffer() {
+		return localData.hasBuffer() || remoteData.hasBuffer();
+	}
+
 }

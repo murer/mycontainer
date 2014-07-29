@@ -2,6 +2,10 @@ package com.googlecode.mycontainer.util.tunnel;
 
 public interface TunnelHandler {
 
-	void handle(TunnelConnection conn);
+	void connected(TunnelConnection socketTunnel);
+
+	void disconnected(TunnelConnection conn);
+
+	void data(TunnelConnection conn);
 
 }
