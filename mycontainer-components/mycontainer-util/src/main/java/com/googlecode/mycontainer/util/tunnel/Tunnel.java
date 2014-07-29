@@ -77,10 +77,11 @@ public class Tunnel implements Closeable {
 
 	public void bind() {
 		try {
-			LOG.info("Binding " + this);
 			InetAddress address = InetAddress.getByName(localHost);
 			this.serverSocket = ServerSocketFactory.getDefault().createServerSocket(localPort, 50, address);
+			this.localPort = serverSocket.getLocalPort();
 			this.serverSocket.setSoTimeout(1);
+			LOG.info("Binded " + this);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		} catch (SocketException e) {
@@ -113,14 +114,29 @@ public class Tunnel implements Closeable {
 			TunnelConnection socketTunnel = new TunnelConnection();
 			this.connections.add(socketTunnel);
 			socketTunnel.setLocal(socket);
+			socket.setSoTimeout(1);
 			Socket remote = SocketFactory.getDefault().createSocket(remoteHost, remotePort);
+			remote.setSoTimeout(1);
 			socketTunnel.setRemote(remote);
+			LOG.info("Starting tunneling: " + socketTunnel);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		} catch (SocketTimeoutException e) {
 			return;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public void read() {
+		for (TunnelConnection conn : connections) {
+			conn.readData();
+		}
+	}
+
+	public void handle() {
+		for (TunnelConnection conn : connections) {
+			conn.handler();
 		}
 	}
 }

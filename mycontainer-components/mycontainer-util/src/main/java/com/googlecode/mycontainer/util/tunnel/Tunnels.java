@@ -27,14 +27,18 @@ public class Tunnels implements Closeable {
 	}
 
 	public void run() {
+		while (true) {
+			Thread.yield();
+			step();
+		}
 	}
 
 	public static void main(String[] args) {
 		Tunnels tunnels = new Tunnels();
 		try {
-			tunnels.bind(new Tunnel("0.0.0.0", 0, "google.com", 80));
-			tunnels.bind(new Tunnel("0.0.0.0", 0, "chat.freenode.net", 6667));
-			tunnels.step();
+			tunnels.bind(new Tunnel("0.0.0.0", 5001, "google.com", 80));
+			tunnels.bind(new Tunnel("0.0.0.0", 5002, "chat.freenode.net", 6667));
+			tunnels.run();
 		} finally {
 			tunnels.close();
 		}
@@ -49,6 +53,8 @@ public class Tunnels implements Closeable {
 				continue;
 			}
 			tunnel.accepts();
+			tunnel.read();
+			tunnel.handle();
 		}
 	}
 
