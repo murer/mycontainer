@@ -3,6 +3,7 @@ package com.googlecode.mycontainer.util.tunnel;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import com.googlecode.mycontainer.util.Util;
@@ -52,7 +53,22 @@ public class TunnelConnection implements Closeable {
 
 	@Override
 	public String toString() {
-		return "[TunnelConnection " + local + " " + remote + "]";
+		return "[TunnelConnection " + toString(local) + " " + toString(remote) + "]";
+	}
+
+	private String toString(Socket sck) {
+		try {
+			if (!sck.isConnected()) {
+				return "[Socket disconnected]";
+			}
+			InetAddress addr = sck.getInetAddress();
+			String host = addr == null ? null : addr.getHostAddress();
+			int port = sck.getPort();
+			int localPort = sck.getLocalPort();
+			return new StringBuilder().append(localPort).append(":").append(host).append(":").append(port).toString();
+		} catch (Exception e) {
+			return sck.toString();
+		}
 	}
 
 	public void readData() {

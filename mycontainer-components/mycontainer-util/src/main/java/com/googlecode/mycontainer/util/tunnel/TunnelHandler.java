@@ -2,7 +2,7 @@ package com.googlecode.mycontainer.util.tunnel;
 
 public interface TunnelHandler {
 
-	void connected(TunnelConnection socketTunnel);
+	void connected(TunnelConnection conn);
 
 	void disconnected(TunnelConnection conn);
 

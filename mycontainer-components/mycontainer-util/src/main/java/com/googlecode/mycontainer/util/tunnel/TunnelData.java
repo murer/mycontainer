@@ -43,9 +43,14 @@ public class TunnelData {
 	}
 
 	public byte[] consume() {
+		byte[] ret = getBuffer();
+		offset = 0;
+		return ret;
+	}
+
+	public byte[] getBuffer() {
 		byte[] ret = new byte[offset];
 		System.arraycopy(data, 0, ret, 0, offset);
-		offset = 0;
 		return ret;
 	}
 
@@ -56,4 +61,5 @@ public class TunnelData {
 	public boolean hasBuffer() {
 		return offset > 0;
 	}
+
 }

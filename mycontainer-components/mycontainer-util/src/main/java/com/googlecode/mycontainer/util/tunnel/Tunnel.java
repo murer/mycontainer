@@ -128,7 +128,6 @@ public class Tunnel implements Closeable {
 			remote.setSoTimeout(1);
 			socketTunnel.setRemote(remote);
 			this.connections.add(socketTunnel);
-			LOG.info("Starting tunneling: " + socketTunnel);
 			handler.connected(socketTunnel);
 			error = false;
 		} catch (UnknownHostException e) {
@@ -158,7 +157,6 @@ public class Tunnel implements Closeable {
 		while (it.hasNext()) {
 			TunnelConnection conn = it.next();
 			if (conn.isStopped()) {
-				LOG.info("Closing " + conn);
 				it.remove();
 				Util.close(conn);
 				handler.disconnected(conn);

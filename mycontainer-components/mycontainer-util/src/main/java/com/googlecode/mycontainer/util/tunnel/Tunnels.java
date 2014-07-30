@@ -12,7 +12,7 @@ public class Tunnels implements Closeable {
 	private final List<Tunnel> tunnels = new ArrayList<Tunnel>();
 
 	private TunnelHandler handler = new RedirectTunnelHandler();
-
+	
 	public Tunnels() {
 	}
 
@@ -37,6 +37,7 @@ public class Tunnels implements Closeable {
 
 	public static void main(String[] args) {
 		Tunnels tunnels = new Tunnels();
+		tunnels.setHandler(new LogTunnelHandler());
 		try {
 			tunnels.bind(new Tunnel("0.0.0.0", 5001, "google.com", 80));
 			tunnels.bind(new Tunnel("0.0.0.0", 5002, "chat.freenode.net", 6667));
@@ -45,6 +46,10 @@ public class Tunnels implements Closeable {
 		} finally {
 			tunnels.close();
 		}
+	}
+
+	private void setHandler(TunnelHandler handler) {
+		this.handler = handler;
 	}
 
 	public void step() {

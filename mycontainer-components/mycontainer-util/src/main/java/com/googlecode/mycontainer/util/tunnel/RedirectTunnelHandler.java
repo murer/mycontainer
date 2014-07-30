@@ -14,7 +14,7 @@ public class RedirectTunnelHandler implements TunnelHandler {
 		}
 	}
 
-	public void connected(TunnelConnection socketTunnel) {
+	public void connected(TunnelConnection conn) {
 
 	}
 
