@@ -77,7 +77,7 @@ Others arguments describes tunnels to startup. `[local-host]:local-port:remote-h
 
 You can also start it by maven (pom.xml is not required). It is an aggregator plugin.
 
-    $  mvn com.googlecode.mycontainer:mycontainer-maven-plugin:tunnels -Dmycontainer.tunnels.list=5000:localhost:6000,0.0.0.0:6667:chat.freenode.net:6667 -Dmycontainer.tunnels.handler=Log
+    $  mvn com.googlecode.mycontainer:mycontainer-maven-plugin:tunnels -Dmycontainer.tunnels.list=5000:localhost:6000,0.0.0.0:6667:chat.freenode.net:6667 -Dmycontainer.tunnels.handler=Console
 
 Like the `java -cp` you need to tell `Redirect`, `Console` or `Log` (`mycontainer.tunnels.handler`) and tunnels (`mycontainer.tunnels.list`) separeted by comma.
 
