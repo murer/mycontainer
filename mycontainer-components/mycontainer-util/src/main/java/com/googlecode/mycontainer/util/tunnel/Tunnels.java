@@ -1,18 +1,24 @@
 package com.googlecode.mycontainer.util.tunnel;
 
 import java.io.Closeable;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.googlecode.mycontainer.util.ReflectionUtil;
 import com.googlecode.mycontainer.util.Util;
+import com.googlecode.mycontainer.util.log.Log;
 
-public class Tunnels implements Closeable {
+public class Tunnels implements Closeable, Runnable, UncaughtExceptionHandler {
+
+	private static Log LOG = Log.get(Util.class);
 
 	private final List<Tunnel> tunnels = new ArrayList<Tunnel>();
 
 	private TunnelHandler handler = new RedirectTunnelHandler();
+
+	private Thread thread;
 
 	public Tunnels() {
 	}
@@ -36,6 +42,55 @@ public class Tunnels implements Closeable {
 		}
 	}
 
+	public void join() {
+		try {
+			getThread().join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void start() {
+		getThread().start();
+	}
+
+	private Thread getThread() {
+		if (thread == null) {
+			thread = new Thread(this);
+			thread.setUncaughtExceptionHandler(this);
+		}
+		return thread;
+	}
+
+	public void bindAll(Iterable<Tunnel> list) {
+		for (Tunnel tunnel : list) {
+			bind(tunnel);
+		}
+	}
+
+	public void setHandler(TunnelHandler handler) {
+		this.handler = handler;
+	}
+
+	public void step() {
+		Iterator<Tunnel> it = tunnels.iterator();
+		while (it.hasNext()) {
+			Tunnel tunnel = it.next();
+			if (tunnel.isClosed()) {
+				it.remove();
+				continue;
+			}
+			tunnel.closeFinisheds();
+			tunnel.accepts(handler);
+			tunnel.read(handler);
+		}
+	}
+
+	public void uncaughtException(Thread t, Throwable e) {
+		LOG.error("error on tunnels thread: " + t, e);
+		Util.close(this);
+	}
+
 	public static void main(String[] args) {
 		// args = new String[] { "Console", "0.0.0.0:5001:google.com:80",
 		// "localhost:5002:chat.freenode.net:6667", "5003:localhost:5000" };
@@ -54,36 +109,12 @@ public class Tunnels implements Closeable {
 		}
 
 		Tunnels tunnels = new Tunnels();
-		tunnels.setHandler(handler);
 		try {
+			tunnels.setHandler(handler);
 			tunnels.bindAll(list);
 			tunnels.run();
 		} finally {
-			tunnels.close();
-		}
-	}
-
-	public void bindAll(Iterable<Tunnel> list) {
-		for (Tunnel tunnel : list) {
-			bind(tunnel);
-		}
-	}
-
-	private void setHandler(TunnelHandler handler) {
-		this.handler = handler;
-	}
-
-	public void step() {
-		Iterator<Tunnel> it = tunnels.iterator();
-		while (it.hasNext()) {
-			Tunnel tunnel = it.next();
-			if (tunnel.isClosed()) {
-				it.remove();
-				continue;
-			}
-			tunnel.closeFinisheds();
-			tunnel.accepts(handler);
-			tunnel.read(handler);
+			Util.close(tunnels);
 		}
 	}
 

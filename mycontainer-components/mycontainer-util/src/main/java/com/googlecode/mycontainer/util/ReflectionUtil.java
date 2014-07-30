@@ -246,7 +246,7 @@ public class ReflectionUtil {
 	}
 
 	public static Object newInstance(String className) {
-		Class<?> clazz = clazz(className);
+		Class<?> clazz = requireClazz(className);
 		return newInstance(clazz);
 	}
 
