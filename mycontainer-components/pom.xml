@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-parent</artifactId>
-		<version>1.5.0</version>
+		<version>1.5.1</version>
 		<relativePath>../mycontainer-parent</relativePath>
 	</parent>
 
@@ -23,8 +23,8 @@
 		<module>mycontainer-commons</module>
 		<module>mycontainer-servlet-commons</module>
 		<module>mycontainer-kernel</module>
-		<module>mycontainer-cpscanner</module>
 		<module>mycontainer-jta</module>
+		<module>mycontainer-util</module>
 		<module>mycontainer-datasource</module>
 		<module>mycontainer-ejb</module>
 		<module>mycontainer-jpa</module>

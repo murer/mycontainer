@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.5.0</version>
+		<version>1.5.1</version>
 	</parent>
 	<prerequisites>
 		<maven>2.0.9</maven>
