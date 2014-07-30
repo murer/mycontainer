@@ -41,7 +41,7 @@ public class ClasspathScannerTest {
 
 		List<URL> resources = listener.getResources();
 		for (URL resource : resources) {
-			assertTrue(resource.toString().contains(".svn"));
+			assertTrue(resource.toString().contains(".properties"));
 		}
 	}
 
