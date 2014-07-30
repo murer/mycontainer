@@ -24,6 +24,7 @@
 		<module>mycontainer-servlet-commons</module>
 		<module>mycontainer-kernel</module>
 		<module>mycontainer-jta</module>
+		<module>mycontainer-util</module>
 		<module>mycontainer-datasource</module>
 		<module>mycontainer-ejb</module>
 		<module>mycontainer-jpa</module>
