@@ -23,27 +23,27 @@ public class MycontainerTunnelsMojo extends AbstractMojo {
 	/**
 	 * @parameter expression="${mycontainer.tunnels.waitfor}"
 	 */
-	private boolean waitfor = true;
+	private boolean tunnelsWaitfor = true;
 
 	/**
 	 * @parameter expression="${mycontainer.tunnels.list}"
 	 */
-	private String list;
+	private String tunnelsList;
 
 	/**
 	 * @parameter expression="${mycontainer.tunnels.handler}"
 	 */
-	private String handler = "Redirect";
+	private String tunnelsHandler = "Redirect";
 
 	@SuppressWarnings("resource")
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		list = Util.str(list);
-		if (list == null) {
+		tunnelsList = Util.str(tunnelsList);
+		if (tunnelsList == null) {
 			throw new MojoExecutionException("tunnels is required, try: -Dmycontainer.tunnels.list=local-host:local-port:remote-host:remote-port,local-host:local-port:remote-host:remote-port,...");
 		}
-		String[] args = list.split(",");
+		String[] args = tunnelsList.split(",");
 
-		TunnelHandler handler = (TunnelHandler) ReflectionUtil.newInstance(Tunnels.class.getPackage().getName() + "." + this.handler + "TunnelHandler");
+		TunnelHandler handler = (TunnelHandler) ReflectionUtil.newInstance(Tunnels.class.getPackage().getName() + "." + this.tunnelsHandler + "TunnelHandler");
 		List<Tunnel> list = new ArrayList<Tunnel>();
 		for (int i = 0; i < args.length; i++) {
 			String str = args[i];
@@ -60,7 +60,7 @@ public class MycontainerTunnelsMojo extends AbstractMojo {
 			throw new RuntimeException(e);
 		}
 		tunnels.start();
-		if (waitfor) {
+		if (tunnelsWaitfor) {
 			tunnels.join();
 		}
 
