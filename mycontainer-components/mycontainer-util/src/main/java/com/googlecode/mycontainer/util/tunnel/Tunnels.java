@@ -48,16 +48,8 @@ public class Tunnels implements Closeable {
 		TunnelHandler handler = (TunnelHandler) ReflectionUtil.newInstance(Tunnels.class.getPackage().getName() + "." + handlerName + "TunnelHandler");
 		List<Tunnel> list = new ArrayList<Tunnel>();
 		for (int i = 1; i < args.length; i++) {
-			String[] array = args[i].split(":");
-			String localhost = "127.0.0.1";
-			int j = 0;
-			if (array.length >= 4) {
-				localhost = array[j++];
-			}
-			int localport = Integer.parseInt(array[j++]);
-			String remotehost = array[j++];
-			int remoteport = Integer.parseInt(array[j++]);
-			Tunnel tunnel = new Tunnel(localhost, localport, remotehost, remoteport);
+			String str = args[i];
+			Tunnel tunnel = Tunnel.parse(str);
 			list.add(tunnel);
 		}
 

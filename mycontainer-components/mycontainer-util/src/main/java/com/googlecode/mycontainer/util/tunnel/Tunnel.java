@@ -187,4 +187,18 @@ public class Tunnel implements Closeable {
 		}
 	}
 
+	public static Tunnel parse(String str) {
+		String[] array = str.split(":");
+		String localhost = "127.0.0.1";
+		int j = 0;
+		if (array.length >= 4) {
+			localhost = array[j++];
+		}
+		int localport = Integer.parseInt(array[j++]);
+		String remotehost = array[j++];
+		int remoteport = Integer.parseInt(array[j++]);
+		Tunnel tunnel = new Tunnel(localhost, localport, remotehost, remoteport);
+		return tunnel;
+	}
+
 }
