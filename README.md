@@ -61,7 +61,7 @@ No pom.xml required. And it is nice to quick start html, javascript and css proj
 
 ## TCP Tunnels
 
-Mycontainer can start multiple tcp tunnels. You can do this via `java -cp` or `mvn` (pom.xml is not required)
+Mycontainer can start multiple tcp tunnels. You can do this using `java -cp` or `mvn` (pom.xml is not required)
 
     $ java -cp mycontainer-util.jar com.googlecode.mycontainer.util.tunnel.Tunnels Redirect 0.0.0.0:6667:chat.freenode.net:6667 5080:google.com:80
 
