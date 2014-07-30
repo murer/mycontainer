@@ -10,6 +10,7 @@ Mycontainer is a generic test and development enviroment. Check it out.
  * [Embedding Mycontainer to do some GAE stuff](#embedding-mycontainer-to-do-some-gae-stuff)
  * [Starting all modules from maven](#starting-all-modules-from-maven)
  * [Start a local web server](#start-a-local-web-server)
+ * [TCP Tunnels](#tcp-tunnels)
  * [Checking for non us-ascii files](#checking-for-non-us-ascii-files)
  * [Installing PhantomJS](#installing-phantomjs)
 
@@ -57,7 +58,29 @@ You can write this in any java class and just use that in beanshell
 No pom.xml required. And it is nice to quick start html, javascript and css projects.
 
     $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:web -Dmycontainer.web.port=8080
-    
+
+## TCP Tunnels
+
+Mycontainer can start multiple tcp tunnels. You can do this via `java -cp` or `mvn` (pom.xml is not required)
+
+    $ java -cp mycontainer-util.jar com.googlecode.mycontainer.util.tunnel.Tunnels Redirect 0.0.0.0:6667:chat.freenode.net:6667 5080:google.com:80
+
+You can get this jar [here](http://central.maven.org/maven2/com/googlecode/mycontainer/mycontainer-util/)
+
+The first argument can be `Console` (System.out) or `Log` (slf4j/jdk-logging) to show transfered data. Or `Redirect` to just redirect it silently.
+
+Others arguments describes tunnels to startup. `[local-host]:local-port:remote-host:remote-port`.
+
+`local-host` is not required (default 127.0.0.1). Use 0.0.0.0 to bind on all interfaces.
+
+`local-port` can be zero to bind on a free random port.
+
+You can also start it by maven (pom.xml is not required). It is a aggregator plugin.
+
+    $  mvn com.googlecode.mycontainer:mycontainer-maven-plugin:1.5.1-SNAPSHOT:tunnels -Dmycontainer.tunnels.list=5000:localhost:6000,0.0.0.0:6667:chat.freenode.net:6667 -Dmycontainer.tunnels.handler=Log
+
+Like the `java -cp` you need to tell `Redirect`, `Console` or `Log` (`mycontainer.tunnels.handler`) and tunnels (`mycontainer.tunnels.list`) separeted by comma.
+
 ## Checking for non us-ascii files
 
 Checking recursively for non-ascii files (pom.xml is not required):
