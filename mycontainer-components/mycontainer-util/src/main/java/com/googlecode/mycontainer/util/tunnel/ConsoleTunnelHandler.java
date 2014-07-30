@@ -19,24 +19,25 @@ public class ConsoleTunnelHandler extends RedirectTunnelHandler {
 
 	protected String bufferToString(byte[] buffer) {
 		StringBuilder sb = new StringBuilder();
-		StringBuilder hex = new StringBuilder();
+		// StringBuilder hex = new StringBuilder();
 		for (int i = 0; i < buffer.length; i++) {
 			byte b = buffer[i];
-			int num = 0xFFFFFFFF & b;
-			if (num <= 0xF) {
-				hex.append('0');
-			}
-			hex.append(Integer.toHexString(num));
-			if (i % 4 == 0 && i > 0) {
-				hex.append(' ');
-			}
+			// int num = 0xFFFFFFFF & b;
+			// if (num <= 0xF) {
+			// hex.append('0');
+			// }
+			// hex.append(Integer.toHexString(num));
+			// if (i % 4 == 0 && i > 0) {
+			// hex.append(' ');
+			// }
 			if (b < 20 || b > 127) {
 				b = (char) '.';
 			}
 			char c = (char) (0xFFFF & b);
 			sb.append(c);
 		}
-		return sb.append(' ').append(hex).toString();
+		// return sb.append(' ').append(hex).toString();
+		return sb.toString();
 	}
 
 	@Override
