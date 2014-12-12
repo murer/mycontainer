@@ -84,7 +84,7 @@ public class Tunnel implements Closeable {
 			this.serverSocket = ServerSocketFactory.getDefault().createServerSocket(localPort, 50, address);
 			this.localPort = serverSocket.getLocalPort();
 			this.serverSocket.setSoTimeout(1);
-			LOG.info("Binded " + this);
+			LOG.info("Bound " + this);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		} catch (SocketException e) {
