@@ -218,4 +218,43 @@ public class ReflectUtil {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static Object invokeStatic(String className, String method, Object... params) {
+		try {
+			Class<?> clazz = Class.forName(className);
+			return invokeStatic(clazz, method, params);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object invokeStatic(Class<?> clazz, String methodName, Object... params) {
+		if (params.length % 2 != 0) {
+			throw new RuntimeException("types and values mismatch");
+		}
+		try {
+			int size = params.length / 2;
+			Class<?>[] types = new Class<?>[size];
+			Object[] args = new Object[size];
+			for (int i = 0; i < types.length; i++) {
+				int idx = (i * 2);
+				types[i] = (Class<?>) params[idx];
+				args[i] = params[idx + 1];
+			}
+			Method method = clazz.getMethod(methodName, types);
+			Object ret = method.invoke(null, args);
+			return ret;
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		} catch (SecurityException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException(e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

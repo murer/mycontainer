@@ -11,6 +11,7 @@
 
 package com.googlecode.mycontainer.web.jetty;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.FilterMapping;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler.Decorator;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Password;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -54,6 +56,8 @@ public class JettyServerDeployer extends WebServerDeployer {
 	public static final String JETTY_USE_FILE_MAPPTED_BUFFER = "org.eclipse.jetty.servlet.Default.useFileMappedBuffer";
 
 	private Server server;
+
+	private List<Decorator> decorators = new ArrayList<ServletContextHandler.Decorator>();
 
 	public JettyServerDeployer() {
 		server = new Server();
@@ -207,6 +211,10 @@ public class JettyServerDeployer extends WebServerDeployer {
 				}
 			}
 
+			for (Decorator decorator : decorators) {
+				handler.addDecorator(decorator);
+			}
+
 			handlers[i++] = handler;
 		}
 		ContextHandlerCollection contexts = new ContextHandlerCollection();
@@ -238,6 +246,11 @@ public class JettyServerDeployer extends WebServerDeployer {
 	// LOG.info("org.mortbay.jetty.webapp.TagLibConfiguration removed: "
 	// + remove);
 	// }
+
+	public JettyServerDeployer addDecorator(Decorator decorator) {
+		this.decorators.add(decorator);
+		return this;
+	}
 
 	@Override
 	public void addRealm(Realm realm) {
