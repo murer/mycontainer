@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
 			<artifactId>mycontainer-ejb</artifactId>
-			<scope>test</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.mycontainer</groupId>
