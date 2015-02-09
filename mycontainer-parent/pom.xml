@@ -19,8 +19,7 @@
 		<hsqldb.version>1.8.0.7</hsqldb.version>
 		<jsf.version>2.1.2</jsf.version>
 
-		<gae.version>1.7.6</gae.version>
-		<appengine.target.plugin.version>1.7.5</appengine.target.plugin.version>
+		<appengine.version>1.9.17</appengine.version>
 		<datanucleus.version>1.1.5</datanucleus.version>
 	</properties>
 
@@ -199,22 +198,22 @@
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-labs</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-testing</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-1.0-sdk</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-stubs</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.googlecode.mycontainer</groupId>
