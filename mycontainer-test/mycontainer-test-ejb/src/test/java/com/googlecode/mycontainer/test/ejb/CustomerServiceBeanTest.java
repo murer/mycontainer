@@ -51,7 +51,7 @@ public class CustomerServiceBeanTest extends AbstractTestCase {
 
 	}
 	
-	@Test
+	//@Test
 	public void testGetHello() throws Exception {
 		String hello = service.getHello();
 		assertNotNull(hello);
