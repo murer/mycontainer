@@ -7,7 +7,6 @@ import javax.ejb.EJB;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-import com.googlecode.mycontainer.kernel.naming.MyNameParser;
 import com.googlecode.mycontainer.kernel.reflect.ReflectUtil;
 
 public class InjectionUtil {
@@ -24,16 +23,9 @@ public class InjectionUtil {
 			if (field.isAnnotationPresent(EJB.class)) {
 				EJB ejb = field.getAnnotation(EJB.class);
 
-				String beanName;
-				if (ejb.mappedName().trim().length() > 0) {
-					beanName = ejb.mappedName().trim();
-				} else if (ejb.beanInterface() == Object.class) {
-					beanName = MyNameParser.parseClassName("ejb", field.getType());
-				} else {
-					beanName = MyNameParser.parseClassName("ejb", ejb.beanInterface());
-				}
-
-				ReflectUtil.setField(field, instance, context.lookup(beanName));
+				Class<?> type = field.getType();
+				Object ejbInstance = LookupUtil.lookupEJB(ejb, type, context);
+				ReflectUtil.setField(field, instance, ejbInstance);
 			}
 		}
 	}
@@ -44,17 +36,10 @@ public class InjectionUtil {
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(Resource.class)) {
 				Resource resource = field.getAnnotation(Resource.class);
+				Class<?> type = field.getType();
 
-				String beanName;
-				if (resource.mappedName().trim().length() > 0) {
-					beanName = resource.mappedName().trim();
-				} else if (resource.type() == Object.class) {
-					beanName = MyNameParser.parseClassName("resource", field.getType());
-				} else {
-					beanName = MyNameParser.parseClassName("resource", resource.type());
-				}
-
-				ReflectUtil.setField(field, instance, context.lookup(beanName));
+				Object resourceInstance = LookupUtil.lookupResource(resource, type, context);
+				ReflectUtil.setField(field, instance, resourceInstance);
 			}
 		}
 	}
