@@ -53,7 +53,7 @@ public abstract class AbstractTestCase {
 		DataSourceDeployer ds = builder.createDeployer(DataSourceDeployer.class);
 		ds.setName("TestDS");
 		ds.setDriver("org.hsqldb.jdbcDriver");
-		ds.setUrl("jdbc:hsqldb:file:/tmp/abc;hsqldb.sqllog=3;hsqldb.applog=3");
+		ds.setUrl("jdbc:hsqldb:mem:.");
 		ds.setUser("sa");
 		ds.deploy();
 
@@ -65,7 +65,7 @@ public abstract class AbstractTestCase {
 		info.setPersistenceUnitRootUrl(CustomerBean.class);
 		Properties props = info.getProperties();
 		props.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-		props.setProperty("hibernate.hbm2ddl.auto", "update");
+		props.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 		props.setProperty("hibernate.show_sql", "true");
 		jpa.deploy();
 
