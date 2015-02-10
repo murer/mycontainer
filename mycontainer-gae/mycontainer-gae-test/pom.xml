@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-parent</artifactId>
-		<version>1.5.3</version>
+		<version>1.6.0</version>
 		<relativePath>../../mycontainer-parent</relativePath>
 	</parent>
 
@@ -34,21 +34,21 @@
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-labs</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-testing</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -85,7 +85,7 @@
 					<plugin>
 						<groupId>com.google.appengine</groupId>
 						<artifactId>appengine-maven-plugin</artifactId>
-						<version>${appengine.target.plugin.version}</version>
+						<version>${appengine.version}</version>
 						<configuration>
 							<disableUpdateCheck>true</disableUpdateCheck>
 						</configuration>

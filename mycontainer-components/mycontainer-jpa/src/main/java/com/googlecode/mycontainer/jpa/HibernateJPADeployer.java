@@ -12,7 +12,6 @@ import javax.transaction.TransactionManager;
 
 import org.hibernate.cfg.Environment;
 import org.hibernate.ejb.HibernatePersistence;
-import org.hibernate.transaction.TransactionManagerLookup;
 
 import com.googlecode.mycontainer.kernel.KernelRuntimeException;
 
@@ -31,8 +30,7 @@ public class HibernateJPADeployer extends JPADeployer {
 		try {
 			Properties props = info.getProperties();
 
-			Map<String, String> ctxEnv = (Map<String, String>) getContext()
-					.getEnvironment();
+			Map<String, String> ctxEnv = (Map<String, String>) getContext().getEnvironment();
 			for (Entry<String, String> entry : ctxEnv.entrySet()) {
 				if (entry.getKey().equals(Context.INITIAL_CONTEXT_FACTORY)) {
 					props.setProperty(Environment.JNDI_CLASS, entry.getValue());
@@ -43,8 +41,11 @@ public class HibernateJPADeployer extends JPADeployer {
 				}
 			}
 
-			props.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY,
-					MyContainerTransactionManagerLookup.class.getName());
+			props.setProperty(Environment.TRANSACTION_STRATEGY, MycontainerTransactionFactory.class.getName());
+			props.setProperty(Environment.JTA_PLATFORM, MycontainerJtaPlatform.class.getName());
+			// assuming JBoss TransactionManager in standalone mode
+			// props.setProperty(Environment.JTA_PLATFORM,
+			// "org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform");
 		} catch (NamingException e) {
 			throw new KernelRuntimeException(e);
 		}
@@ -52,22 +53,27 @@ public class HibernateJPADeployer extends JPADeployer {
 
 	@Override
 	protected TransactionManager getTransactionManager(PersistenceUnitInfo info) {
+		// try {
+		// Properties props = info.getProperties();
+		// String className =
+		// props.getProperty("hibernate.transaction.manager_lookup_class");
+		//
+		// Class<?> clazz = Class.forName(className);
+		// TransactionManagerLookup i = (TransactionManagerLookup)
+		// clazz.newInstance();
+		// TransactionManager tm = i.getTransactionManager(props);
+		// return tm;
+		// } catch (ClassNotFoundException e) {
+		// throw new KernelRuntimeException(e);
+		// } catch (InstantiationException e) {
+		// throw new KernelRuntimeException(e);
+		// } catch (IllegalAccessException e) {
+		// throw new KernelRuntimeException(e);
+		// }
 		try {
-			Properties props = info.getProperties();
-			String className = props
-					.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
-
-			Class<?> clazz = Class.forName(className);
-			TransactionManagerLookup i = (TransactionManagerLookup) clazz
-					.newInstance();
-			TransactionManager tm = i.getTransactionManager(props);
-			return tm;
-		} catch (ClassNotFoundException e) {
-			throw new KernelRuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new KernelRuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new KernelRuntimeException(e);
+			return (TransactionManager) getContext().lookup("TransactionManager");
+		} catch (NamingException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -185,6 +185,11 @@ public class DataSourceDeployer extends Deployer implements ShutdownHook, DataSo
 					LOG.error("Error closing st.", ex);
 				}
 			}
+			try {
+				con.commit();
+			} catch (Exception e) {
+				throw new RuntimeException("error commiting newConnectionSql", e);
+			}
 		}
 	}
 

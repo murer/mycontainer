@@ -4,23 +4,22 @@
 	<artifactId>mycontainer-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>mycontainer parent</name>
-	<version>1.5.3</version>
+	<version>1.6.0</version>
 
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer</artifactId>
-		<version>1.5.3</version>
+		<version>1.6.0</version>
 	</parent>
 
 	<properties>
 		<jetty.version>7.6.8.v20121106</jetty.version>
 		<javax.el.version>2.2</javax.el.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<hsqldb.version>1.8.0.7</hsqldb.version>
+		<hsqldb.version>2.3.2</hsqldb.version>
 		<jsf.version>2.1.2</jsf.version>
 
-		<gae.version>1.7.6</gae.version>
-		<appengine.target.plugin.version>1.7.5</appengine.target.plugin.version>
+		<appengine.version>1.9.17</appengine.version>
 		<datanucleus.version>1.1.5</datanucleus.version>
 	</properties>
 
@@ -35,7 +34,7 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>hsqldb</groupId>
+			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -148,16 +147,16 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
-				<version>3.5.6-Final</version>
+				<version>4.3.7.Final</version>
 			</dependency>
 			<!-- this dependecy is temporary. Depends jpa-2.0 release -->
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
 				<version>1.0.0.Final</version>
 			</dependency>
 			<dependency>
-				<groupId>hsqldb</groupId>
+				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb.version}</version>
 			</dependency>
@@ -199,22 +198,22 @@
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-labs</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-testing</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-1.0-sdk</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-api-stubs</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.googlecode.mycontainer</groupId>
