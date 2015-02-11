@@ -87,7 +87,7 @@ Checking recursively for non-ascii files (pom.xml is not required):
 
     $ mvn com.googlecode.mycontainer:mycontainer-maven-plugin:us-ascii
     
-You can configure your pom.xml do check it on test maven phase like we do [pom.xml](./mycontainer-test/pom.xml).
+You can configure your pom.xml to check it on test maven phase like we do [pom.xml](./mycontainer-test/pom.xml).
 Use `<inherited>false</inherited>` if you are configuring your root pom.xml at multi modules project.
 
 ## Installing PhantomJS
