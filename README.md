@@ -32,6 +32,15 @@ Here is a junit sample:
 [AbstractWebBaseTestCase.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/AbstractWebBaseTestCase.java)
 / [MycontainerWebTest.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerWebTest.java)
 
+ * Embeddable on any java application (junit tests, jetty, tomcat, and any others)
+ * Programmatic configuration and deploy
+ * Light weight
+ * Fast boot
+ * No hijack the Java Virtual Machine (real embeddable):
+   * No change JVM URL protocols configs
+   * No dynamic classloader
+   * No classloader isolation
+
 ## Embedding Mycontainer to do some GAE stuff
 
 Configure [pom.xml](./mycontainer-gae/mycontainer-gae-test/pom.xml) to [Google App Engine](https://developers.google.com/appengine/)
@@ -125,15 +134,6 @@ It is highly recommended that you **avoid** linking this repository in your `pom
 
 Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
-## Some features
- * Embeddable on any java application (junit tests, jetty, tomcat, and any others)
- * Programmatic configuration and deploy
- * Light weight
- * Fast boot
- * No hijack the Java Virtual Machine (real embeddable):
-   * No change JVM URL protocols configs
-   * No dynamic classloader
-   * No classloader isolation
 
 
 
