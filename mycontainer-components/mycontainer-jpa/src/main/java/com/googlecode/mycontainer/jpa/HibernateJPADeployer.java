@@ -14,8 +14,9 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.ejb.HibernatePersistence;
 
 import com.googlecode.mycontainer.kernel.KernelRuntimeException;
+import com.googlecode.mycontainer.kernel.deploy.SimpleDeployer;
 
-public class HibernateJPADeployer extends JPADeployer {
+public class HibernateJPADeployer extends JPADeployer implements SimpleDeployer {
 
 	private static final long serialVersionUID = -6535646563439755792L;
 

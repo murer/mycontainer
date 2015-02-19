@@ -39,6 +39,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.webapp.WebInfConfiguration;
 
 import com.googlecode.mycontainer.kernel.KernelRuntimeException;
+import com.googlecode.mycontainer.kernel.deploy.SimpleDeployer;
 import com.googlecode.mycontainer.kernel.reflect.ReflectUtil;
 import com.googlecode.mycontainer.web.ContextWebServer;
 import com.googlecode.mycontainer.web.FilterDesc;
@@ -47,7 +48,7 @@ import com.googlecode.mycontainer.web.Realm.UserRole;
 import com.googlecode.mycontainer.web.ServletDesc;
 import com.googlecode.mycontainer.web.WebServerDeployer;
 
-public class JettyServerDeployer extends WebServerDeployer {
+public class JettyServerDeployer extends WebServerDeployer implements SimpleDeployer {
 
 	private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(JettyServerDeployer.class);
 
