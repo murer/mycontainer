@@ -27,7 +27,8 @@ public class ExceptionHandlerServiceBeanTest extends AbstractTestCase {
 			int transactionStatus = service.doItButHandleRuntimeException();
 			fail("tx: " + transactionStatus);
 		} catch (EJBException e) {
-			assertEquals(RuntimeException.class.getName(), e.getCause().getClass().getName());
+			assertEquals(RuntimeException.class.getName(), e.getCause()
+					.getClass().getName());
 		}
 	}
 
