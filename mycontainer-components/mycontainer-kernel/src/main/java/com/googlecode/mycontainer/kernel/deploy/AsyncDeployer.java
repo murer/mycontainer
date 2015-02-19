@@ -7,12 +7,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Logger;
 
 public class AsyncDeployer {
 
-	private final static Logger LOGGER = Logger.getLogger(AsyncDeployer.class
-			.getSimpleName());
+	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(AsyncDeployer.class);
 
 	public Future<Void> deployAll(SimpleDeployer... deployers) {
 		final List<Future<Void>> futures = new ArrayList<Future<Void>>();
@@ -36,7 +34,9 @@ public class AsyncDeployer {
 		final Thread t = new Thread("AsyncDeployer " + deployer) {
 			@Override
 			public void run() {
+				LOGGER.info("Executing deployer " + deployer);
 				deployer.deploy();
+				LOGGER.info("Executed deployer " + deployer);
 			}
 		};
 		Future<Void> ret = new DeployerFuture(t);
