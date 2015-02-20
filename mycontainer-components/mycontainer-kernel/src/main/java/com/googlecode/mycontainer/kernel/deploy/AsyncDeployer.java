@@ -1,9 +1,12 @@
 package com.googlecode.mycontainer.kernel.deploy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -11,6 +14,19 @@ import java.util.concurrent.TimeoutException;
 public class AsyncDeployer {
 
 	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(AsyncDeployer.class);
+
+	private static final long TIMEOUT = 60;
+
+	private ExecutorService executorService;
+
+	public AsyncDeployer() {
+		this(Executors.newCachedThreadPool());
+	}
+
+	public AsyncDeployer(ExecutorService executorService) {
+		super();
+		this.executorService = executorService;
+	}
 
 	public Future<Void> deployAll(SimpleDeployer... deployers) {
 		final List<Future<Void>> futures = new ArrayList<Future<Void>>();
@@ -30,21 +46,29 @@ public class AsyncDeployer {
 		return new CollectionFuture(futures);
 	}
 
-	public Future<Void> deploy(final SimpleDeployer deployer) {
-		final Thread t = new Thread("AsyncDeployer " + deployer) {
-			@Override
-			public void run() {
-				LOGGER.info("Executing deployer " + deployer);
-				deployer.deploy();
-				LOGGER.info("Executed deployer " + deployer);
-			}
-		};
-		Future<Void> ret = new DeployerFuture(t);
-		t.start();
-		return ret;
+	public Future<Void> getAll(Collection<Future<Void>> futures) {
+		return new CollectionFuture(futures);
 	}
 
-	private final class CollectionFuture implements Future<Void> {
+	public Future<Void> getAll(Future<Void>... futures) {
+		return new CollectionFuture(Arrays.asList(futures));
+	}
+
+	@SuppressWarnings("unchecked")
+	public Future<Void> deploy(final SimpleDeployer deployer) {
+		return (Future<Void>) executorService.submit(new DeployTask(deployer));
+	}
+
+	public void shutdown() {
+		try {
+			this.executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
+			this.executorService.shutdown();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static class CollectionFuture implements Future<Void> {
 
 		private final Collection<Future<Void>> futures;
 
@@ -86,9 +110,7 @@ public class AsyncDeployer {
 			return null;
 		}
 
-		public Void get(long timeout, TimeUnit unit)
-				throws InterruptedException, ExecutionException,
-				TimeoutException {
+		public Void get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 			for (Future<Void> future : futures) {
 				future.get(timeout, unit);
 			}
@@ -96,41 +118,21 @@ public class AsyncDeployer {
 		}
 	}
 
-	private final class DeployerFuture implements Future<Void> {
-		private final Thread t;
+	private final class DeployTask implements Runnable {
 
-		private DeployerFuture(Thread t) {
-			this.t = t;
+		private SimpleDeployer deployer;
+
+		public DeployTask(SimpleDeployer deployer) {
+			super();
+			this.deployer = deployer;
 		}
 
-		public boolean cancel(boolean mayInterruptIfRunning) {
-			throw new RuntimeException("unsupported");
+		public void run() {
+			LOGGER.info("Executing deployer " + deployer);
+			deployer.deploy();
+			LOGGER.info("Executed deployer " + deployer);
 		}
 
-		public boolean isCancelled() {
-			return false;
-		}
-
-		public boolean isDone() {
-			return !t.isAlive();
-		}
-
-		public Void get() throws InterruptedException, ExecutionException {
-			LOGGER.info("Waiting deployer to finish");
-			if (t.isAlive()) {
-				t.join();
-			}
-			return null;
-		}
-
-		public Void get(long timeout, TimeUnit unit)
-				throws InterruptedException, ExecutionException,
-				TimeoutException {
-			LOGGER.info("Waiting deployer to finish");
-			if (t.isAlive()) {
-				t.join(unit.toMillis(timeout));
-			}
-			return null;
-		}
 	}
+
 }
