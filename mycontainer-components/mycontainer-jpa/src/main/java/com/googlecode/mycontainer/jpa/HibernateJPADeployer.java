@@ -11,10 +11,9 @@ import javax.persistence.spi.PersistenceUnitInfo;
 import javax.transaction.TransactionManager;
 
 import org.hibernate.cfg.Environment;
-import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import com.googlecode.mycontainer.kernel.KernelRuntimeException;
-import com.googlecode.mycontainer.kernel.deploy.SimpleDeployer;
 
 public class HibernateJPADeployer extends JPADeployer {
 
@@ -22,7 +21,7 @@ public class HibernateJPADeployer extends JPADeployer {
 
 	@Override
 	protected PersistenceProvider getPersistenceProvider() {
-		return new HibernatePersistence();
+		return new HibernatePersistenceProvider();
 	}
 
 	@SuppressWarnings("unchecked")
