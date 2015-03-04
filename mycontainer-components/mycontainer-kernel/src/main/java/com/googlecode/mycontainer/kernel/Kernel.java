@@ -58,7 +58,7 @@ public class Kernel implements Serializable {
 	}
 
 	public void shutdown() {
-		LOG.info("Shutting down contaier " + name);
+		LOG.info("Shutting down container " + name);
 		while (!hooks.isEmpty()) {
 			ShutdownHook hook = hooks.remove(hooks.size() - 1);
 			hook.shutdown();

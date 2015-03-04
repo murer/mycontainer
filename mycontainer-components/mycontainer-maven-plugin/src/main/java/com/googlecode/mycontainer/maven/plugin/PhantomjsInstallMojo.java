@@ -31,8 +31,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		private String path;
 		private String executable;
 
-		public Spec(String plataform, String arch, String pack, String path,
-				String executable) {
+		public Spec(String plataform, String arch, String pack, String path, String executable) {
 			this.plataform = plataform;
 			this.arch = arch;
 			this.pack = pack;
@@ -55,6 +54,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 
 	/**
 	 * @parameter expression="${mycontainer.phantomjs.version}"
+	 *            default-value="1.9.2"
 	 * @required
 	 */
 	private String version;
@@ -82,8 +82,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		addSpec("windows", null, "zip", "phantomjs.exe", "phantomjs.exe");
 	}
 
-	private void addSpec(String plataform, String arch, String pack,
-			String path, String executable) {
+	private void addSpec(String plataform, String arch, String pack, String path, String executable) {
 		Spec spec = new Spec(plataform, arch, pack, path, executable);
 		String name = spec.getName();
 		specs.put(name, spec);
@@ -92,8 +91,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException {
 
 		if (!dest.exists() && !dest.mkdirs()) {
-			throw new MojoExecutionException("unable to create directory: "
-					+ dest);
+			throw new MojoExecutionException("unable to create directory: " + dest);
 		}
 
 		File file = getFile();
@@ -108,8 +106,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 			throw new MojoExecutionException("phantomjs was not installed");
 		}
 		getLog().info("Phantomjs: " + file);
-		project.getProperties().put("mycontainer.phatomjs.executable",
-				file.getAbsolutePath());
+		project.getProperties().put("mycontainer.phatomjs.executable", file.getAbsolutePath());
 	}
 
 	private void executable(Spec spec) {
@@ -120,8 +117,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 	private void unpack(Spec spec) {
 		try {
 			File packFile = new File(dest, "phantomjs." + spec.pack);
-			TFile archive = new TFile(packFile, "phantomjs-" + version + "-"
-					+ spec.getName() + "/" + spec.path);
+			TFile archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/" + spec.path);
 			getLog().debug("Unpacking: " + archive);
 			archive.cp(new File(dest, spec.executable));
 		} catch (IOException e) {
@@ -130,8 +126,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 	}
 
 	private void download(Spec spec) {
-		String url = "" + baseUrl + "phantomjs-" + version + "-"
-				+ spec.getName() + "." + spec.pack;
+		String url = "" + baseUrl + "phantomjs-" + version + "-" + spec.getName() + "." + spec.pack;
 		File packFile = new File(dest, "phantomjs." + spec.pack);
 		ReadableByteChannel in = null;
 		FileChannel out = null;
@@ -159,8 +154,7 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		} else if (platform.contains("nux")) {
 			name = "linux-" + (arch.contains("64") ? "x86_64" : "i686");
 		} else {
-			throw new IllegalArgumentException("unknown platform: " + platform
-					+ " " + arch);
+			throw new IllegalArgumentException("unknown platform: " + platform + " " + arch);
 		}
 		Spec ret = specs.get(name);
 		if (ret == null) {
