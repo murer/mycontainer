@@ -23,7 +23,7 @@ public abstract class WebServerDeployer extends NamingDeployer {
 
 	private final List<ContextWebServer> webContexts = new ArrayList<ContextWebServer>();
 
-	public abstract void bindPort(int port);
+	public abstract int bindPort(int port);
 
 	public abstract void bindPort(int port, int confidentialPort);
 

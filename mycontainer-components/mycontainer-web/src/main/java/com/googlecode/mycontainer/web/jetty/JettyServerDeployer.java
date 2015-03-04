@@ -96,9 +96,17 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 	}
 
 	@Override
-	public void bindPort(int port) {
-		Connector connector = createConnector(port);
-		server.addConnector(connector);
+	public int bindPort(int port) {
+		try {
+			Connector connector = createConnector(port);
+			server.addConnector(connector);
+			if (server.isStarted()) {
+				connector.start();
+			}
+			return connector.getLocalPort();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private SelectChannelConnector createConnector(int port) {
