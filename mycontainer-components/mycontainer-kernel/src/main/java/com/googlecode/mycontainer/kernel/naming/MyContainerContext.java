@@ -177,6 +177,10 @@ public class MyContainerContext implements Context, Serializable {
 	}
 
 	public Object lookup(Name name) throws NamingException {
+		if (name.isEmpty()) {
+			return this;
+		}
+
 		String key = name.get(0);
 		Name suffix = name.getSuffix(1);
 		Object ret = lookupInstance(key, suffix);
