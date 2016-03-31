@@ -47,7 +47,7 @@ public class MyContainerContext implements Context, Serializable {
 
 	public Object addToEnvironment(String propName, Object propVal)
 			throws NamingException {
-		throw new NamingException("not supported operation");
+		return this.envs.put(propName, propVal);
 	}
 
 	public void bind(Name name, Object obj) throws NamingException {
@@ -71,13 +71,17 @@ public class MyContainerContext implements Context, Serializable {
 		}
 		Context ctx = (Context) o;
 		if (ctx == null) {
-			ctx = new MyContainerContext(envs);
+			ctx = createNewSubContext();
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("Binding: " + key);
 			}
 			elements.put(key, ctx);
 		}
 		ctx.bind(name, obj);
+	}
+
+	protected MyContainerContext createNewSubContext() {
+		return new MyContainerContext(envs);
 	}
 
 	public void bind(String name, Object obj) throws NamingException {
@@ -98,7 +102,7 @@ public class MyContainerContext implements Context, Serializable {
 	}
 
 	public Context createSubcontext(Name name) throws NamingException {
-		MyContainerContext ctx = new MyContainerContext(envs);
+		MyContainerContext ctx = createNewSubContext();
 		bind(name, ctx);
 		return ctx;
 	}
