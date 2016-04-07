@@ -14,6 +14,8 @@ package com.googlecode.mycontainer.test.ejb;
 import java.util.Properties;
 
 import javax.naming.InitialContext;
+import javax.naming.Name;
+import javax.naming.NamingException;
 import javax.transaction.TransactionManager;
 
 import org.junit.After;
@@ -29,6 +31,7 @@ import com.googlecode.mycontainer.jta.MyTransactionManagerDeployer;
 import com.googlecode.mycontainer.kernel.ShutdownCommand;
 import com.googlecode.mycontainer.kernel.boot.ContainerBuilder;
 import com.googlecode.mycontainer.kernel.deploy.ScannerDeployer;
+import com.googlecode.mycontainer.kernel.naming.MyNameParser;
 import com.googlecode.mycontainer.mail.MailDeployer;
 
 public abstract class AbstractTestCase {
@@ -91,5 +94,11 @@ public abstract class AbstractTestCase {
 		} catch (Exception e) {
 			LOG.error("Error shutdown", e);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <V> V lookupEJB(Class<V> clazz) throws NamingException {
+		Name name = new MyNameParser().parse("ejb", clazz);
+		return (V) ctx.lookup(name);
 	}
 }

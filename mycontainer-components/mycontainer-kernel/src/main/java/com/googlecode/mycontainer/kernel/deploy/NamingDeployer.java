@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import com.googlecode.mycontainer.kernel.ShutdownHook;
 
-public abstract class NamingDeployer extends Deployer implements ShutdownHook {
+public abstract class NamingDeployer extends Deployer implements ShutdownHook, SimpleDeployer {
+
+	private static final long serialVersionUID = -7089079079467512034L;
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(NamingDeployer.class);
