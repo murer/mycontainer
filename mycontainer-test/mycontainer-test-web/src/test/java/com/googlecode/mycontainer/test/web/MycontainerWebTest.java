@@ -68,6 +68,11 @@ public class MycontainerWebTest extends AbstractWebBaseTestCase {
 		testURL(200, "http://localhost:8380/test-other/filter.txt");
 		testURL(404, "http://localhost:8380/test-other/notfound.txt");
 	}
+	
+	@Test
+	public void testServlet() throws Exception {
+		assertEquals("OK", testURL(200, "http://localhost:8380/test/ping"));
+	}
 
 	@Test
 	public void testJsf() throws Exception {

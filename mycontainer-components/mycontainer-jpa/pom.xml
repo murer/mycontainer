@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.6.2</version>
+		<version>1.6.3</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -36,9 +36,9 @@
 			<!-- this is a dependency of hibernate-entitymanager (3.4.GA). And this 
 				version working with JBoss 4.x. The version for JBoss 5.x is 3.10.0.GA. Mycontainer 
 				does not requires direct dependency to it. -->
-			<groupId>javassist</groupId>
+			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.10.0.GA</version>
+			<version>3.18.1-GA</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement />

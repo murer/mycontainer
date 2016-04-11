@@ -17,6 +17,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
@@ -59,6 +60,15 @@ public class LookupTest {
 		ic = new InitialContext();
 		assertEquals("bla", ic.lookup("test"));
 	}
+
+
+	@Test
+	public void testEmptyLookup() throws NamingException {
+		InitialContext ic = new InitialContext();
+		Object result = ic.lookup("");
+		assertTrue(result instanceof Context);
+	}
+
 
 	@Test
 	public void testLookupInstances() throws NamingException {
