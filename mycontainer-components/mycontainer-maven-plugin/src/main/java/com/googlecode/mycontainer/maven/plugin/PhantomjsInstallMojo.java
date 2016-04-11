@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
@@ -125,22 +127,41 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		}
 	}
 
+	@SuppressWarnings("resource")
 	private void download(Spec spec) {
 		String url = "" + baseUrl + "phantomjs-" + version + "-" + spec.getName() + "." + spec.pack;
 		File packFile = new File(dest, "phantomjs." + spec.pack);
-		ReadableByteChannel in = null;
+		ReadableByteChannel channel = null;
 		FileChannel out = null;
+		HttpURLConnection conn = null;
 		try {
-			out = new FileOutputStream(packFile).getChannel();
 			getLog().info("Downloading: " + url);
-			in = Channels.newChannel(new URL(url).openStream());
-			out.transferFrom(in, 0, Long.MAX_VALUE);
+			out = new FileOutputStream(packFile).getChannel();
+			conn = (HttpURLConnection) fetchURL(url);
+			InputStream inputStream = conn.getInputStream();
+			channel = Channels.newChannel(inputStream);
+			out.transferFrom(channel, 0, Long.MAX_VALUE);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
-			close(in);
+			close(channel);
 			close(out);
+			close(conn);
 		}
+	}
+	
+	private HttpURLConnection fetchURL( String url ) throws IOException {
+	    URL dest = new URL(url);
+	    HttpURLConnection yc =  (HttpURLConnection) dest.openConnection();
+	    yc.setInstanceFollowRedirects( false );
+	    yc.setUseCaches(false);
+	    int responseCode = yc.getResponseCode();
+	    if ( responseCode >= 300 && responseCode < 400 ) { // brute force check, far too wide
+	    	url = yc.getHeaderField( "Location");
+	    	getLog().info("Following: " + url);
+	        return fetchURL( url );
+	    }
+	    return yc;
 	}
 
 	private Spec getSpec() {
@@ -175,6 +196,15 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		if (c != null) {
 			try {
 				c.close();
+			} catch (Exception e) {
+				getLog().error("Error closing", e);
+			}
+		}
+	}
+	private void close(HttpURLConnection conn) {
+		if(conn != null){
+			try {
+				conn.disconnect();
 			} catch (Exception e) {
 				getLog().error("Error closing", e);
 			}
