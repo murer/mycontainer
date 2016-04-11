@@ -32,11 +32,12 @@ import com.googlecode.mycontainer.kernel.KernelRuntimeException;
 import com.googlecode.mycontainer.kernel.ShutdownHook;
 import com.googlecode.mycontainer.kernel.deploy.DeployException;
 import com.googlecode.mycontainer.kernel.deploy.Deployer;
+import com.googlecode.mycontainer.kernel.deploy.SimpleDeployer;
 import com.googlecode.mycontainer.kernel.interceptors.AbstractIntercetorDeployer;
 import com.googlecode.mycontainer.kernel.naming.ObjectProvider;
 
 public abstract class JPADeployer extends Deployer implements ShutdownHook,
-		ObjectProvider {
+		ObjectProvider, SimpleDeployer {
 
 	private static final long serialVersionUID = -5739685369847277589L;
 

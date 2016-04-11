@@ -26,6 +26,16 @@
         -->
 
 	<servlet>
+		<servlet-name>PingServlet</servlet-name>
+		<servlet-class>com.googlecode.mycontainer.test.web.PingServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PingServlet</servlet-name>
+		<url-pattern>/ping</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<description>List Customer Servlet</description>
 		<display-name>MyContainer Test Web List Customer Servlet</display-name>
 		<servlet-name>listCustomer</servlet-name>

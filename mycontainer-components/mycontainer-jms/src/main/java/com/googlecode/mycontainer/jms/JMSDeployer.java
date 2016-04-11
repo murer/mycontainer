@@ -15,9 +15,10 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
 
 import com.googlecode.mycontainer.kernel.deploy.NamingDeployer;
+import com.googlecode.mycontainer.kernel.deploy.SimpleDeployer;
 import com.googlecode.mycontainer.kernel.naming.MyNameParser;
 
-public class JMSDeployer extends NamingDeployer {
+public class JMSDeployer extends NamingDeployer implements SimpleDeployer {
 
 	private static final long serialVersionUID = 3150792465673952927L;
 
