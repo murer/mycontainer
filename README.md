@@ -131,6 +131,8 @@ Example:
 
 Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
+Speed up the process:
 
+    mvn clean install -Dmaven.test.skip.exec -T 10 && mvn test
 
 
