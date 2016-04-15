@@ -38,8 +38,8 @@ Here is a junit sample:
  * Programmatic configuration and deploy
  * Light weight
  * Fast boot
- * No hijack the Java Virtual Machine (real embeddable):
-   * No change JVM URL protocols configs
+ * Do not hijack the Java Virtual Machine (real embeddable):
+   * Do not change JVM URL protocols configs
    * No dynamic classloader
    * No classloader isolation
 
