@@ -25,8 +25,6 @@ public abstract class WebServerDeployer extends NamingDeployer {
 
 	public abstract int bindPort(int port);
 
-	public abstract void bindPort(int port, int confidentialPort);
-
 	public abstract void bindSSLPort(SslConnectorInfo info);
 
 	public ContextWebServer createContextWebServer() {

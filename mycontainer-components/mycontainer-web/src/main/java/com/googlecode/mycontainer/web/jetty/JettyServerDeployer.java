@@ -26,6 +26,9 @@ import javax.servlet.http.HttpServlet;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
@@ -116,25 +119,16 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 	}
 
 	@Override
-	public void bindPort(int port, int confidentialPort) {
+	public void bindSSLPort(SslConnectorInfo info) {
 		try {
-			bindPort(port);
-			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory();
-			ServerConnector http = new ServerConnector(server, sslConnectionFactory);
-			http.setHost("0.0.0.0");
-			http.setPort(confidentialPort);
-			http.setIdleTimeout(30000);
-			server.addConnector(http);
-			http.start();
+			Connector connector = info.createConnector(server);
+			server.addConnector(connector);
+			if (server.isStarted()) {
+				connector.start();
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@Override
-	public void bindSSLPort(SslConnectorInfo info) {
-		Connector connector = info.createConnector(server);
-		server.addConnector(connector);
 	}
 
 	@Override
