@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.6.3-SNAPSHOT</version>
+		<version>1.7.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -22,10 +22,6 @@
 			<groupId>com.googlecode.mycontainer</groupId>
 			<artifactId>mycontainer-datasource</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>

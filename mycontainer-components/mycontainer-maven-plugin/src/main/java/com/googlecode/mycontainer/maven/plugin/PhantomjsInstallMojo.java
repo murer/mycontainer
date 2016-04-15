@@ -131,37 +131,40 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 	private void download(Spec spec) {
 		String url = "" + baseUrl + "phantomjs-" + version + "-" + spec.getName() + "." + spec.pack;
 		File packFile = new File(dest, "phantomjs." + spec.pack);
-		ReadableByteChannel channel = null;
 		FileChannel out = null;
-		HttpURLConnection conn = null;
 		try {
 			getLog().info("Downloading: " + url);
 			out = new FileOutputStream(packFile).getChannel();
-			conn = (HttpURLConnection) fetchURL(url);
-			InputStream inputStream = conn.getInputStream();
-			channel = Channels.newChannel(inputStream);
-			out.transferFrom(channel, 0, Long.MAX_VALUE);
+			readUrl(url, out);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
-			close(channel);
 			close(out);
-			close(conn);
 		}
 	}
 	
-	private HttpURLConnection fetchURL( String url ) throws IOException {
-	    URL dest = new URL(url);
-	    HttpURLConnection yc =  (HttpURLConnection) dest.openConnection();
-	    yc.setInstanceFollowRedirects( false );
-	    yc.setUseCaches(false);
-	    int responseCode = yc.getResponseCode();
-	    if ( responseCode >= 300 && responseCode < 400 ) { // brute force check, far too wide
-	    	url = yc.getHeaderField( "Location");
-	    	getLog().info("Following: " + url);
-	        return fetchURL( url );
-	    }
-	    return yc;
+	private void readUrl( String url, FileChannel out ) throws IOException {
+		HttpURLConnection yc = null;
+		ReadableByteChannel channel = null;
+		try{
+		    URL dest = new URL(url);
+		    yc =  (HttpURLConnection) dest.openConnection();
+		    yc.setInstanceFollowRedirects( false );
+		    yc.setUseCaches(false);
+		    int responseCode = yc.getResponseCode();
+		    if ( responseCode >= 300 && responseCode < 400 ) { 
+		    	url = yc.getHeaderField( "Location");
+		    	getLog().info("Following: " + url);
+		        readUrl( url, out);
+		        return;
+		    }
+		    InputStream inputStream = yc.getInputStream();
+		    channel = Channels.newChannel(inputStream);
+			out.transferFrom(channel, 0, Long.MAX_VALUE);
+		} finally {
+			close(yc);
+			close(channel);
+		}
 	}
 
 	private Spec getSpec() {

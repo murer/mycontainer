@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-components</artifactId>
-		<version>1.6.3-SNAPSHOT</version>
+		<version>1.7.2-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 		<dependency>
@@ -25,38 +25,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jasper-el</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>el-impl</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-jsp</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.jetty.orbit</groupId>
-					<artifactId>javax.el</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.jetty.orbit</groupId>
-					<artifactId>com.sun.el</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-jndi</artifactId> 
-			<version>${jetty.version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-jmx</artifactId> <version>${jetty.version}</version> </dependency> 
-			<dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-annotations</artifactId> 
-			<version>${jetty.version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-websocket</artifactId> <version>${jetty.version}</version> 
-			</dependency><dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-util</artifactId> 
-			<version>${jetty.version}</version> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-deploy</artifactId> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
-			<artifactId>jetty-plus</artifactId> </dependency> -->
-
 
 	</dependencies>
 	<dependencyManagement />

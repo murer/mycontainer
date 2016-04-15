@@ -52,7 +52,7 @@ public class ContentTypeByExtentionFilterTest extends AbstractTestCase {
 		try {
 			assertEquals(200, response.getCode());
 			assertEquals("'my message'", response.getContentAsString().trim());
-			assertEquals("text/plain;charset=ISO-8859-1", response.getContentType());
+			assertEquals("text/plain; charset=ISO-8859-1", response.getContentType());
 		} finally {
 			response.close();
 		}
