@@ -123,11 +123,6 @@ Example:
         <version>${mycontainer.version}</version>
     </dependency>
     
-Not all versions are deployed to central. 
-But you can find them all at my private repository http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/
-
-It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure it's availability.
-
 ## Building Mycontainer
 
     mvn clean install
