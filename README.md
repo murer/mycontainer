@@ -13,6 +13,8 @@ Mycontainer is a generic test and development enviroment. Check it out.
  * [TCP Tunnels](#tcp-tunnels)
  * [Checking for non us-ascii files](#checking-for-non-us-ascii-files)
  * [Installing PhantomJS](#installing-phantomjs)
+ * [Maven Repository](#maven-repository)
+ * [Building Mycontainer](#building-mycontainer)
 
 ## Since 1.4.4
 
