@@ -13,6 +13,8 @@ Mycontainer is a generic test and development enviroment. Check it out.
  * [TCP Tunnels](#tcp-tunnels)
  * [Checking for non us-ascii files](#checking-for-non-us-ascii-files)
  * [Installing PhantomJS](#installing-phantomjs)
+ * [Maven Repository](#maven-repository)
+ * [Building Mycontainer](#building-mycontainer)
 
 ## Since 1.4.4
 
@@ -36,8 +38,8 @@ Here is a junit sample:
  * Programmatic configuration and deploy
  * Light weight
  * Fast boot
- * No hijack the Java Virtual Machine (real embeddable):
-   * No change JVM URL protocols configs
+ * Do not hijack the Java Virtual Machine (real embeddable):
+   * Do not change JVM URL protocols configs
    * No dynamic classloader
    * No classloader isolation
 
@@ -123,17 +125,14 @@ Example:
         <version>${mycontainer.version}</version>
     </dependency>
     
-Not all versions are deployed to central. 
-But you can find them all at my private repository http://repo.pyrata.org/release/maven2/com/googlecode/mycontainer/
-
-It is highly recommended that you **avoid** linking this repository in your `pom.xml` since I can not ensure it's availability.
-
 ## Building Mycontainer
 
     mvn clean install
 
 Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 
+Speed up the process:
 
+    mvn clean install -Dmaven.test.skip.exec -T 10 && mvn test
 
 

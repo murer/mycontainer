@@ -26,10 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.mycontainer.kernel.ShutdownCommand;
-import com.googlecode.mycontainer.web.ContextWebServer;
-import com.googlecode.mycontainer.web.FilterDesc;
-import com.googlecode.mycontainer.web.ServletDesc;
-import com.googlecode.mycontainer.web.WebServerDeployer;
 import com.googlecode.mycontainer.web.jetty.JettyServerDeployer;
 
 public class ServletDeployerTest {
@@ -52,8 +48,7 @@ public class ServletDeployerTest {
 
 	}
 
-	private void testURL(String urlStr) throws MalformedURLException,
-			IOException {
+	private void testURL(String urlStr) throws MalformedURLException, IOException {
 		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(urlStr);

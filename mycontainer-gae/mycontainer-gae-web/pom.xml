@@ -10,14 +10,14 @@
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer-parent</artifactId>
-		<version>1.6.3</version>
+		<version>1.7.1</version>
 		<relativePath>../../mycontainer-parent</relativePath>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
