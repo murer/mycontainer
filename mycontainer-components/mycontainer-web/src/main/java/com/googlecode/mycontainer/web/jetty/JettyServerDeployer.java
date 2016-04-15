@@ -13,11 +13,13 @@ package com.googlecode.mycontainer.web.jetty;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.EventListener;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServlet;
 
@@ -25,12 +27,12 @@ import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.FilterMapping;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler.Decorator;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -63,7 +65,8 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 	public JettyServerDeployer() {
 		server = new Server();
 
-		System.setProperty("com.sun.faces.InjectionProvider", "com.googlecode.mycontainer.jsfprovider.MyContainerInjectionProvider");
+		System.setProperty("com.sun.faces.InjectionProvider",
+				"com.googlecode.mycontainer.jsfprovider.MyContainerInjectionProvider");
 
 		RequestLogHandler requestLogHandler = new RequestLogHandler();
 		requestLogHandler.setRequestLog(new JettyRequestLogImpl());
@@ -98,44 +101,39 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 	@Override
 	public int bindPort(int port) {
 		try {
-			Connector connector = createConnector(port);
-			server.addConnector(connector);
+			ServerConnector http = new ServerConnector(server);
+			http.setHost("0.0.0.0");
+			http.setPort(port);
+			http.setIdleTimeout(30000);
+			server.addConnector(http);
 			if (server.isStarted()) {
-				connector.start();
+				http.start();
 			}
-			return connector.getLocalPort();
+			return http.getLocalPort();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private SelectChannelConnector createConnector(int port) {
-		SelectChannelConnector connector = new SelectChannelConnector();
-		connector.setPort(port);
-		connector.setMaxIdleTime(30000);
-		return connector;
-	}
-
 	@Override
 	public void bindPort(int port, int confidentialPort) {
-		SelectChannelConnector connector = createConnector(port);
-		connector.setConfidentialPort(confidentialPort);
-		server.addConnector(connector);
-	}
-
-	@Deprecated
-	@Override
-	public void bindSSLPort(int port, String keystore, String password) {
-		SslConnectorInfo info = new SslConnectorInfo(port, keystore);
-		info.setKeyManagerPassword(password);
-		info.setKeyStorePassword(password);
-
-		bindSSLPort(info);
+		try {
+			bindPort(port);
+			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory();
+			ServerConnector http = new ServerConnector(server, sslConnectionFactory);
+			http.setHost("0.0.0.0");
+			http.setPort(confidentialPort);
+			http.setIdleTimeout(30000);
+			server.addConnector(http);
+			http.start();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public void bindSSLPort(SslConnectorInfo info) {
-		Connector connector = info.createConnector();
+		Connector connector = info.createConnector(server);
 		server.addConnector(connector);
 	}
 
@@ -162,11 +160,11 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 			if (contextWebServer.getResources() != null) {
 				handler = new WebAppContext(contextWebServer.getResources(), contextWebServer.getContext());
 			} else {
-				handler = new ServletContextHandler(null, contextWebServer.getContext(), ServletContextHandler.SESSIONS | ServletContextHandler.SECURITY);
+				handler = new ServletContextHandler(null, contextWebServer.getContext(),
+						ServletContextHandler.SESSIONS | ServletContextHandler.SECURITY);
 				handler.addServlet(DefaultServlet.class, "/*");
 			}
-			handler.setAttribute(
-					WebInfConfiguration.CONTAINER_JAR_PATTERN,
+			handler.setAttribute(WebInfConfiguration.CONTAINER_JAR_PATTERN,
 					".*/.*jsp-api-[^/]*\\.jar$|.*/.*jsp-[^/]*\\.jar$|.*/.*taglibs[^/]*\\.jar$|.*/.*jstl[^/]*\\.jar$|.*/.*jsf-impl-[^/]*\\.jar$|.*/.*javax.faces-[^/]*\\.jar$|.*/.*myfaces-impl-[^/]*\\.jar$");
 			// performRemoveTagLibConfiguration((WebAppContext) handler);
 			Set<Entry<String, Object>> attrs = contextWebServer.getAttributes().entrySet();
@@ -195,13 +193,13 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 				Object filter = desc.getFilter();
 				if (filter instanceof Filter) {
 					FilterHolder holder = new FilterHolder((Filter) filter);
-					handler.addFilter(holder, desc.getPath(), FilterMapping.ALL);
+					handler.addFilter(holder, desc.getPath(), EnumSet.of(DispatcherType.REQUEST));
 				} else if (filter instanceof FilterHolder) {
-					handler.addFilter((FilterHolder) filter, desc.getPath(), FilterMapping.ALL);
+					handler.addFilter((FilterHolder) filter, desc.getPath(), EnumSet.of(DispatcherType.REQUEST));
 				} else if (filter instanceof Class) {
-					handler.addFilter((Class) filter, desc.getPath(), FilterMapping.ALL);
+					handler.addFilter((Class) filter, desc.getPath(), EnumSet.of(DispatcherType.REQUEST));
 				} else {
-					handler.addFilter((String) filter, desc.getPath(), FilterMapping.ALL);
+					handler.addFilter((String) filter, desc.getPath(), EnumSet.of(DispatcherType.REQUEST));
 				}
 			}
 
@@ -236,7 +234,8 @@ public class JettyServerDeployer extends WebServerDeployer implements SimpleDepl
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.indexOf("win") >= 0 && handler.getInitParameter(JETTY_USE_FILE_MAPPTED_BUFFER) == null) {
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("Windows detected (" + os + "). Turning " + JETTY_USE_FILE_MAPPTED_BUFFER + " off to " + handler);
+				LOG.debug("Windows detected (" + os + "). Turning " + JETTY_USE_FILE_MAPPTED_BUFFER + " off to "
+						+ handler);
 			}
 			handler.setInitParameter(JETTY_USE_FILE_MAPPTED_BUFFER, "false");
 		}

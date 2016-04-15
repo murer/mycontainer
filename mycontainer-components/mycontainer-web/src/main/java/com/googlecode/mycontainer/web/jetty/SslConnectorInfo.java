@@ -1,10 +1,12 @@
 package com.googlecode.mycontainer.web.jetty;
 
 import java.io.Serializable;
+import java.security.KeyStore;
 
-import org.eclipse.jetty.http.ssl.SslContextFactory;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.ssl.SslSocketConnector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 public class SslConnectorInfo implements Serializable {
 
@@ -24,7 +26,7 @@ public class SslConnectorInfo implements Serializable {
 
 	private String certAlias;
 
-	private String trustStore;
+	private KeyStore trustStore;
 
 	private String trustStorePassword;
 
@@ -99,11 +101,11 @@ public class SslConnectorInfo implements Serializable {
 		this.certAlias = certAlias;
 	}
 
-	public String getTrustStore() {
+	public KeyStore getTrustStore() {
 		return trustStore;
 	}
 
-	public void setTrustStore(String trustStore) {
+	public void setTrustStore(KeyStore trustStore) {
 		this.trustStore = trustStore;
 	}
 
@@ -123,7 +125,7 @@ public class SslConnectorInfo implements Serializable {
 		this.maxIdleTime = maxIdleTime;
 	}
 
-	public Connector createConnector() {
+	public Connector createConnector(Server server) {
 
 		SslContextFactory sslContextFactory = new SslContextFactory(keyStore);
 
@@ -137,9 +139,9 @@ public class SslConnectorInfo implements Serializable {
 		sslContextFactory.setTrustStore(trustStore);
 		sslContextFactory.setTrustStorePassword(trustStorePassword);
 
-		SslSocketConnector connector = new SslSocketConnector(sslContextFactory);
+		ServerConnector connector = new ServerConnector(server, sslContextFactory);
 		connector.setPort(port);
-		connector.setMaxIdleTime(maxIdleTime);
+		connector.setIdleTimeout(maxIdleTime);
 
 		return connector;
 	}

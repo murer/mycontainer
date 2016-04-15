@@ -108,7 +108,7 @@ public class HttpRawProtocolTest extends AbstractTestCase {
 			}
 		}
 		conn.getState().check(State.DOWNLOADING);
-		assertEquals("text/plain;charset=ISO-8859-1", contentType);
+		assertEquals("text/plain; charset=ISO-8859-1", contentType);
 
 		InputStream in = conn.getInputStream();
 		StringBuilder content = new StringBuilder();
