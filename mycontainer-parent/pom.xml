@@ -149,7 +149,6 @@
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>4.3.7.Final</version>
 			</dependency>
-			<!-- this dependecy is temporary. Depends jpa-2.0 release -->
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
