@@ -30,15 +30,11 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		private String plataform;
 		private String arch;
 		private String pack;
-		private String path;
-		private String executable;
 
-		public Spec(String plataform, String arch, String pack, String path, String executable) {
+		public Spec(String plataform, String arch, String pack) {
 			this.plataform = plataform;
 			this.arch = arch;
 			this.pack = pack;
-			this.path = path;
-			this.executable = executable;
 		}
 
 		public String getName() {
@@ -56,14 +52,14 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 
 	/**
 	 * @parameter expression="${mycontainer.phantomjs.version}"
-	 *            default-value="1.9.2"
+	 *            default-value="2.1.1"
 	 * @required
 	 */
 	private String version;
 
 	/**
 	 * @parameter expression="${mycontainer.phantomjs.baseUrl}"
-	 *            default-value="https://phantomjs.googlecode.com/files/"
+	 *            default-value="https://bitbucket.org/ariya/phantomjs/downloads/"
 	 * @required
 	 */
 	private String baseUrl;
@@ -78,14 +74,14 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 	private Map<String, Spec> specs = new HashMap<String, Spec>();
 
 	public PhantomjsInstallMojo() {
-		addSpec("linux", "i686", "tar.bz2", "bin/phantomjs", "phantomjs");
-		addSpec("linux", "x86_64", "tar.bz2", "bin/phantomjs", "phantomjs");
-		addSpec("macosx", null, "zip", "bin/phantomjs", "phantomjs");
-		addSpec("windows", null, "zip", "phantomjs.exe", "phantomjs.exe");
+		addSpec("linux", "i686", "tar.bz2");
+		addSpec("linux", "x86_64", "tar.bz2");
+		addSpec("macosx", null, "zip");
+		addSpec("windows", null, "zip");
 	}
 
-	private void addSpec(String plataform, String arch, String pack, String path, String executable) {
-		Spec spec = new Spec(plataform, arch, pack, path, executable);
+	private void addSpec(String plataform, String arch, String pack) {
+		Spec spec = new Spec(plataform, arch, pack);
 		String name = spec.getName();
 		specs.put(name, spec);
 	}
@@ -101,7 +97,6 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 			Spec spec = getSpec();
 			download(spec);
 			unpack(spec);
-			executable(spec);
 			file = getFile();
 		}
 		if (!file.exists()) {
@@ -111,20 +106,35 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 		project.getProperties().put("mycontainer.phatomjs.executable", file.getAbsolutePath());
 	}
 
-	private void executable(Spec spec) {
-		File executable = new File(dest, spec.executable);
-		executable.setExecutable(true);
-	}
-
-	private void unpack(Spec spec) {
+	private void unpack(Spec spec) throws MojoExecutionException {
 		try {
-			File packFile = new File(dest, "phantomjs." + spec.pack);
-			TFile archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/" + spec.path);
-			getLog().debug("Unpacking: " + archive);
-			archive.cp(new File(dest, spec.executable));
+			TFile archive = getTFile(spec);
+			String executable = archive.getName();
+			File target = new File(dest, executable);
+			getLog().info("Unpacking " + archive);
+			archive.cp(target);
+			target.setExecutable(true);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private TFile getTFile(Spec spec) throws MojoExecutionException {
+		File packFile = new File(dest, "phantomjs." + spec.pack);
+		TFile archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/bin/phantomjs");
+		if (!archive.exists()) {
+			archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/bin/phantomjs.exe");
+			if (!archive.exists()) {
+				archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/phantomjs.exe");
+				if (!archive.exists()) {
+					archive = new TFile(packFile, "phantomjs-" + version + "-" + spec.getName() + "/phantomjs");
+					if (!archive.exists()) {
+						throw new MojoExecutionException("phantomjs executable not found: " + packFile);
+					}
+				}
+			}
+		}
+		return archive;
 	}
 
 	@SuppressWarnings("resource")
@@ -142,24 +152,24 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 			close(out);
 		}
 	}
-	
-	private void readUrl( String url, FileChannel out ) throws IOException {
+
+	private void readUrl(String url, FileChannel out) throws IOException {
 		HttpURLConnection yc = null;
 		ReadableByteChannel channel = null;
-		try{
-		    URL dest = new URL(url);
-		    yc =  (HttpURLConnection) dest.openConnection();
-		    yc.setInstanceFollowRedirects( false );
-		    yc.setUseCaches(false);
-		    int responseCode = yc.getResponseCode();
-		    if ( responseCode >= 300 && responseCode < 400 ) { 
-		    	url = yc.getHeaderField( "Location");
-		    	getLog().info("Following: " + url);
-		        readUrl( url, out);
-		        return;
-		    }
-		    InputStream inputStream = yc.getInputStream();
-		    channel = Channels.newChannel(inputStream);
+		try {
+			URL dest = new URL(url);
+			yc = (HttpURLConnection) dest.openConnection();
+			yc.setInstanceFollowRedirects(false);
+			yc.setUseCaches(false);
+			int responseCode = yc.getResponseCode();
+			if (responseCode >= 300 && responseCode < 400) {
+				url = yc.getHeaderField("Location");
+				getLog().info("Following: " + url);
+				readUrl(url, out);
+				return;
+			}
+			InputStream inputStream = yc.getInputStream();
+			channel = Channels.newChannel(inputStream);
 			out.transferFrom(channel, 0, Long.MAX_VALUE);
 		} finally {
 			close(yc);
@@ -204,8 +214,9 @@ public class PhantomjsInstallMojo extends AbstractMojo {
 			}
 		}
 	}
+
 	private void close(HttpURLConnection conn) {
-		if(conn != null){
+		if (conn != null) {
 			try {
 				conn.disconnect();
 			} catch (Exception e) {
