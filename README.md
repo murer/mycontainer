@@ -70,7 +70,7 @@ Use `<inherited>false</inherited>` if you are configuring your root pom.xml at m
 
 Mycontainer has a plugin to install [PhantomJS](http://phantomjs.org). 
 
- * Download packages from original host: http://code.google.com/p/phantomjs/downloads/
+ * Download packages from original host: https://bitbucket.org/ariya/phantomjs/downloads
  * Install the correct package (windows, macosx, linux).
  * No pom.xml required
  * It set a maven property to the phantomjs executable: `mycontainer.phantomjs.executable`
