@@ -16,10 +16,6 @@ Mycontainer is a generic test and development enviroment. Check it out.
  * [Maven Repository](#maven-repository)
  * [Building Mycontainer](#building-mycontainer)
 
-## Since 1.4.4
-
-You need to change `maven-mycontainer-plugin` to `mycontainer-maven-plugin` (thanks maven 3.x)
-
 ## @Before
 
 You will need java and maven
