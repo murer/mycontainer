@@ -1,6 +1,8 @@
 package com.googlecode.mycontainer.darkproxy;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,12 +43,22 @@ public class DarkProxyRequest {
 	}
 
 	public static DarkProxyRequest parse(HttpServletRequest request, String dest) {
-		DarkProxyRequest ret = new DarkProxyRequest();
-		ret.setId(DarkProxyId.nextId());
-		ret.setUri(request.getRequestURI());
-		ret.parseHeaders(request);
-		ret.writeMeta(dest);
-		return ret;
+		try {
+			DarkProxyRequest ret = new DarkProxyRequest();
+			ret.setId(DarkProxyId.nextId());
+			ret.setUri(request.getRequestURI());
+			ret.parseHeaders(request);
+			ret.writeMeta(dest);
+			ret.writeBody(dest, request.getInputStream());
+			return ret;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void writeBody(String dest, InputStream in) {
+		File file = DarkProxyFiles.getFile(dest, id, "req.body");
+		DarkProxyFiles.write(file, in);
 	}
 
 	private void writeMeta(String dest) {

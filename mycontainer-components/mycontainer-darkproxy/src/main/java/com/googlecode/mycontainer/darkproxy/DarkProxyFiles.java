@@ -1,6 +1,7 @@
 package com.googlecode.mycontainer.darkproxy;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -30,6 +31,11 @@ public class DarkProxyFiles {
 	public static void write(File file, String json) {
 		file.getParentFile().mkdirs();
 		Util.write(file, json, "UTF-8");
+	}
+
+	public static void write(File file, InputStream in) {
+		file.getParentFile().mkdirs();
+		Util.write(file, in);
 	}
 
 }

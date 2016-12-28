@@ -335,4 +335,16 @@ public class Util {
 		return;
 	}
 
+	public static void write(File file, InputStream in) {
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(file);
+			copy(in, out);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(out);
+		}
+	}
+
 }
