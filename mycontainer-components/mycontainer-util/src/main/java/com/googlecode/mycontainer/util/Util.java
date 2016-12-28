@@ -20,6 +20,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
@@ -199,6 +200,14 @@ public class Util {
 		try {
 			Thread.sleep(time);
 		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String readAll(InputStream in, String charset) {
+		try {
+			return readAll(new InputStreamReader(in, charset));
+		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -404,17 +413,13 @@ public class Util {
 			destinationChannel = new FileOutputStream(destination).getChannel();
 
 			sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
-
-			if (sourceChannel != null && sourceChannel.isOpen()) {
-				sourceChannel.close();
-			}
-			if (destinationChannel != null && destinationChannel.isOpen()) {
-				destinationChannel.close();
-			}
 		} catch (FileNotFoundException e1) {
 			throw new RuntimeException(e1);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} finally {
+			Util.close(sourceChannel);
+			Util.close(destinationChannel);
 		}
 	}
 
@@ -697,6 +702,24 @@ public class Util {
 			}
 			return lines;
 		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void close(HttpURLConnection resource) {
+		if (resource != null) {
+			try {
+				resource.disconnect();
+			} catch (Exception e) {
+				LOG.error("error closing", e);
+			}
+		}
+	}
+
+	public static void sleep(long millis, int nanos) {
+		try {
+			Thread.sleep(millis, nanos);
+		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
 	}
