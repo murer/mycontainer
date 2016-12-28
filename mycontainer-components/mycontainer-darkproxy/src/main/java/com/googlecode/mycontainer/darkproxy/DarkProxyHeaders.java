@@ -50,4 +50,10 @@ public class DarkProxyHeaders {
 		return this;
 	}
 
+	public void set(String name, String value) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(value);
+		headers.put(name, list);
+	}
+
 }

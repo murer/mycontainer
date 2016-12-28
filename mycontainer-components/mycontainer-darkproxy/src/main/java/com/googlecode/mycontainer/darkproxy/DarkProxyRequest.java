@@ -169,6 +169,10 @@ public class DarkProxyRequest {
 		setHost(req.getHost());
 		setId(req.getId());
 		setMethod(req.getMethod());
+		if(headers.first("Content-Length") != null) {
+			long len = getBodyFile(dest).length();
+			headers.set("Content-Length", Long.toString(len));
+		}
 		setPort(req.getPort());
 		setQuery(req.getQuery());
 		setSchema(req.getSchema());
