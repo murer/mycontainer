@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.googlecode.mycontainer.util.Util;
+
 public class DarkProxyFiles {
 
 	public static File getFile(String dest, Long id, String ext) {
@@ -23,6 +25,11 @@ public class DarkProxyFiles {
 		int o = padding.length - array.length;
 		System.arraycopy(array, 0, padding, o, array.length);
 		return new String(padding);
+	}
+
+	public static void write(File file, String json) {
+		file.getParentFile().mkdirs();
+		Util.write(file, json, "UTF-8");
 	}
 
 }

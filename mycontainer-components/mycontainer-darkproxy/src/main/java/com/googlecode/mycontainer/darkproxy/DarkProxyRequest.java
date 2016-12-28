@@ -51,7 +51,8 @@ public class DarkProxyRequest {
 
 	private void writeMeta(String dest) {
 		File file = DarkProxyFiles.getFile(dest, id, "req.json");
-		System.out.println(file);
+		String json = JSON.stringify(this);
+		DarkProxyFiles.write(file, json);
 	}
 
 	private void parseHeaders(HttpServletRequest request) {

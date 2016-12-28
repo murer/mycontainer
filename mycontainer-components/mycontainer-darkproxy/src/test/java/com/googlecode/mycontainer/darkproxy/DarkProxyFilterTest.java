@@ -30,7 +30,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 			Util.close(conn);
 		}
 
-		assertEquals("test", Util.read(url, "UTF-8"));
+		assertEquals("test", Util.readAll(url, "UTF-8"));
 	}
 
 }

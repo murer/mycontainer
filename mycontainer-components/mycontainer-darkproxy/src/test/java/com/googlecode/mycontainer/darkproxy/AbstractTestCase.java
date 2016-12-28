@@ -31,6 +31,8 @@ public class AbstractTestCase {
 		webServer.setName("WebServer");
 		
 		proxy = new DarkProxy();
+		proxy.setDest("target/requests");
+		proxy.cleanDest();
 
 		ContextWebServer webContext = webServer.createContextWebServer();
 		webContext.setContext("/");
