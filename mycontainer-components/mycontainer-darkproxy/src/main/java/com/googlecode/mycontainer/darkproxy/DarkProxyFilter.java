@@ -26,10 +26,10 @@ public class DarkProxyFilter implements Filter {
 		filter((HttpServletRequest) request, (HttpServletResponse) response);
 	}
 
-	public void filter(HttpServletRequest request, HttpServletResponse response) {
+	public void filter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String uri = DarkProxyMeta.uri(request);
 		if (uri.startsWith("/_darkproxy/")) {
-			DarkProxyMeta.filter(request, response);
+			DarkProxyMeta.filter(proxy, request, response);
 			return;
 		}
 

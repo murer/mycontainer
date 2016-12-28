@@ -360,4 +360,12 @@ public class Util {
 		}
 	}
 
+	public static String readURL(String url, String charset) {
+		try {
+			return readAll(new URL(url), charset);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 }

@@ -127,7 +127,7 @@ public class DarkProxyResponse {
 
 	public synchronized void waitFor() {
 		try {
-			wait();
+			wait(7000);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

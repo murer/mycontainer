@@ -4,15 +4,29 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.google.gson.reflect.TypeToken;
 import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxyFilterTest extends AbstractTestCase {
 
+	private Thread respThread;
+	private Thread reqThread;
+	
+	@Override
+	public void shutdown() throws Exception {
+		Util.join(respThread);
+		Util.join(reqThread);
+		super.shutdown();
+	}
+	
 	@Test
 	public void testFilter() throws Exception {
 		forwardRequest();
@@ -47,25 +61,45 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	}
 
 	private void forwardResponse() {
-		Thread t = new Thread() {
+		respThread = new Thread() {
 			public void run() {
 				Util.sleep(2000L);
-				DarkProxyConn conn = proxy.getFirst();
-				conn.getResponse().proceed();
+				List<String> conns = getConns();
+				assertEquals(1, conns.size());
+
+				assertEquals("\"OK\"",
+						Util.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
 			}
 		};
-		t.start();
+		respThread.start();
 	}
 
 	private void forwardRequest() {
-		Thread t = new Thread() {
+		reqThread = new Thread() {
 			public void run() {
 				Util.sleep(500L);
-				DarkProxyConn conn = proxy.getFirst();
-				conn.getRequest().proceed();
+				List<String> conns = getConns();
+				assertEquals(1, conns.size());
+
+				assertEquals("\"OK\"",
+						Util.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
 			}
+
 		};
-		t.start();
+		reqThread.start();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getConns() {
+		try {
+			String str = Util.readAll(new URL("http://localhost:8380/_darkproxy/conns"), "UTF-8");
+			Type type = new TypeToken<List<String>>() {
+			}.getType();
+			List<String> ids = (List<String>) JSON.parse(str, type);
+			return ids;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

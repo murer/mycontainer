@@ -60,4 +60,16 @@ public class DarkProxy implements Closeable {
 		return conns.get(key);
 	}
 
+	public SortedMap<Long, DarkProxyConn> getConns() {
+		return conns;
+	}
+
+	public synchronized DarkProxyRequest getRequest(Long id) {
+		return conns.get(id).getRequest();
+	}
+
+	public synchronized DarkProxyResponse getRresponse(Long id) {
+		return conns.get(id).getResponse();
+	}
+
 }

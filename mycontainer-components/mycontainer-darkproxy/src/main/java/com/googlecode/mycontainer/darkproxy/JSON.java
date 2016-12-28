@@ -1,5 +1,6 @@
 package com.googlecode.mycontainer.darkproxy;
 
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -29,6 +30,10 @@ public class JSON {
 			ret.add(entry.getKey());
 		}
 		return ret;
+	}
+
+	public static Object parse(String json, Type type) {
+		return basic().create().fromJson(json, type);
 	}
 
 }
