@@ -16,17 +16,22 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	public void testFilter() throws Exception {
 		URL url = new URL("http://localhost:8380/repoz/docs.html?a=1&b=2");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		OutputStream out = null;
+		OutputStream in = null;
 		try {
 			conn.setDoOutput(true);
 			conn.setRequestProperty("x-test", "my-value");
 			conn.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
-			OutputStream out = conn.getOutputStream();
+			out = conn.getOutputStream();
 			out.write("my body".getBytes());
-			out.flush();
+			out.close();
+			out = null;
 			assertEquals(200, conn.getResponseCode());
 			assertEquals("text/html", conn.getHeaderField("Content-Type"));
 //			assertEquals("test", Util.readAll(conn.getInputStream(), "UTF-8"));
 		} finally {
+			Util.close(in);
+			Util.close(out);
 			Util.close(conn);
 		}
 	}
