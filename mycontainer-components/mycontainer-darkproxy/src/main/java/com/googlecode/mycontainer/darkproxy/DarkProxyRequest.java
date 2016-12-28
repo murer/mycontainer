@@ -147,4 +147,8 @@ public class DarkProxyRequest {
 				req.getQuery());
 	}
 
+	public synchronized void proceed() {
+		notify();
+	}
+
 }

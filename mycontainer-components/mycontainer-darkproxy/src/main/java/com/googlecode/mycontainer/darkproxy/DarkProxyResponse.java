@@ -133,4 +133,8 @@ public class DarkProxyResponse {
 		}
 	}
 
+	public synchronized void proceed() {
+		notify();
+	}
+
 }

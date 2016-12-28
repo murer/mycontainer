@@ -32,7 +32,7 @@ public class DarkProxyFilter implements Filter {
 		req.setPort(80);
 		req.setSchema("http");
 		proxy.register(req);
-		// req.waitFor();
+		req.waitFor();
 		DarkProxyResponse resp = new DarkProxyResponse();
 		resp.setId(req.getId());
 		resp.forward(req, proxy.getDest());

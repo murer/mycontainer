@@ -2,8 +2,8 @@ package com.googlecode.mycontainer.darkproxy;
 
 import java.io.Closeable;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.googlecode.mycontainer.util.Util;
 
@@ -11,7 +11,7 @@ public class DarkProxy implements Closeable {
 
 	private String dest = "darkreq";
 
-	private Map<Long, DarkProxyConn> conns = new HashMap<Long, DarkProxyConn>();
+	private SortedMap<Long, DarkProxyConn> conns = new TreeMap<Long, DarkProxyConn>();
 
 	public String getDest() {
 		return dest;
@@ -50,6 +50,14 @@ public class DarkProxy implements Closeable {
 
 	public synchronized void remove(Long id) {
 		conns.remove(id);
+	}
+
+	public synchronized DarkProxyConn getFirst() {
+		if (conns.isEmpty()) {
+			return null;
+		}
+		Long key = conns.firstKey();
+		return conns.get(key);
 	}
 
 }

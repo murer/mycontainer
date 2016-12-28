@@ -18,7 +18,7 @@ public class AbstractTestCase {
 
 	protected InitialContext ctx;
 
-	private DarkProxy proxy;
+	protected DarkProxy proxy;
 
 	@Before
 	public void boot() throws Exception {
