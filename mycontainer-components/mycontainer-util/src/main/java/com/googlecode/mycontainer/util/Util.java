@@ -3,6 +3,7 @@ package com.googlecode.mycontainer.util;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -344,6 +345,18 @@ public class Util {
 			throw new RuntimeException(e);
 		} finally {
 			close(out);
+		}
+	}
+
+	public static void read(File file, OutputStream out) {
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+			copy(in, out);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(in);
 		}
 	}
 

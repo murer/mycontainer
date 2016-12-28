@@ -1,11 +1,136 @@
 package com.googlecode.mycontainer.darkproxy;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletResponse;
+
+import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxyResponse {
 
-	public void writeTo(HttpServletResponse response) {
-		
+	private Long id;
+
+	private Integer code;
+
+	private String reason;
+
+	private DarkProxyHeaders headers = new DarkProxyHeaders();
+
+	public Long getId() {
+		return id;
+	}
+
+	public DarkProxyResponse setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public DarkProxyHeaders getHeaders() {
+		return headers;
+	}
+
+	public DarkProxyResponse setHeaders(DarkProxyHeaders headers) {
+		this.headers = headers;
+		return this;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public DarkProxyResponse setReason(String reason) {
+		this.reason = reason;
+		return this;
+	}
+
+	public Integer getCode() {
+		return code;
+	}
+
+	public DarkProxyResponse setCode(Integer code) {
+		this.code = code;
+		return this;
+	}
+
+	public void writeTo(String dest, HttpServletResponse response) {
+		response.setStatus(response.getStatus());
+		writeHeaders(response);
+		writeBody(dest, response);
+	}
+
+	private void writeBody(String dest, HttpServletResponse response) {
+		try {
+			File file = bodyFile(dest);
+			Util.read(file, response.getOutputStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void writeHeaders(HttpServletResponse response) {
+		for (Entry<String, List<String>> entry : headers.getHeaders().entrySet()) {
+			for (String value : entry.getValue()) {
+				response.addHeader(entry.getKey(), value);
+			}
+		}
+	}
+
+	public DarkProxyResponse forward(DarkProxyRequest req, String dest) {
+		String strurl = req.createUrl(req);
+		HttpURLConnection conn = null;
+		try {
+			URL url = new URL(strurl);
+			conn = (HttpURLConnection) url.openConnection();
+			this.setCode(conn.getResponseCode());
+			this.setReason(conn.getResponseMessage());
+			this.parseHeaders(conn);
+			this.writeBody(dest, conn.getInputStream());
+			this.writeMeta(dest);
+			return this;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Util.close(conn);
+		}
+	}
+
+	private void writeBody(String dest, InputStream in) {
+		File file = bodyFile(dest);
+		DarkProxyFiles.write(file, in);
+	}
+
+	private File bodyFile(String dest) {
+		return DarkProxyFiles.getFile(dest, id, "resp.body");
+	}
+
+	private void writeMeta(String dest) {
+		File file = DarkProxyFiles.getFile(dest, id, "resp.json");
+		String json = JSON.stringify(this);
+		DarkProxyFiles.write(file, json);
+	}
+
+	private void parseHeaders(HttpURLConnection conn) {
+		Map<String, List<String>> headers = conn.getHeaderFields();
+		for (Entry<String, List<String>> entry : headers.entrySet()) {
+			if (entry.getKey() != null) {
+				this.headers.setHeaders(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	public synchronized void waitFor() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

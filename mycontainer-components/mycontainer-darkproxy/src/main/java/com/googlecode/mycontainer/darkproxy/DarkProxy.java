@@ -11,7 +11,7 @@ public class DarkProxy implements Closeable {
 
 	private String dest = "darkreq";
 
-	private Map<Long, DarkProxyRequest> requests = new HashMap<Long, DarkProxyRequest>();
+	private Map<Long, DarkProxyConn> conns = new HashMap<Long, DarkProxyConn>();
 
 	public String getDest() {
 		return dest;
@@ -26,15 +26,30 @@ public class DarkProxy implements Closeable {
 
 	}
 
-	public synchronized void register(DarkProxyRequest req) {
-		requests.put(req.getId(), req);
-	}
-
 	public void cleanDest() {
 		Util.deleteAll(dest);
 		if (!new File(dest).mkdirs()) {
 			throw new RuntimeException("we can not create directory: " + dest);
 		}
+	}
+
+	public void register(DarkProxyRequest req) {
+		DarkProxyConn ret = conns.get(req.getId());
+		if (ret == null) {
+			ret = new DarkProxyConn();
+			ret.setId(req.getId());
+			conns.put(req.getId(), ret);
+		}
+		ret.setRequest(req);
+	}
+
+	public synchronized void register(DarkProxyResponse resp) {
+		DarkProxyConn ret = conns.get(resp.getId());
+		ret.setResponse(resp);
+	}
+
+	public synchronized void remove(Long id) {
+		conns.remove(id);
 	}
 
 }

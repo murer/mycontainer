@@ -37,4 +37,17 @@ public class DarkProxyHeaders {
 		return this;
 	}
 
+	public String first(String name) {
+		List<String> ret = headers.get(name);
+		if (ret == null || ret.isEmpty()) {
+			return null;
+		}
+		return ret.get(0);
+	}
+
+	public DarkProxyHeaders setHeaders(String key, List<String> values) {
+		headers.put(key, new ArrayList<String>(values));
+		return this;
+	}
+
 }

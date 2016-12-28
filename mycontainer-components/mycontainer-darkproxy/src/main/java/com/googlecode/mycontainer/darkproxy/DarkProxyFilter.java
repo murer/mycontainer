@@ -28,13 +28,18 @@ public class DarkProxyFilter implements Filter {
 
 	public void filter(HttpServletRequest request, HttpServletResponse response) {
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
+		req.setHost("repoz.dextra.com.br");
+		req.setPort(80);
+		req.setSchema("http");
 		proxy.register(req);
-
 		// req.waitFor();
-		
-
-		DarkProxyResponse resp = req.response();
-		resp.writeTo(response);
+		DarkProxyResponse resp = new DarkProxyResponse();
+		resp.setId(req.getId());
+		resp.forward(req, proxy.getDest());
+		proxy.register(resp);
+		// resp.waitFor();
+		proxy.remove(req.getId());
+		resp.writeTo(proxy.getDest(), response);
 	}
 
 	public void destroy() {
