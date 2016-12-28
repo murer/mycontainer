@@ -27,6 +27,12 @@ public class DarkProxyFilter implements Filter {
 	}
 
 	public void filter(HttpServletRequest request, HttpServletResponse response) {
+		String uri = DarkProxyMeta.uri(request);
+		if (uri.startsWith("/_darkproxy/")) {
+			DarkProxyMeta.filter(request, response);
+			return;
+		}
+
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
 		req.setHost("repoz.dextra.com.br");
 		req.setPort(80);
@@ -37,7 +43,7 @@ public class DarkProxyFilter implements Filter {
 		resp.setId(req.getId());
 		resp.forward(req, proxy.getDest());
 		proxy.register(resp);
-		// resp.waitFor();
+		resp.waitFor();
 		proxy.remove(req.getId());
 		resp.writeTo(proxy.getDest(), response);
 	}

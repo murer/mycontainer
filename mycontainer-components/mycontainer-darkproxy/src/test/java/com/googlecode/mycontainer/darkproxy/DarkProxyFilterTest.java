@@ -49,7 +49,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	private void forwardResponse() {
 		Thread t = new Thread() {
 			public void run() {
-				Util.sleep(1000L);
+				Util.sleep(2000L);
 				DarkProxyConn conn = proxy.getFirst();
 				conn.getResponse().proceed();
 			}
