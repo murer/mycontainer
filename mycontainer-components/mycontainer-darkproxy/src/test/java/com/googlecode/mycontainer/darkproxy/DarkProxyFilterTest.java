@@ -19,14 +19,22 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 	private Thread respThread;
 	private Thread reqThread;
-	
+	private Throwable exp;
+
+	@Override
+	public void boot() throws Exception {
+		super.boot();
+
+		exp = null;
+	}
+
 	@Override
 	public void shutdown() throws Exception {
 		Util.join(respThread);
 		Util.join(reqThread);
 		super.shutdown();
 	}
-	
+
 	@Test
 	public void testFilter() throws Exception {
 		forwardRequest();
@@ -58,17 +66,27 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 			Util.close(out);
 			Util.close(conn);
 		}
+
+		Util.join(reqThread);
+		Util.join(respThread);
+		if (exp != null) {
+			throw new RuntimeException("error on test thread: " + exp);
+		}
 	}
 
 	private void forwardResponse() {
 		respThread = new Thread() {
 			public void run() {
-				Util.sleep(2000L);
-				List<String> conns = getConns();
-				assertEquals(1, conns.size());
+				try {
+					Util.sleep(2000L);
+					List<String> conns = getConns();
+					assertEquals(1, conns.size());
 
-				assertEquals("\"OK\"",
-						Util.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
+					assertEquals("\"OK\"", Util
+							.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
+				} catch (Throwable e) {
+					exp = e;
+				}
 			}
 		};
 		respThread.start();
@@ -77,12 +95,16 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	private void forwardRequest() {
 		reqThread = new Thread() {
 			public void run() {
-				Util.sleep(500L);
-				List<String> conns = getConns();
-				assertEquals(1, conns.size());
+				try {
+					Util.sleep(500L);
+					List<String> conns = getConns();
+					assertEquals(1, conns.size());
 
-				assertEquals("\"OK\"",
-						Util.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
+					assertEquals("\"OK\"", Util
+							.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
+				} catch (Throwable e) {
+					exp = e;
+				}
 			}
 
 		};
