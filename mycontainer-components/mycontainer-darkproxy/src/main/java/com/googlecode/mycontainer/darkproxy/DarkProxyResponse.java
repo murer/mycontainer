@@ -3,6 +3,7 @@ package com.googlecode.mycontainer.darkproxy;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -85,9 +86,23 @@ public class DarkProxyResponse {
 	public DarkProxyResponse forward(DarkProxyRequest req, String dest) {
 		String strurl = req.createUrl(req);
 		HttpURLConnection conn = null;
+		OutputStream out = null;
 		try {
 			URL url = new URL(strurl);
 			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod(req.getMethod());
+			for (Entry<String, List<String>> entry : req.getHeaders().getHeaders().entrySet()) {
+				for (String value : entry.getValue()) {
+					conn.addRequestProperty(entry.getKey(), value);
+				}
+			}
+			conn.setDoOutput(true);
+			out = conn.getOutputStream();
+			File bodyFile = req.getBodyFile(dest);
+			Util.read(bodyFile, out);
+			out.close();
+			out = null;
+
 			this.setCode(conn.getResponseCode());
 			this.setReason(conn.getResponseMessage());
 			this.parseHeaders(conn);
@@ -97,6 +112,7 @@ public class DarkProxyResponse {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
+			Util.close(out);
 			Util.close(conn);
 		}
 	}

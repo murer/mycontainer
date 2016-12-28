@@ -32,11 +32,7 @@ public class DarkProxyFilter implements Filter {
 			DarkProxyMeta.filter(proxy, request, response);
 			return;
 		}
-
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
-		req.setHost("repoz.dextra.com.br");
-		req.setPort(80);
-		req.setSchema("http");
 		proxy.register(req);
 		req.waitFor();
 		DarkProxyResponse resp = new DarkProxyResponse();

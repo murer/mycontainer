@@ -68,7 +68,7 @@ public class DarkProxy implements Closeable {
 		return conns.get(id).getRequest();
 	}
 
-	public synchronized DarkProxyResponse getRresponse(Long id) {
+	public synchronized DarkProxyResponse getResponse(Long id) {
 		return conns.get(id).getResponse();
 	}
 

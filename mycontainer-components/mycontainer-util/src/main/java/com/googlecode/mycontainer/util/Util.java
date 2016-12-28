@@ -368,4 +368,29 @@ public class Util {
 		}
 	}
 
+	public static int put(String strurl, String contentType, String data) {
+		HttpURLConnection conn = null;
+		OutputStream out = null;
+		try {
+			URL url = new URL(strurl);
+			byte[] array = toBytes(data, "UTF-8");
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("PUT");
+			conn.setRequestProperty("Content-Type", contentType);
+			conn.setRequestProperty("Content-Length", Integer.toString(array.length));
+			conn.setDoOutput(true);
+			out = conn.getOutputStream();
+			out.write(array);
+			out.close();
+			out = null;
+
+			return conn.getResponseCode();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			Util.close(out);
+			Util.close(conn);
+		}
+	}
+
 }

@@ -1,9 +1,12 @@
 package com.googlecode.mycontainer.darkproxy;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxyMeta {
 
@@ -13,6 +16,8 @@ public class DarkProxyMeta {
 			writeJson(resp, "OK");
 		} else if (uri.startsWith("/_darkproxy/conns")) {
 			writeJson(resp, proxy.getConns().keySet());
+		} else if (uri.startsWith("/_darkproxy/download")) {
+			download(proxy, req, resp);
 		} else if (uri.startsWith("/_darkproxy/request/proceed")) {
 			requestProceed(proxy, req, resp);
 		} else if (uri.startsWith("/_darkproxy/response/proceed")) {
@@ -22,9 +27,22 @@ public class DarkProxyMeta {
 		}
 	}
 
+	private static void download(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Long id = paramLong(req, "id");
+		String ext = req.getParameter("ext");
+		File file = DarkProxyFiles.getFile(proxy.getDest(), id, ext);
+		if (ext.endsWith(".json")) {
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+		} else {
+			resp.setContentType("application/octet-stream");
+		}
+		Util.read(file, resp.getOutputStream());
+	}
+
 	private static void responseProceed(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) {
 		Long id = paramLong(req, "id");
-		proxy.getRresponse(id).proceed();
+		proxy.getResponse(id).proceed();
 		writeJson(resp, "OK");
 	}
 

@@ -114,8 +114,12 @@ public class DarkProxyRequest {
 	}
 
 	private void writeBody(String dest, InputStream in) {
-		File file = DarkProxyFiles.getFile(dest, id, "req.body");
+		File file = getBodyFile(dest);
 		DarkProxyFiles.write(file, in);
+	}
+
+	public File getBodyFile(String dest) {
+		return DarkProxyFiles.getFile(dest, id, "req.body");
 	}
 
 	private void writeMeta(String dest) {

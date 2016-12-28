@@ -116,6 +116,14 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		List<String> conns = getConns();
 		assertEquals(1, conns.size());
 
+		String str = Util.readURL("http://localhost:8380/_darkproxy/download?ext=req.json&id=" + conns.get(0), "UTF-8");
+		DarkProxyRequest req = JSON.parse(str, DarkProxyRequest.class);
+		req.setHost("repoz.dextra.com.br");
+		req.setPort(80);
+		req.setSchema("http");
+		
+		Util.put("http://localhost:8380/_darkproxy/download?ext=req.json&id=" + conns.get(0), "application/json", JSON.stringify(req));
+		
 		assertEquals("\"OK\"",
 				Util.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
 	}
