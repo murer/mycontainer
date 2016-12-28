@@ -11,9 +11,20 @@ public class DarkProxyRequest {
 
 	private Long id;
 
+	private String method;
+
 	private String uri;
 
 	private DarkProxyHeaders headers = new DarkProxyHeaders();
+
+	public String getMethod() {
+		return method;
+	}
+
+	public DarkProxyRequest setMethod(String method) {
+		this.method = method;
+		return this;
+	}
 
 	public String getUri() {
 		return uri;
@@ -46,6 +57,7 @@ public class DarkProxyRequest {
 		try {
 			DarkProxyRequest ret = new DarkProxyRequest();
 			ret.setId(DarkProxyId.nextId());
+			ret.setMethod(request.getMethod().toUpperCase());
 			ret.setUri(request.getRequestURI());
 			ret.parseHeaders(request);
 			ret.writeMeta(dest);
@@ -79,6 +91,14 @@ public class DarkProxyRequest {
 
 	public DarkProxyResponse response() {
 		return null;
+	}
+
+	public synchronized void waitFor() {
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

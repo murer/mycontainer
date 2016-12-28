@@ -2,12 +2,16 @@ package com.googlecode.mycontainer.darkproxy;
 
 import java.io.Closeable;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxy implements Closeable {
 
 	private String dest = "darkreq";
+
+	private Map<Long, DarkProxyRequest> requests = new HashMap<Long, DarkProxyRequest>();
 
 	public String getDest() {
 		return dest;
@@ -22,8 +26,8 @@ public class DarkProxy implements Closeable {
 
 	}
 
-	public void proxy(DarkProxyRequest req) {
-
+	public synchronized void register(DarkProxyRequest req) {
+		requests.put(req.getId(), req);
 	}
 
 	public void cleanDest() {
