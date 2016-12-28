@@ -78,30 +78,30 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		respThread = new Thread() {
 			public void run() {
 				try {
-					Util.sleep(2000L);
-					List<String> conns = getConns();
-					assertEquals(1, conns.size());
-
-					assertEquals("\"OK\"", Util
-							.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
+					changeResponse();
 				} catch (Throwable e) {
 					exp = e;
 				}
 			}
+
 		};
 		respThread.start();
+	}
+
+	private void changeResponse() {
+		Util.sleep(2000L);
+		List<String> conns = getConns();
+		assertEquals(1, conns.size());
+
+		assertEquals("\"OK\"",
+				Util.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
 	}
 
 	private void forwardRequest() {
 		reqThread = new Thread() {
 			public void run() {
 				try {
-					Util.sleep(500L);
-					List<String> conns = getConns();
-					assertEquals(1, conns.size());
-
-					assertEquals("\"OK\"", Util
-							.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
+					changeRequest();
 				} catch (Throwable e) {
 					exp = e;
 				}
@@ -109,6 +109,15 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 		};
 		reqThread.start();
+	}
+
+	private void changeRequest() {
+		Util.sleep(500L);
+		List<String> conns = getConns();
+		assertEquals(1, conns.size());
+
+		assertEquals("\"OK\"",
+				Util.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
 	}
 
 	@SuppressWarnings("unchecked")
