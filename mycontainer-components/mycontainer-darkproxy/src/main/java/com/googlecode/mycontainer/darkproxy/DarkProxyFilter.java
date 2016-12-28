@@ -27,7 +27,7 @@ public class DarkProxyFilter implements Filter {
 	}
 
 	public void filter(HttpServletRequest request, HttpServletResponse response) {
-		DarkProxyRequest req = DarkProxyRequest.parse(request, response);
+		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
 		proxy.proxy(req);
 		DarkProxyResponse resp = req.response();
 		resp.writeTo(response);
