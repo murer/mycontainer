@@ -16,14 +16,28 @@ public class DarkProxyMeta {
 			writeJson(resp, "OK");
 		} else if (uri.startsWith("/_darkproxy/conns")) {
 			writeJson(resp, proxy.getConns().keySet());
-		} else if (uri.startsWith("/_darkproxy/download")) {
-			download(proxy, req, resp);
+		} else if (uri.startsWith("/_darkproxy/file")) {
+			if ("GET".equals(req.getMethod())) {
+				download(proxy, req, resp);
+			} else {
+				upload(proxy, req, resp);
+			}
 		} else if (uri.startsWith("/_darkproxy/request/proceed")) {
 			requestProceed(proxy, req, resp);
 		} else if (uri.startsWith("/_darkproxy/response/proceed")) {
 			responseProceed(proxy, req, resp);
 		} else {
 			resp.sendError(404);
+		}
+	}
+
+	private static void upload(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		Long id = paramLong(req, "id");
+		String ext = req.getParameter("ext");
+		File file = DarkProxyFiles.getFile(proxy.getDest(), id, ext);
+		Util.write(file, req.getInputStream());
+		if (ext.endsWith(".json")) {
+			proxy.getRequest(id).reload(proxy.getDest());
 		}
 	}
 

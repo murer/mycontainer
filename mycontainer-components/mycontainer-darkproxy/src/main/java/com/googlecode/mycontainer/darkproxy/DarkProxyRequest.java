@@ -7,6 +7,8 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.googlecode.mycontainer.util.Util;
+
 public class DarkProxyRequest {
 
 	private Long id;
@@ -123,9 +125,13 @@ public class DarkProxyRequest {
 	}
 
 	private void writeMeta(String dest) {
-		File file = DarkProxyFiles.getFile(dest, id, "req.json");
+		File file = getMetaFile(dest);
 		String json = JSON.stringify(this);
 		DarkProxyFiles.write(file, json);
+	}
+
+	private File getMetaFile(String dest) {
+		return DarkProxyFiles.getFile(dest, id, "req.json");
 	}
 
 	private void parseHeaders(HttpServletRequest request) {
@@ -153,6 +159,20 @@ public class DarkProxyRequest {
 
 	public synchronized void proceed() {
 		notify();
+	}
+
+	public void reload(String dest) {
+		File file = getMetaFile(dest);
+		String json  = Util.readAll(file, "UTF-8");
+		DarkProxyRequest req = JSON.parse(json, DarkProxyRequest.class);
+		setHeaders(req.getHeaders());
+		setHost(req.getHost());
+		setId(req.getId());
+		setMethod(req.getMethod());
+		setPort(req.getPort());
+		setQuery(req.getQuery());
+		setSchema(req.getSchema());
+		setUri(req.getUri());
 	}
 
 }
