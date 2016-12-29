@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.googlecode.mycontainer.util.Util;
@@ -157,7 +158,7 @@ public class DarkProxyResponse {
 		notify();
 	}
 
-	public void reload(String dest) {
+	public void reload(String dest, HttpServletRequest req) {
 		File file = getMetaFile(dest);
 		String json  = Util.readAll(file, "UTF-8");
 		DarkProxyResponse resp = JSON.parse(json, DarkProxyResponse.class);
@@ -165,7 +166,7 @@ public class DarkProxyResponse {
 		setCode(resp.getCode());
 		setId(resp.getId());
 		setReason(resp.getReason());
-		if (headers.first("Content-Length") != null) {
+		if(!"HEAD".equals(req)) {
 			long len = getBodyFile(dest).length();
 			headers.set("Content-Length", Long.toString(len));
 		}

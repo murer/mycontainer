@@ -183,14 +183,18 @@ public class DarkProxyRequest {
 		setHost(req.getHost());
 		setId(req.getId());
 		setMethod(req.getMethod());
-		if (headers.first("Content-Length") != null) {
-			long len = getBodyFile(dest).length();
-			headers.set("Content-Length", Long.toString(len));
-		}
+		hackContentLength(dest);
 		setPort(req.getPort());
 		setQuery(req.getQuery());
 		setSchema(req.getSchema());
 		setUri(req.getUri());
+	}
+
+	private void hackContentLength(String dest) {
+		if ("GET".equals(method) || "DELETE".equals(method) || "HEAD".equals(method)) {
+			long len = getBodyFile(dest).length();
+			headers.set("Content-Length", Long.toString(len));
+		}
 	}
 
 }

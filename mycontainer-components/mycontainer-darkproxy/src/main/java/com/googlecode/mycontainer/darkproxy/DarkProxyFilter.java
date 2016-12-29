@@ -42,7 +42,7 @@ public class DarkProxyFilter implements Filter {
 		resp.forward(req, proxy.getDest());
 		proxy.register(resp);
 		resp.waitFor();
-		resp.reload(proxy.getDest());
+		resp.reload(proxy.getDest(), request);
 		proxy.remove(req.getId());
 		resp.writeTo(proxy.getDest(), response);
 	}
