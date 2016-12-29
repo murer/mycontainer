@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.googlecode.mycontainer.darkproxy.site.DarkProxySite;
 import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxyMeta {
@@ -28,6 +29,8 @@ public class DarkProxyMeta {
 			requestProceed(proxy, req, resp);
 		} else if (uri.startsWith("/_darkproxy/s/response/proceed")) {
 			responseProceed(proxy, req, resp);
+		} else if (method(req, "GET")) {
+			DarkProxySite.serveFile(req, resp);
 		} else {
 			resp.sendError(404);
 		}

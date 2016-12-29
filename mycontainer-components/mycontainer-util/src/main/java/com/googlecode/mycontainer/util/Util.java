@@ -393,4 +393,16 @@ public class Util {
 		}
 	}
 
+	public static void copy(URL url, OutputStream out) {
+		InputStream in = null;
+		try {
+			in = url.openStream();
+			copy(in, out);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close(in);
+		}
+	}
+
 }

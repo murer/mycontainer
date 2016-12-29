@@ -38,4 +38,10 @@ public class DarkProxyFiles {
 		Util.write(file, in);
 	}
 
+	public static String extention(String path) {
+		path = Util.str(path);
+		String ret = path.replaceAll("^.*\\.([^//.]*)$", "$1");
+		return Util.str(ret);
+	}
+
 }
