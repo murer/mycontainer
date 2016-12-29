@@ -103,15 +103,29 @@ public class DarkProxyRequest {
 		try {
 			DarkProxyRequest ret = new DarkProxyRequest();
 			ret.setId(DarkProxyId.nextId());
+			ret.setSchema(request.getScheme());
 			ret.setMethod(request.getMethod().toUpperCase());
 			ret.setUri(request.getRequestURI());
 			ret.setQuery(request.getQueryString());
 			ret.parseHeaders(request);
+			ret.parseHost();
 			ret.writeBody(dest, request.getInputStream());
 			ret.writeMeta(dest);
 			return ret;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private void parseHost() {
+		String host = headers.first("Host");
+		if (host == null) {
+			return;
+		}
+		String[] array = host.split(":");
+		setHost(array[0]);
+		if (array.length > 0) {
+			setPort(Integer.parseInt(array[1]));
 		}
 	}
 
@@ -163,13 +177,13 @@ public class DarkProxyRequest {
 
 	public void reload(String dest) {
 		File file = getMetaFile(dest);
-		String json  = Util.readAll(file, "UTF-8");
+		String json = Util.readAll(file, "UTF-8");
 		DarkProxyRequest req = JSON.parse(json, DarkProxyRequest.class);
 		setHeaders(req.getHeaders());
 		setHost(req.getHost());
 		setId(req.getId());
 		setMethod(req.getMethod());
-		if(headers.first("Content-Length") != null) {
+		if (headers.first("Content-Length") != null) {
 			long len = getBodyFile(dest).length();
 			headers.set("Content-Length", Long.toString(len));
 		}
