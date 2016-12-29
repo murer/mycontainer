@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.After;
 import org.junit.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.googlecode.mycontainer.kernel.ShutdownCommand;
 import com.googlecode.mycontainer.kernel.boot.ContainerBuilder;
@@ -24,6 +26,8 @@ import com.googlecode.mycontainer.web.jetty.JettyServerDeployer;
 
 public class AbstractTestCase {
 
+	private static final Logger LOG = LoggerFactory.getLogger(DarkProxyFilter.class);
+
 	protected ContainerBuilder builder;
 
 	protected InitialContext ctx;
@@ -32,17 +36,17 @@ public class AbstractTestCase {
 
 	@Before
 	public void boot() throws Exception {
-		builder = new ContainerBuilder();
-		ctx = builder.getContext();
-		builder.deployVMShutdownHook();
-
-		JettyServerDeployer webServer = builder.createDeployer(JettyServerDeployer.class);
-		webServer.bindPort(8380);
-		webServer.setName("WebServer");
-
 		proxy = new DarkProxy();
 		proxy.setDest("target/requests");
 		proxy.cleanDest();
+		
+		builder = new ContainerBuilder();
+		ctx = builder.getContext();
+		builder.deployVMShutdownHook();
+		
+		JettyServerDeployer webServer = builder.createDeployer(JettyServerDeployer.class);
+		webServer.bindPort(8380);
+		webServer.setName("WebServer");
 
 		ContextWebServer webContext = webServer.createContextWebServer();
 		webContext.setContext("/");
@@ -61,6 +65,7 @@ public class AbstractTestCase {
 
 			public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 					throws IOException, ServletException {
+				LOG.info("Sum: {}", request);
 				String body = Util.readAll(request.getInputStream(), "UTF-8");
 				int num = 0;
 				if (body != null && body.length() > 0) {
@@ -88,11 +93,11 @@ public class AbstractTestCase {
 
 	@After
 	public void shutdown() throws Exception {
-		Util.close(proxy);
-
 		ShutdownCommand shutdown = new ShutdownCommand();
 		shutdown.setContext(new InitialContext());
 		shutdown.shutdown();
+		
+		Util.close(proxy);
 	}
 
 }

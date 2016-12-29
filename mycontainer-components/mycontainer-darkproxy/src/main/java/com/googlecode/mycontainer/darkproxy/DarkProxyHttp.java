@@ -78,4 +78,13 @@ public class DarkProxyHttp {
 		}
 	}
 
+	public static void destroy() {
+		synchronized (MUTEX) {
+			if (me != null) {
+				Util.close(me().client);
+				me = null;
+			}
+		}
+	}
+
 }

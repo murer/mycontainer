@@ -54,6 +54,8 @@ public class DarkProxyFilter implements Filter {
 	public void filter(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String uri = DarkProxyMeta.uri(request);
 		if (uri.startsWith("/_darkproxy/")) {
+			LOG.info("DarkProxy: {} {}?{}",
+					new Object[] { request.getMethod(), request.getRequestURI(), request.getQueryString() });
 			DarkProxyMeta.filter(proxy, request, response);
 			return;
 		}
@@ -73,7 +75,7 @@ public class DarkProxyFilter implements Filter {
 		resp.waitFor();
 		resp.reload(proxy.getDest(), request);
 		proxy.remove(req.getId());
-		LOG.info("Dome: {} {} {}: {}",
+		LOG.info("Done: {} {} {}: {}",
 				new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri(), resp.getCode() });
 		resp.writeTo(proxy.getDest(), response);
 	}
@@ -89,7 +91,7 @@ public class DarkProxyFilter implements Filter {
 	}
 
 	public void destroy() {
-
+		DarkProxyHttp.destroy();
 	}
 
 	public void setProxy(DarkProxy proxy) {
