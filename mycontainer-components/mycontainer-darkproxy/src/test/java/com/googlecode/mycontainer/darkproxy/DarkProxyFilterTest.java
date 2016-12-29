@@ -40,14 +40,14 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		forwardRequest();
 		forwardResponse();
 
-		URL url = new URL("http://localhost:8380/repoz/docs.html?a=1&b=2");
+		URL url = new URL("http://localhost:8380/any?n=1&n=2");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		OutputStream out = null;
 		InputStream in = null;
 		try {
-			String msg = "my body";
+			String msg = "4";
 			conn.setDoOutput(true);
-			conn.setRequestProperty("x-test", "my-value");
+			conn.setRequestProperty("x-sum", "8");
 			conn.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
 			conn.setRequestProperty("Content-Length", Integer.toString(msg.length()));
 			out = conn.getOutputStream();
@@ -58,9 +58,9 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 			in = conn.getInputStream();
 
 			assertEquals(200, conn.getResponseCode());
-			assertEquals("text/html", conn.getHeaderField("Content-Type"));
-			// assertEquals("test", Util.readAll(conn.getInputStream(),
-			// "UTF-8"));
+			assertEquals("text/plain; charset=UTF-8", conn.getHeaderField("Content-Type"));
+			assertEquals("15", conn.getHeaderField("x-sum-resp"));
+			assertEquals("15", Util.readAll(conn.getInputStream(), "UTF-8"));
 		} finally {
 			Util.close(in);
 			Util.close(out);
@@ -118,9 +118,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0), "UTF-8");
 		DarkProxyRequest req = JSON.parse(str, DarkProxyRequest.class);
-		req.setHost("repoz.dextra.com.br");
-		req.setPort(80);
-		req.setSchema("http");
+		req.setUri("/test/sum");
 
 		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0),
 				"application/json", JSON.stringify(req)));
