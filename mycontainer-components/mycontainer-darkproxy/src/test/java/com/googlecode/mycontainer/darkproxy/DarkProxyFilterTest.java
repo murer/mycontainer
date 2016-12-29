@@ -19,9 +19,9 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.reflect.TypeToken;
 import com.googlecode.mycontainer.util.Util;
 
-public class DarkProxyFilterZTest extends AbstractTestCase {
+public class DarkProxyFilterTest extends AbstractTestCase {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DarkProxyFilterZTest.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DarkProxyFilterTest.class);
 
 	private Thread respThread;
 	private Thread reqThread;
