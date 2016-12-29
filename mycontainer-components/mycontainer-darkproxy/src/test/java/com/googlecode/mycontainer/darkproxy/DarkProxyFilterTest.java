@@ -82,12 +82,26 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	}
 
 	private void changeResponse() {
-		Util.sleep(2000L);
-		SortedMap<Long, DarkProxyConn> conns = getConns();
-		assertEquals(1, conns.size());
-
+		DarkProxyResponse resp = waitForResponse();
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/s/response/proceed?id=" + conns.firstKey(), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/response/proceed?id=" + resp.getId(), "UTF-8"));
+	}
+
+	private DarkProxyResponse waitForResponse() {
+		long before = System.currentTimeMillis();
+		while (true) {
+			SortedMap<Long, DarkProxyConn> conns = getConns();
+			if (!conns.isEmpty()) {
+				DarkProxyResponse ret = conns.get(conns.firstKey()).getResponse();
+				if (ret != null) {
+					return ret;
+				}
+			}
+			Thread.yield();
+			if (System.currentTimeMillis() > before + 2000L) {
+				Util.sleep(100L);
+			}
+		}
 	}
 
 	private void forwardRequest() {
@@ -106,29 +120,31 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	}
 
 	private void changeRequest() {
-		waitForRequest();
-		Util.sleep(500L);
-		SortedMap<Long, DarkProxyConn> conns = getConns();
-		assertEquals(1, conns.size());
+		DarkProxyRequest req = waitForRequest();
 
-		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.firstKey(), "UTF-8");
-		DarkProxyRequest req = JSON.parse(str, DarkProxyRequest.class);
+		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + req.getId(), "UTF-8");
+		req = JSON.parse(str, DarkProxyRequest.class);
 		req.setUri("/test/sum");
 
-		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.firstKey(),
+		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + req.getId(),
 				"application/json", JSON.stringify(req)));
 
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/s/request/proceed?id=" + conns.firstKey(), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/request/proceed?id=" + req.getId(), "UTF-8"));
 	}
 
-	private void waitForRequest() {
-		// while (true) {
-		// List<Long> conns = getConns();
-		// if(!conns.isEmpty()) {
-		// return conns.get(0);
-		// }
-		// }
+	private DarkProxyRequest waitForRequest() {
+		long before = System.currentTimeMillis();
+		while (true) {
+			SortedMap<Long, DarkProxyConn> conns = getConns();
+			if (!conns.isEmpty()) {
+				return conns.get(conns.firstKey()).getRequest();
+			}
+			Thread.yield();
+			if (System.currentTimeMillis() > before + 2000L) {
+				Util.sleep(100L);
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
