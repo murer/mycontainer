@@ -48,12 +48,14 @@ public class DarkProxyFilter implements Filter {
 		DarkProxyResponse resp = new DarkProxyResponse();
 		resp.setId(req.getId());
 		forward(req, proxy.getDest());
+		proxy.register(resp);
 		LOG.info("Response: {} {} {}: {}",
 				new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri(), resp.getCode() });
-		proxy.register(resp);
 		resp.waitFor();
 		resp.reload(proxy.getDest(), request);
 		proxy.remove(req.getId());
+		LOG.info("Dome: {} {} {}: {}",
+				new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri(), resp.getCode() });
 		resp.writeTo(proxy.getDest(), response);
 	}
 
