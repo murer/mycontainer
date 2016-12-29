@@ -124,7 +124,7 @@ public class DarkProxyRequest {
 		}
 		String[] array = host.split(":");
 		setHost(array[0]);
-		if (array.length > 0) {
+		if (array.length > 1) {
 			setPort(Integer.parseInt(array[1]));
 		}
 	}
