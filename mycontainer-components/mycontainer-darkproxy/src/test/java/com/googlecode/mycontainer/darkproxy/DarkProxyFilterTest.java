@@ -37,8 +37,8 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 	@Test
 	public void testFilter() throws Exception {
-		forwardRequest();
-		forwardResponse();
+		// forwardRequest();
+		// forwardResponse();
 
 		URL url = new URL("http://localhost:8380/any?n=1&n=2");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
