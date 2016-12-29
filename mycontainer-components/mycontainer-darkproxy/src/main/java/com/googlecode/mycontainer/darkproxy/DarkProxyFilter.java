@@ -36,11 +36,13 @@ public class DarkProxyFilter implements Filter {
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
 		proxy.register(req);
 		req.waitFor();
+		req.reload(proxy.getDest());
 		DarkProxyResponse resp = new DarkProxyResponse();
 		resp.setId(req.getId());
 		resp.forward(req, proxy.getDest());
 		proxy.register(resp);
 		resp.waitFor();
+		resp.reload(proxy.getDest());
 		proxy.remove(req.getId());
 		resp.writeTo(proxy.getDest(), response);
 	}
