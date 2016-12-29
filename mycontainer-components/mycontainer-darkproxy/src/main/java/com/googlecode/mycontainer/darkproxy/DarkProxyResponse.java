@@ -165,6 +165,10 @@ public class DarkProxyResponse {
 		setCode(resp.getCode());
 		setId(resp.getId());
 		setReason(resp.getReason());
+		if (headers.first("Content-Length") != null) {
+			long len = getBodyFile(dest).length();
+			headers.set("Content-Length", Long.toString(len));
+		}
 	}
 
 }
