@@ -94,7 +94,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		assertEquals(1, conns.size());
 
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/response/proceed?id=" + conns.get(0), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/response/proceed?id=" + conns.get(0), "UTF-8"));
 	}
 
 	private void forwardRequest() {
@@ -116,23 +116,23 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		List<String> conns = getConns();
 		assertEquals(1, conns.size());
 
-		String str = Util.readURL("http://localhost:8380/_darkproxy/file?ext=req.json&id=" + conns.get(0), "UTF-8");
+		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0), "UTF-8");
 		DarkProxyRequest req = JSON.parse(str, DarkProxyRequest.class);
 		req.setHost("repoz.dextra.com.br");
 		req.setPort(80);
 		req.setSchema("http");
 
-		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/file?ext=req.json&id=" + conns.get(0),
+		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0),
 				"application/json", JSON.stringify(req)));
 
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/request/proceed?id=" + conns.get(0), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/request/proceed?id=" + conns.get(0), "UTF-8"));
 	}
 
 	@SuppressWarnings("unchecked")
 	private List<String> getConns() {
 		try {
-			String str = Util.readAll(new URL("http://localhost:8380/_darkproxy/conns"), "UTF-8");
+			String str = Util.readAll(new URL("http://localhost:8380/_darkproxy/s/conns"), "UTF-8");
 			Type type = new TypeToken<List<String>>() {
 			}.getType();
 			List<String> ids = (List<String>) JSON.parse(str, type);

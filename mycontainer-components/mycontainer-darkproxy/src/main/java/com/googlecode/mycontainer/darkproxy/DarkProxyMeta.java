@@ -12,28 +12,40 @@ public class DarkProxyMeta {
 
 	public static void filter(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		String uri = uri(req);
-		if (uri.startsWith("/_darkproxy/ping")) {
+		if (uri.startsWith("/_darkproxy/s/ping")) {
 			writeJson(resp, "OK");
-		} else if (uri.startsWith("/_darkproxy/conns")) {
+		} else if (uri.startsWith("/_darkproxy/s/conns")) {
 			writeJson(resp, proxy.getConns().keySet());
-		} else if (uri.startsWith("/_darkproxy/file")) {
-			if ("GET".equals(req.getMethod())) {
-				download(proxy, req, resp);
-			} else {
-				upload(proxy, req, resp);
-			}
-		} else if (uri.startsWith("/_darkproxy/request/proceed")) {
+		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/request.json")) {
+			download("req.json", proxy, req, resp);
+		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/response.body")) {
+			download("resp.body", proxy, req, resp);
+		} else if (method(req, "POST", "PUT") && uri.startsWith("/_darkproxy/s/request.json")) {
+			upload("req.json", proxy, req, resp);
+		} else if (method(req, "POST", "PUT") && uri.startsWith("/_darkproxy/s/response.body")) {
+			upload("resp.body", proxy, req, resp);
+		} else if (uri.startsWith("/_darkproxy/s/request/proceed")) {
 			requestProceed(proxy, req, resp);
-		} else if (uri.startsWith("/_darkproxy/response/proceed")) {
+		} else if (uri.startsWith("/_darkproxy/s/response/proceed")) {
 			responseProceed(proxy, req, resp);
 		} else {
 			resp.sendError(404);
 		}
 	}
 
-	private static void upload(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	private static boolean method(HttpServletRequest req, String... methods) {
+		String m = req.getMethod();
+		for (String method : methods) {
+			if (method.equals(m)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void upload(String ext, DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		Long id = paramLong(req, "id");
-		String ext = req.getParameter("ext");
 		File file = DarkProxyFiles.getFile(proxy.getDest(), id, ext);
 		Util.write(file, req.getInputStream());
 		if (ext.endsWith(".json")) {
@@ -41,9 +53,9 @@ public class DarkProxyMeta {
 		}
 	}
 
-	private static void download(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	private static void download(String ext, DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 		Long id = paramLong(req, "id");
-		String ext = req.getParameter("ext");
 		File file = DarkProxyFiles.getFile(proxy.getDest(), id, ext);
 		if (ext.endsWith(".json")) {
 			resp.setContentType("application/json");
@@ -56,7 +68,8 @@ public class DarkProxyMeta {
 
 	private static void responseProceed(DarkProxy proxy, HttpServletRequest req, HttpServletResponse resp) {
 		Long id = paramLong(req, "id");
-		proxy.getResponse(id).proceed();
+		DarkProxyResponse response = proxy.getResponse(id);
+		response.proceed();
 		writeJson(resp, "OK");
 	}
 

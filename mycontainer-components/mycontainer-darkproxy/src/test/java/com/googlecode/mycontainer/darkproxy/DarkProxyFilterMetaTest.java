@@ -12,7 +12,7 @@ public class DarkProxyFilterMetaTest extends AbstractTestCase {
 
 	@Test
 	public void testFilter() throws Exception {
-		URL url = new URL("http://localhost:8380/_darkproxy/ping");
+		URL url = new URL("http://localhost:8380/_darkproxy/s/ping");
 		assertEquals("\"OK\"", Util.readAll(url, "UTF-8"));
 	}
 
