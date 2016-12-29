@@ -2,16 +2,17 @@ package com.googlecode.mycontainer.darkproxy;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,33 +47,18 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 		forwardRequest();
 		forwardResponse();
 
-		URL url = new URL("http://localhost:8380/any?n=1&n=2");
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		OutputStream out = null;
-		InputStream in = null;
+		HttpPost req = new HttpPost("http://localhost:8380/any?n=1&n=2");
+		req.addHeader("x-sum", "8");
+		req.setEntity(new StringEntity("4"));
+		CloseableHttpResponse resp = DarkProxyHttp.me().execute(req);
 		try {
-			String msg = "4";
-			conn.setDoOutput(true);
-			conn.setRequestProperty("x-sum", "8");
-			conn.setRequestProperty("Content-Type", "text/plain; charset=UTF-8");
-			conn.setRequestProperty("Content-Length", Integer.toString(msg.length()));
-			out = conn.getOutputStream();
-			out.write(msg.getBytes());
-			out.flush();
-			out.close();
-			out = null;
-			in = conn.getInputStream();
-
-			assertEquals(200, conn.getResponseCode());
-			assertEquals("text/plain; charset=UTF-8", conn.getHeaderField("Content-Type"));
-			assertEquals("15", conn.getHeaderField("x-sum-resp"));
-			assertEquals("15", Util.readAll(conn.getInputStream(), "UTF-8"));
+			assertEquals(200, resp.getStatusLine().getStatusCode());
+			assertEquals("text/plain; charset=UTF-8", resp.getFirstHeader("Content-Type").getValue());
+			assertEquals("15", resp.getFirstHeader("x-sum-resp").getValue());
+			assertEquals("15", EntityUtils.toString(resp.getEntity()));
 		} finally {
-			Util.close(in);
-			Util.close(out);
-			Util.close(conn);
+			Util.close(resp);
 		}
-
 		Util.join(reqThread);
 		Util.join(respThread);
 		if (exp != null) {
