@@ -3,11 +3,7 @@ package com.googlecode.mycontainer.darkproxy;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +63,7 @@ public class DarkProxyResponse {
 		writeBody(dest, response);
 	}
 
-	private void writeBody(String dest, HttpServletResponse response) {
+	public void writeBody(String dest, HttpServletResponse response) {
 		try {
 			File file = getBodyFile(dest);
 			Util.read(file, response.getOutputStream());
@@ -84,41 +80,7 @@ public class DarkProxyResponse {
 		}
 	}
 
-	public DarkProxyResponse forward(DarkProxyRequest req, String dest) {
-		String strurl = req.createUrl(req);
-		HttpURLConnection conn = null;
-		OutputStream out = null;
-		try {
-			URL url = new URL(strurl);
-			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod(req.getMethod());
-			for (Entry<String, List<String>> entry : req.getHeaders().getHeaders().entrySet()) {
-				for (String value : entry.getValue()) {
-					conn.addRequestProperty(entry.getKey(), value);
-				}
-			}
-			conn.setDoOutput(true);
-			out = conn.getOutputStream();
-			File bodyFile = req.getBodyFile(dest);
-			Util.read(bodyFile, out);
-			out.close();
-			out = null;
-
-			this.setCode(conn.getResponseCode());
-			this.setReason(conn.getResponseMessage());
-			this.parseHeaders(conn);
-			this.writeBody(dest, conn.getInputStream());
-			this.writeMeta(dest);
-			return this;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			Util.close(out);
-			Util.close(conn);
-		}
-	}
-
-	private void writeBody(String dest, InputStream in) {
+	public void writeBody(String dest, InputStream in) {
 		File file = getBodyFile(dest);
 		DarkProxyFiles.write(file, in);
 	}
@@ -127,7 +89,7 @@ public class DarkProxyResponse {
 		return DarkProxyFiles.getFile(dest, id, "resp.body");
 	}
 
-	private void writeMeta(String dest) {
+	public void writeMeta(String dest) {
 		File file = getMetaFile(dest);
 		String json = JSON.stringify(this);
 		DarkProxyFiles.write(file, json);
@@ -135,15 +97,6 @@ public class DarkProxyResponse {
 
 	public File getMetaFile(String dest) {
 		return DarkProxyFiles.getFile(dest, id, "resp.json");
-	}
-
-	private void parseHeaders(HttpURLConnection conn) {
-		Map<String, List<String>> headers = conn.getHeaderFields();
-		for (Entry<String, List<String>> entry : headers.entrySet()) {
-			if (entry.getKey() != null) {
-				this.headers.setHeaders(entry.getKey(), entry.getValue());
-			}
-		}
 	}
 
 	public synchronized void waitFor() {
@@ -160,13 +113,13 @@ public class DarkProxyResponse {
 
 	public void reload(String dest, HttpServletRequest req) {
 		File file = getMetaFile(dest);
-		String json  = Util.readAll(file, "UTF-8");
+		String json = Util.readAll(file, "UTF-8");
 		DarkProxyResponse resp = JSON.parse(json, DarkProxyResponse.class);
 		setHeaders(resp.getHeaders());
 		setCode(resp.getCode());
 		setId(resp.getId());
 		setReason(resp.getReason());
-		if(!"HEAD".equals(req)) {
+		if (!"HEAD".equals(req)) {
 			long len = getBodyFile(dest).length();
 			headers.set("Content-Length", Long.toString(len));
 		}

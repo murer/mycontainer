@@ -166,11 +166,6 @@ public class DarkProxyRequest {
 		}
 	}
 
-	public String createUrl(DarkProxyRequest req) {
-		return String.format("%s://%s:%s%s?%s", req.getSchema(), req.getHost(), req.getPort(), req.getUri(),
-				req.getQuery());
-	}
-
 	public synchronized void proceed() {
 		notify();
 	}
@@ -195,6 +190,10 @@ public class DarkProxyRequest {
 			long len = getBodyFile(dest).length();
 			headers.set("Content-Length", Long.toString(len));
 		}
+	}
+
+	public String getMediaType() {
+		return null;
 	}
 
 }
