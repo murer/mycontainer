@@ -56,4 +56,8 @@ public class DarkProxyHeaders {
 		headers.put(name, list);
 	}
 
+	public List<String> remove(String name) {
+		return headers.remove(name);
+	}
+
 }

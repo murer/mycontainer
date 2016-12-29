@@ -191,13 +191,11 @@ public class DarkProxyRequest {
 
 	private void hackContentLength(String dest) {
 		if ("GET".equals(method) || "DELETE".equals(method) || "HEAD".equals(method)) {
-			long len = getBodyFile(dest).length();
-			headers.set("Content-Length", Long.toString(len));
+			headers.remove("Content-Length");
+			return;
 		}
-	}
-
-	public String getMediaType() {
-		return null;
+		long len = getBodyFile(dest).length();
+		headers.set("Content-Length", Long.toString(len));
 	}
 
 }
