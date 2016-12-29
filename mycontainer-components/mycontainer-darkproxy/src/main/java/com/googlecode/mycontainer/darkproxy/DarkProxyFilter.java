@@ -11,6 +11,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 public class DarkProxyFilter implements Filter {
 
 	private DarkProxy proxy;
@@ -39,12 +42,16 @@ public class DarkProxyFilter implements Filter {
 		req.reload(proxy.getDest());
 		DarkProxyResponse resp = new DarkProxyResponse();
 		resp.setId(req.getId());
-		resp.forward(req, proxy.getDest());
+		forward(req, proxy.getDest());
 		proxy.register(resp);
 		resp.waitFor();
 		resp.reload(proxy.getDest(), request);
 		proxy.remove(req.getId());
 		resp.writeTo(proxy.getDest(), response);
+	}
+
+	private void forward(DarkProxyRequest req, String dest) {
+		DefaultHttpClient client = new DefaultHttpClient();
 	}
 
 	public void destroy() {

@@ -19,6 +19,10 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement />
 </project>
