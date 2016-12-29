@@ -13,7 +13,7 @@ public class DarkProxy implements Closeable {
 
 	private SortedMap<Long, DarkProxyConn> conns = new TreeMap<Long, DarkProxyConn>();
 
-	private long timeout = 3000L;
+	private long timeout = -1L;
 
 	public String getDest() {
 		return dest;

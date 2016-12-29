@@ -38,6 +38,7 @@ public class AbstractTestCase {
 	public void boot() throws Exception {
 		proxy = new DarkProxy();
 		proxy.setDest("target/requests");
+		proxy.setTimeout(5000L);
 		proxy.cleanDest();
 		
 		builder = new ContainerBuilder();
