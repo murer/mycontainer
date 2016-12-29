@@ -13,6 +13,8 @@ public class DarkProxy implements Closeable {
 
 	private SortedMap<Long, DarkProxyConn> conns = new TreeMap<Long, DarkProxyConn>();
 
+	private long timeout = 3L;
+
 	public String getDest() {
 		return dest;
 	}
@@ -60,8 +62,8 @@ public class DarkProxy implements Closeable {
 		return conns.get(key);
 	}
 
-	public SortedMap<Long, DarkProxyConn> getConns() {
-		return conns;
+	public synchronized SortedMap<Long, DarkProxyConn> getConns() {
+		return new TreeMap<Long, DarkProxyConn>(conns);
 	}
 
 	public synchronized DarkProxyRequest getRequest(Long id) {
@@ -70,6 +72,15 @@ public class DarkProxy implements Closeable {
 
 	public synchronized DarkProxyResponse getResponse(Long id) {
 		return conns.get(id).getResponse();
+	}
+
+	public long getTimeout() {
+		return timeout;
+	}
+
+	public DarkProxy setTimeout(long timeout) {
+		this.timeout = timeout;
+		return this;
 	}
 
 }
