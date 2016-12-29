@@ -99,9 +99,13 @@ public class DarkProxyResponse {
 		return DarkProxyFiles.getFile(dest, id, "resp.json");
 	}
 
-	public synchronized void waitFor() {
+	public synchronized void waitFor(long time) {
 		try {
-			wait(7000);
+			if (time >= 0) {
+				wait(time);
+			} else {
+				wait();
+			}
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}

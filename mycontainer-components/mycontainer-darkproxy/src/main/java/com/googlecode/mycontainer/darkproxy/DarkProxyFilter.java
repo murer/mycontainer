@@ -63,7 +63,7 @@ public class DarkProxyFilter implements Filter {
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
 		proxy.register(req);
 		LOG.info("Request: {} {} {}", new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri() });
-		req.waitFor();
+		req.waitFor(proxy.getTimeout());
 		LOG.info("Proxing: {} {} {}", new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri() });
 		req.reload(proxy.getDest());
 		DarkProxyResponse resp = new DarkProxyResponse();
@@ -72,7 +72,7 @@ public class DarkProxyFilter implements Filter {
 		proxy.register(resp);
 		LOG.info("Response: {} {} {}: {}",
 				new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri(), resp.getCode() });
-		resp.waitFor();
+		resp.waitFor(proxy.getTimeout());
 		resp.reload(proxy.getDest(), request);
 		proxy.remove(req.getId());
 		LOG.info("Done: {} {} {}: {}",
