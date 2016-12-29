@@ -11,10 +11,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DarkProxyFilter implements Filter {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DarkProxyFilter.class);
 
 	private DarkProxy proxy;
 
@@ -38,11 +41,15 @@ public class DarkProxyFilter implements Filter {
 
 		DarkProxyRequest req = DarkProxyRequest.parse(request, proxy.getDest());
 		proxy.register(req);
+		LOG.info("Request: {} {} {}", new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri() });
 		req.waitFor();
+		LOG.info("Proxing: {} {} {}", new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri() });
 		req.reload(proxy.getDest());
 		DarkProxyResponse resp = new DarkProxyResponse();
 		resp.setId(req.getId());
 		forward(req, proxy.getDest());
+		LOG.info("Response: {} {} {}: {}",
+				new Object[] { Long.toHexString(req.getId()), req.getMethod(), req.getUri(), resp.getCode() });
 		proxy.register(resp);
 		resp.waitFor();
 		resp.reload(proxy.getDest(), request);
