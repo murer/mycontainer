@@ -19,11 +19,19 @@ public class DarkProxyMeta {
 			writeJson(resp, proxy.getConns());
 		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/request.json")) {
 			download("req.json", proxy, req, resp);
+		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/request.body")) {
+			download("req.body", proxy, req, resp);
+		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/response.json")) {
+			download("resp.json", proxy, req, resp);
 		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/response.body")) {
 			download("resp.body", proxy, req, resp);
-		} else if (method(req, "POST", "PUT") && uri.startsWith("/_darkproxy/s/request.json")) {
+		} else if (method(req, "PUT", "POST") && uri.startsWith("/_darkproxy/s/request.json")) {
 			upload("req.json", proxy, req, resp);
-		} else if (method(req, "POST", "PUT") && uri.startsWith("/_darkproxy/s/response.body")) {
+		} else if (method(req, "PUT", "POST") && uri.startsWith("/_darkproxy/s/request.body")) {
+			upload("req.body", proxy, req, resp);
+		} else if (method(req, "PUT", "POST") && uri.startsWith("/_darkproxy/s/response.json")) {
+			upload("resp.json", proxy, req, resp);
+		} else if (method(req, "PUT", "POST") && uri.startsWith("/_darkproxy/s/response.body")) {
 			upload("resp.body", proxy, req, resp);
 		} else if (uri.startsWith("/_darkproxy/s/request/proceed")) {
 			requestProceed(proxy, req, resp);
