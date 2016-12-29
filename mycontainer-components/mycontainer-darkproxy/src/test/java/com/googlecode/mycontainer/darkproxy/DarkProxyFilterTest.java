@@ -8,14 +8,20 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.reflect.TypeToken;
 import com.googlecode.mycontainer.util.Util;
 
 public class DarkProxyFilterTest extends AbstractTestCase {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DarkProxyFilterTest.class);
 
 	private Thread respThread;
 	private Thread reqThread;
@@ -81,6 +87,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 					changeResponse();
 				} catch (Throwable e) {
 					exp = e;
+					LOG.error("error", e);
 				}
 			}
 
@@ -90,7 +97,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 	private void changeResponse() {
 		Util.sleep(2000L);
-		List<String> conns = getConns();
+		List<Long> conns = getConns();
 		assertEquals(1, conns.size());
 
 		assertEquals("\"OK\"",
@@ -104,6 +111,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 					changeRequest();
 				} catch (Throwable e) {
 					exp = e;
+					LOG.error("error", e);
 				}
 			}
 
@@ -113,7 +121,7 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 	private void changeRequest() {
 		Util.sleep(500L);
-		List<String> conns = getConns();
+		List<Long> conns = getConns();
 		assertEquals(1, conns.size());
 
 		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0), "UTF-8");
@@ -128,13 +136,13 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<String> getConns() {
+	private List<Long> getConns() {
 		try {
 			String str = Util.readAll(new URL("http://localhost:8380/_darkproxy/s/conns"), "UTF-8");
-			Type type = new TypeToken<List<String>>() {
+			Type type = new TypeToken<Map<Long, DarkProxyConn>>() {
 			}.getType();
-			List<String> ids = (List<String>) JSON.parse(str, type);
-			return ids;
+			Map<Long, DarkProxyConn> ids = (Map<Long, DarkProxyConn>) JSON.parse(str, type);
+			return new ArrayList<Long>(ids.keySet());
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}

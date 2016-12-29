@@ -16,7 +16,7 @@ public class DarkProxyMeta {
 		if (uri.startsWith("/_darkproxy/s/ping")) {
 			writeJson(resp, "OK");
 		} else if (uri.startsWith("/_darkproxy/s/conns")) {
-			writeJson(resp, proxy.getConns().keySet());
+			writeJson(resp, proxy.getConns());
 		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/request.json")) {
 			download("req.json", proxy, req, resp);
 		} else if (method(req, "GET") && uri.startsWith("/_darkproxy/s/response.body")) {
