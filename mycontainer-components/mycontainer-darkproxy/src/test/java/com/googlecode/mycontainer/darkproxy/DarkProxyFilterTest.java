@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -83,11 +83,11 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 
 	private void changeResponse() {
 		Util.sleep(2000L);
-		List<Long> conns = getConns();
+		SortedMap<Long, DarkProxyConn> conns = getConns();
 		assertEquals(1, conns.size());
 
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/s/response/proceed?id=" + conns.get(0), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/response/proceed?id=" + conns.firstKey(), "UTF-8"));
 	}
 
 	private void forwardRequest() {
@@ -106,29 +106,39 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 	}
 
 	private void changeRequest() {
+		waitForRequest();
 		Util.sleep(500L);
-		List<Long> conns = getConns();
+		SortedMap<Long, DarkProxyConn> conns = getConns();
 		assertEquals(1, conns.size());
 
-		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0), "UTF-8");
+		String str = Util.readURL("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.firstKey(), "UTF-8");
 		DarkProxyRequest req = JSON.parse(str, DarkProxyRequest.class);
 		req.setUri("/test/sum");
 
-		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.get(0),
+		assertEquals(200, Util.put("http://localhost:8380/_darkproxy/s/request.json?id=" + conns.firstKey(),
 				"application/json", JSON.stringify(req)));
 
 		assertEquals("\"OK\"",
-				Util.readURL("http://localhost:8380/_darkproxy/s/request/proceed?id=" + conns.get(0), "UTF-8"));
+				Util.readURL("http://localhost:8380/_darkproxy/s/request/proceed?id=" + conns.firstKey(), "UTF-8"));
+	}
+
+	private void waitForRequest() {
+		// while (true) {
+		// List<Long> conns = getConns();
+		// if(!conns.isEmpty()) {
+		// return conns.get(0);
+		// }
+		// }
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Long> getConns() {
+	private SortedMap<Long, DarkProxyConn> getConns() {
 		try {
 			String str = Util.readAll(new URL("http://localhost:8380/_darkproxy/s/conns"), "UTF-8");
 			Type type = new TypeToken<Map<Long, DarkProxyConn>>() {
 			}.getType();
 			Map<Long, DarkProxyConn> ids = (Map<Long, DarkProxyConn>) JSON.parse(str, type);
-			return new ArrayList<Long>(ids.keySet());
+			return new TreeMap<Long, DarkProxyConn>(ids);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
