@@ -97,9 +97,9 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 					return ret;
 				}
 			}
-			Thread.yield();
+			Util.sleep(100L);
 			if (System.currentTimeMillis() > before + 2000L) {
-				Util.sleep(100L);
+				throw new RuntimeException("timeout");
 			}
 		}
 	}
@@ -140,9 +140,9 @@ public class DarkProxyFilterTest extends AbstractTestCase {
 			if (!conns.isEmpty()) {
 				return conns.get(conns.firstKey()).getRequest();
 			}
-			Thread.yield();
+			Util.sleep(100L);
 			if (System.currentTimeMillis() > before + 2000L) {
-				Util.sleep(100L);
+				throw new RuntimeException("timeout");
 			}
 		}
 	}
