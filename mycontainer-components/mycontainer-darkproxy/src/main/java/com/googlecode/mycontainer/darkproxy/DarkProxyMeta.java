@@ -48,8 +48,10 @@ public class DarkProxyMeta {
 		Long id = paramLong(req, "id");
 		File file = DarkProxyFiles.getFile(proxy.getDest(), id, ext);
 		Util.write(file, req.getInputStream());
-		if (ext.endsWith(".json")) {
+		if ("req.json".equals(ext)) {
 			proxy.getRequest(id).reload(proxy.getDest());
+		} else if ("resp.json".equals(ext)) {
+			proxy.getResponse(id).reload(proxy.getDest());
 		}
 	}
 

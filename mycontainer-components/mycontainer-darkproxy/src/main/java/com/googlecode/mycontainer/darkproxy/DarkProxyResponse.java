@@ -68,7 +68,7 @@ public class DarkProxyResponse {
 
 	private void writeBody(String dest, HttpServletResponse response) {
 		try {
-			File file = bodyFile(dest);
+			File file = getBodyFile(dest);
 			Util.read(file, response.getOutputStream());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -118,18 +118,22 @@ public class DarkProxyResponse {
 	}
 
 	private void writeBody(String dest, InputStream in) {
-		File file = bodyFile(dest);
+		File file = getBodyFile(dest);
 		DarkProxyFiles.write(file, in);
 	}
 
-	private File bodyFile(String dest) {
+	public File getBodyFile(String dest) {
 		return DarkProxyFiles.getFile(dest, id, "resp.body");
 	}
 
 	private void writeMeta(String dest) {
-		File file = DarkProxyFiles.getFile(dest, id, "resp.json");
+		File file = getMetaFile(dest);
 		String json = JSON.stringify(this);
 		DarkProxyFiles.write(file, json);
+	}
+
+	public File getMetaFile(String dest) {
+		return DarkProxyFiles.getFile(dest, id, "resp.json");
 	}
 
 	private void parseHeaders(HttpURLConnection conn) {
@@ -151,6 +155,16 @@ public class DarkProxyResponse {
 
 	public synchronized void proceed() {
 		notify();
+	}
+
+	public void reload(String dest) {
+		File file = getMetaFile(dest);
+		String json  = Util.readAll(file, "UTF-8");
+		DarkProxyResponse resp = JSON.parse(json, DarkProxyResponse.class);
+		setHeaders(resp.getHeaders());
+		setCode(resp.getCode());
+		setId(resp.getId());
+		setReason(resp.getReason());
 	}
 
 }
