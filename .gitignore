@@ -6,4 +6,5 @@ lockedfile-test
 release-logs
 *.priv
 *~
-
+*.iml
+.idea
