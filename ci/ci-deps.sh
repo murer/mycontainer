@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-java --version
+java -version
 mvn --version
 
 ./cmds/decrypt.sh

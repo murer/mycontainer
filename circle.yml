@@ -4,7 +4,6 @@ machine:
     version: oraclejdk8
 dependencies:
   override:
-    - ls -lart ./ci
     - ./ci/ci-deps.sh
 test:
   override:
