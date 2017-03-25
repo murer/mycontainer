@@ -3,6 +3,6 @@
 java -version
 mvn --version
 
-./cmds/decrypt.sh
+#./cmds/decrypt.sh
 
-gpg --import keys/pyrata.org.priv
+#gpg --import keys/pyrata.org.priv
