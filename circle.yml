@@ -8,5 +8,3 @@ dependencies:
 test:
   override:
     - ./ci/ci-test.sh
-  post:
-    - ./ci/ci-test-post.sh
