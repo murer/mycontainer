@@ -8,3 +8,8 @@ dependencies:
 test:
   override:
     - ./ci/ci-test.sh
+deployment:
+    prod:
+        branch: [ master ]
+        commands:
+           - ./ci/ci-release.sh
