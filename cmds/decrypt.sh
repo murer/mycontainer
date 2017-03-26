@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 
 if [ "x$MYCONTAINER_SECRET" == "x" ]; then
 	echo "export MYCONTAINER_SECRET to descrypt files";
@@ -7,5 +7,5 @@ fi
 
 find -name "*.crypt" | while read k; do
 	echo "decrypt: $k";
-	openssl enc -aes-256-cbc -salt -in "$k" -out "$(echo "$k" | sed "s/\.crypt$//g")" -d -pass "pass:$REPOZSECRET";
+	openssl enc -aes-256-cbc -salt -in "$k" -out "$(echo "$k" | sed "s/\.crypt$//g")" -d -pass "pass:$MYCONTAINER_SECRET";
 done
