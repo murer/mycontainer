@@ -5,4 +5,5 @@ if grep version pom.xml | grep SNAPSHOT; then
 	exit 1;
 fi
 
-mvn -B clean verify source:jar-no-fork javadoc:jar gpg:sign deploy:deploy "-Dgpg.passphrase=$MYCONTAINER_SECRET" -DdeployCentral -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/service/local/staging/deploy/maven2 -Dmaven.test.skip.exec -T 10
+#mvn -B clean verify source:jar-no-fork javadoc:jar gpg:sign deploy:deploy "-Dgpg.passphrase=$MYCONTAINER_SECRET" -DdeployCentral -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/service/local/staging/deploy/maven2 -Dmaven.test.skip.exec -T 10
+mvn -B clean verify source:jar-no-fork javadoc:jar gpg:sign "-Dgpg.passphrase=$MYCONTAINER_SECRET" -DdeployCentral -DaltDeploymentRepository=sonatype-nexus-staging::default::https://oss.sonatype.org/service/local/staging/deploy/maven2 -Dmaven.test.skip.exec -T 10

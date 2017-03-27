@@ -12,4 +12,8 @@ deployment:
     snapshot:
         tag: /snapshot-.*/
         commands:
-           - ./ci/ci-release-snapshot.sh
+           - ./ci/ci-snapshot.sh
+    release:
+        tag: /release-.*/
+        commands:
+           - ./ci/ci-release.sh
