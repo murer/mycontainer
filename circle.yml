@@ -9,7 +9,7 @@ test:
   override:
     - ./ci/ci-test.sh
 deployment:
-    prod:
-        branch: [ master ]
+    snapshot:
+        branch: [ snapshot ]
         commands:
            - ./ci/ci-release-snapshot.sh
