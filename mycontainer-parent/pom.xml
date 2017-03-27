@@ -5,12 +5,12 @@
 	<artifactId>mycontainer-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>mycontainer parent</name>
-	<version>1.7.3</version>
+	<version>1.7.4-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.googlecode.mycontainer</groupId>
 		<artifactId>mycontainer</artifactId>
-		<version>1.7.3</version>
+		<version>1.7.4-SNAPSHOT</version>
 	</parent>
 
 	<properties>
