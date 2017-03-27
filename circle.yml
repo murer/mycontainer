@@ -10,6 +10,6 @@ test:
     - ./ci/ci-test.sh
 deployment:
     snapshot:
-        branch: [ snapshot ]
+        tag: /snapshot-.*/
         commands:
            - ./ci/ci-release-snapshot.sh
