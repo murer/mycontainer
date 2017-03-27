@@ -30,7 +30,6 @@
 		<module>mycontainer-jpa</module>
 		<module>mycontainer-jsfprovider</module>
 		<module>mycontainer-web</module>
-		<module>mycontainer-darkproxy</module>
 		<module>mycontainer-starter</module>
 		<module>mycontainer-maven-plugin</module>
 		<module>mycontainer-mail</module>
