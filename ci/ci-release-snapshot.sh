@@ -1,5 +1,7 @@
 #!/bin/bash -xe
 
+source mvn_opts.sh
+
 ./cmds/decrypt.sh
 
 gpg --import keys/pyrata.org.priv
