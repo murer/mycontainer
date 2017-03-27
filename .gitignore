@@ -5,5 +5,7 @@ target
 lockedfile-test
 release-logs
 *.priv
+*.secret
 *~
-
+*.iml
+.idea

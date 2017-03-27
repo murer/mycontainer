@@ -1,7 +1,6 @@
 package com.googlecode.mycontainer.commons.http;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.List;
 
@@ -101,52 +100,48 @@ public class HttpClientRequestService implements RequestService {
 	}
 
 	private HttpRequestBase createRequest(Request req) {
-		try {
-			Type type = req.type();
-			URI uri = req.toURI(repository);
-			HttpRequestBase ret;
-			switch (type) {
-			case GET:
-				ret = new HttpGet(uri);
-				break;
-			case HEAD:
-				ret = new HttpHead(uri);
-				break;
-			case DELETE:
-				ret = new HttpDelete(uri);
-				break;
-			case PUT:
-				ret = new HttpPut(uri);
-				break;
-			case POST:
-				ret = new HttpPost(uri);
-				break;
-			default:
-				throw new RuntimeException("not supported: " + type);
-			}
-
-			List<NamePair> pairs = req.headers().pairs();
-			for (NamePair header : pairs) {
-				ret.addHeader(header.name(), header.value());
-			}
-
-			if (ret instanceof HttpEntityEnclosingRequestBase) {
-				HttpEntityEnclosingRequestBase base = (HttpEntityEnclosingRequestBase) ret;
-				Content content = req.content();
-				AbstractHttpEntity entity;
-				if (!content.isBinary()) {
-					entity = new StringEntity(content.text(), content.charset());
-				} else {
-					entity = new ByteArrayEntity(content.data());
-				}
-				entity.setContentType(content.mediaType());
-				entity.setContentEncoding(content.charset());
-				base.setEntity(entity);
-			}
-			return ret;
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+		Type type = req.type();
+		URI uri = req.toURI(repository);
+		HttpRequestBase ret;
+		switch (type) {
+		case GET:
+			ret = new HttpGet(uri);
+			break;
+		case HEAD:
+			ret = new HttpHead(uri);
+			break;
+		case DELETE:
+			ret = new HttpDelete(uri);
+			break;
+		case PUT:
+			ret = new HttpPut(uri);
+			break;
+		case POST:
+			ret = new HttpPost(uri);
+			break;
+		default:
+			throw new RuntimeException("not supported: " + type);
 		}
+
+		List<NamePair> pairs = req.headers().pairs();
+		for (NamePair header : pairs) {
+			ret.addHeader(header.name(), header.value());
+		}
+
+		if (ret instanceof HttpEntityEnclosingRequestBase) {
+			HttpEntityEnclosingRequestBase base = (HttpEntityEnclosingRequestBase) ret;
+			Content content = req.content();
+			AbstractHttpEntity entity;
+			if (!content.isBinary()) {
+				entity = new StringEntity(content.text(), content.charset());
+			} else {
+				entity = new ByteArrayEntity(content.data());
+			}
+			entity.setContentType(content.mediaType());
+			entity.setContentEncoding(content.charset());
+			base.setEntity(entity);
+		}
+		return ret;
 	}
 
 	public void setUser(String user, String pass) {
