@@ -268,11 +268,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.googlecode.mycontainer</groupId>
-				<artifactId>mycontainer-darkproxy</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.googlecode.mycontainer</groupId>
 				<artifactId>mycontainer-js-java</artifactId>
 				<version>${project.version}</version>
 			</dependency>

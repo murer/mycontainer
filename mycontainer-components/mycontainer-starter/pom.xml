@@ -28,10 +28,6 @@
 			<artifactId>mycontainer-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode.mycontainer</groupId>
-			<artifactId>mycontainer-darkproxy</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.beanshell</groupId>
 			<artifactId>bsh</artifactId>
 		</dependency>
