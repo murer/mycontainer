@@ -1,7 +1,7 @@
 machine:
   timezone: America/Sao_Paulo
   java:
-    version: oraclejdk8
+    version: oraclejdk7
 dependencies:
   override:
     - ./ci/ci-deps.sh
