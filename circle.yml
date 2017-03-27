@@ -17,3 +17,7 @@ deployment:
         tag: /release-.*/
         commands:
            - ./ci/ci-release.sh
+    tags:
+        tag: /.*/
+        commands:
+           - "true"
