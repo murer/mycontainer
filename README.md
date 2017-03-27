@@ -1,5 +1,6 @@
 # Mycontainer
 
+[![Build Status](https://circleci.com/gh/murer/mycontainer.png?style=shield)](https://circleci.com/gh/murer/mycontainer)
 [![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
 
 ## Purpose
