@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-source mvn_opts.sh
+source mvn_ops.sh
 
 mvn test -B
 
