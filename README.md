@@ -1,13 +1,12 @@
 # Mycontainer
 
+[![Build Status](https://circleci.com/gh/murer/mycontainer.png?style=shield)](https://circleci.com/gh/murer/mycontainer)
 [![Build Status](https://travis-ci.org/murer/mycontainer.png)](https://travis-ci.org/murer/mycontainer)
 
 ## Purpose
 
 Mycontainer is a generic test and development enviroment. Check it out.
 
- * [Embedding Mycontainer to do some Java EE stuff](#embedding-mycontainer-to-do-some-java-ee-stuff)
- * [Embedding Mycontainer to do some GAE stuff](#embedding-mycontainer-to-do-some-gae-stuff)
  * [Starting all modules from maven](#starting-all-modules-from-maven)
  * [Start a local web server](#start-a-local-web-server)
  * [TCP Tunnels](#tcp-tunnels)
@@ -15,45 +14,12 @@ Mycontainer is a generic test and development enviroment. Check it out.
  * [Installing PhantomJS](#installing-phantomjs)
  * [Maven Repository](#maven-repository)
  * [Building Mycontainer](#building-mycontainer)
-
-## Since 1.4.4
-
-You need to change `maven-mycontainer-plugin` to `mycontainer-maven-plugin` (thanks maven 3.x)
+ * [Embedding Mycontainer to do some GAE stuff](#embedding-mycontainer-to-do-some-gae-stuff)
+ * [Embedding Mycontainer to do some Java EE stuff](#embedding-mycontainer-to-do-some-java-ee-stuff)
 
 ## @Before
 
 You will need java and maven
-
-## Embedding Mycontainer to do some Java EE stuff
-
-Configure InitialContext. You can do with [jndi.properties](./mycontainer-test/mycontainer-test-web/src/test/resources/jndi.properties)
-
-Code like [MycontainerTestHelper.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerTestHelper.java) to embed anywhere.
-
-Here is a junit sample: 
-[AbstractWebBaseTestCase.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/AbstractWebBaseTestCase.java)
-/ [MycontainerWebTest.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerWebTest.java)
-
- * Embeddable on any java application (junit tests, jetty, tomcat, and any others)
- * Programmatic configuration and deploy
- * Light weight
- * Fast boot
- * Do not hijack the Java Virtual Machine (real embeddable):
-   * Do not change JVM URL protocols configs
-   * No dynamic classloader
-   * No classloader isolation
-
-## Embedding Mycontainer to do some GAE stuff
-
-Configure [pom.xml](./mycontainer-gae/mycontainer-gae-test/pom.xml) to [Google App Engine](https://developers.google.com/appengine/)
-
-Use [GAETestHelper.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/GAETestHelper.java) or code like that.
-
-Google has [LocalServiceTestHelper](https://developers.google.com/appengine/docs/java/tools/localunittesting) 
-to do unit tests, but it requires a thread environment.
-It means we need to keep the env to each request thread.
-This filter [LocalServiceTestHelperFilter.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/LocalServiceTestHelperFilter.java)
-does the job using a non-documented google class ApiProxy.
 
 ## Starting all modules from maven
 
@@ -105,7 +71,7 @@ Use `<inherited>false</inherited>` if you are configuring your root pom.xml at m
 
 Mycontainer has a plugin to install [PhantomJS](http://phantomjs.org). 
 
- * Download packages from original host: http://code.google.com/p/phantomjs/downloads/
+ * Download packages from original host: https://bitbucket.org/ariya/phantomjs/downloads
  * Install the correct package (windows, macosx, linux).
  * No pom.xml required
  * It set a maven property to the phantomjs executable: `mycontainer.phantomjs.executable`
@@ -134,5 +100,36 @@ Use `-Ddist` to assembly a all-in-one jar and a binary zip.
 Speed up the process:
 
     mvn clean install -Dmaven.test.skip.exec -T 10 && mvn test
+
+## Embedding Mycontainer to do some GAE stuff
+
+Configure [pom.xml](./mycontainer-gae/mycontainer-gae-test/pom.xml) to [Google App Engine](https://developers.google.com/appengine/)
+
+Use [GAETestHelper.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/GAETestHelper.java) or code like that.
+
+Google has [LocalServiceTestHelper](https://developers.google.com/appengine/docs/java/tools/localunittesting) 
+to do unit tests, but it requires a thread environment.
+It means we need to keep the env to each request thread.
+This filter [LocalServiceTestHelperFilter.java](./mycontainer-gae/mycontainer-gae-web/src/main/java/com/googlecode/mycontainer/gae/web/LocalServiceTestHelperFilter.java)
+does the job using a non-documented google class ApiProxy.
+
+## Embedding Mycontainer to do some Java EE stuff
+
+Configure InitialContext. You can do with [jndi.properties](./mycontainer-test/mycontainer-test-web/src/test/resources/jndi.properties)
+
+Code like [MycontainerTestHelper.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerTestHelper.java) to embed anywhere.
+
+Here is a junit sample: 
+[AbstractWebBaseTestCase.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/AbstractWebBaseTestCase.java)
+/ [MycontainerWebTest.java](./mycontainer-test/mycontainer-test-web/src/test/java/com/googlecode/mycontainer/test/web/MycontainerWebTest.java)
+
+ * Embeddable on any java application (junit tests, jetty, tomcat, and any others)
+ * Programmatic configuration and deploy
+ * Light weight
+ * Fast boot
+ * Do not hijack the Java Virtual Machine (real embeddable):
+   * Do not change JVM URL protocols configs
+   * No dynamic classloader
+   * No classloader isolation
 
 

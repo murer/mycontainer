@@ -82,7 +82,9 @@ public class MycontainerUsAsciiMojo extends AbstractMojo {
 			int idx = filter.indexOf(":");
 			String type = filter.substring(0, idx);
 			String value = filter.substring(idx + 1);
-			boolean matches = file.getPath().matches(value);
+			String path = file.getPath();
+			path = path.replaceAll("\\\\", "/");
+			boolean matches = path.matches(value);
 			if ("include".equals(type) && matches) {
 				return true;
 			}

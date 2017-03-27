@@ -1,0 +1,23 @@
+machine:
+  timezone: America/Sao_Paulo
+  java:
+    version: oraclejdk7
+dependencies:
+  override:
+    - ./ci/ci-deps.sh
+test:
+  override:
+    - ./ci/ci-test.sh
+deployment:
+    snapshot:
+        tag: /snapshot-.*/
+        commands:
+           - ./ci/ci-snapshot.sh
+    release:
+        tag: /release-.*/
+        commands:
+           - ./ci/ci-release.sh
+    tags:
+        tag: /.*/
+        commands:
+           - "true"
