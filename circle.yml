@@ -12,4 +12,4 @@ deployment:
     prod:
         branch: [ master ]
         commands:
-           - ./ci/ci-release.sh
+           - ./ci/ci-release-snapshot.sh
