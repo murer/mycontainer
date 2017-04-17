@@ -46,7 +46,7 @@ You can get this jar [here](http://central.maven.org/maven2/com/googlecode/mycon
 
 The first argument can be `Console` (System.out) or `Log` (slf4j/jdk-logging) to show transfered data. Or `Redirect` to just redirect it silently.
 
-Others arguments describes tunnels to startup. `[local-host]:local-port:remote-host:remote-port`.
+Others arguments describes the tcp tunnels. `[local-host]:local-port:remote-host:remote-port`.
 
 `local-host` is not required (default 127.0.0.1). Use 0.0.0.0 to bind on all interfaces.
 
