@@ -1,14 +1,5 @@
 #!/bin/bash -xe
 
-if ! mvn clean -B -Dmaven.test.skip.exec -T 10; then
-	if ! mvn clean -B -Dmaven.test.skip.exec -T 10; then
-		mvn clean -B -Dmaven.test.skip.exec -T 10;
-	fi;
-fi
+mvn clean -B -Dmaven.test.skip.exec
 
-if ! mvn install -B -Dmaven.test.skip.exec -T 10; then
-	if ! mvn install -B -Dmaven.test.skip.exec -T 10; then
-		mvn install -B -Dmaven.test.skip.exec -T 10;
-	fi;
-fi
-
+mvn install -B -Dmaven.test.skip.exec
